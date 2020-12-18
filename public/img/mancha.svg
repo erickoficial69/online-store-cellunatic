@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="448" height="448" viewBox="0 0 -1 448">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgb(30,30,30);
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path data-name="mancha" class="cls-1" d="M437.419,0s33.724,148.673-209.287,208.142c0,0-109.106,59.469-16.862,159.575,0,0,43.643,50.548-46.618,79.292L0.992,448,0,3.965Z"/>
+</svg>

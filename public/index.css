@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'cellunatic';
+    src:url('/fonts/coursive2.ttf');
+}
+*{
+    margin:0;
+    padding:0;
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none;
+    list-style: none;
+    border:none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+body{
+    background:/*url('/img/universo-696x392.jpg') center*/rgb(5,5,5);
+    background-size: cover;
+}
+.containerForm {
+    width:100%;
+    height:100vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.coursive{
+    font-family: 'cellunatic' !important;
+}

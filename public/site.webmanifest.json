@@ -1,0 +1,39 @@
+{
+  "short_name": "Cellunatic",
+  "name": "Cellunatic",
+  "description": "Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en telefonía móvil y dispositivos móviles",
+  "icons": [
+    {
+      "src": "logo512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "logo192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "rgb(15,15,15)",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": "/",
+  "theme_color": "rgb(35,35,35)",
+  "shortcuts": [
+    {
+      "name": "Cellunatic",
+      "short_name": "Home",
+      "description": "Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en telefonía móvil y dispositivos móviles",
+      "url": "/",
+      "icons": [{ "src": "logo192x192.png", "sizes": "192x192" },{ "src": "logo512x512.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Cellunatic - accesorios",
+      "short_name": "Accesorios",
+      "description": "Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en telefonía móvil y dispositivos móviles.",
+      "url": "/accesorios",
+      "icons": [{ "src": "logo192x192.png", "sizes": "192x192" },{ "src": "logo512x512.png", "sizes": "512x512" }]
+    }
+  ]
+}

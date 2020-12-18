@@ -1,0 +1,32 @@
+{
+  "name": "Licores",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && cp .next/service-worker.js public/",
+    "export": "rm public/service-worker.js && next export",
+    "start": "next start ",
+    "type-check": "tsc"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "install": "^0.13.0",
+    "isomorphic-fetch": "^2.2.1",
+    "next": "latest",
+    "next-offline": "^5.0.2",
+    "next-with-workbox": "^1.2.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "workbox-precaching": "^5.1.3",
+    "workbox-window": "^5.1.3"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "0.0.35",
+    "@types/node": "^12.12.21",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
+    "typescript": "4.0"
+  },
+  "license": "MIT"
+}
