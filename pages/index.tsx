@@ -68,7 +68,9 @@ const Index=({context}:any)=>{
                         flexFlow:'row wrap',
                         justifyContent:'center',
                         alignItems:'center',
-                        alignContent:'center'}}>
+                        alignContent:'center',
+                        width:'100%'
+                        }}>
 
                     
                             <Button onClick={()=>{setAppLoader(true),push("/accesorios")}} style={{margin:'5px'}} variant="outlined" >Accesorios</Button>
