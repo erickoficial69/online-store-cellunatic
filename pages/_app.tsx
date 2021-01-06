@@ -2,8 +2,6 @@ import App,{AppProps,AppContext} from "next/app";
 import {useEffect,useState} from 'react'
 import { User, AppData, TasaCambio } from '../interfaces/interfaces'
 
-const API:any = process.env.API || 'https://cellunaticbackend.herokuapp.com' 
-
 const initialApp={
   name:'',
   description:'',
@@ -51,13 +49,13 @@ function Myapp({ Component,pageProps}:AppProps) {
   }
   
   const getTasaCambio = async()=>{
-      const req = await fetch(`${API}/app/tasacambio`)
+      const req = await fetch(process.env.API+`/app/tasacambio`)
       const tasa =  await req.json()
       setTasaCambio(tasa)
   }
 
   const getAppData = async()=>{
-      const send = await fetch(`${API}/app`)
+      const send = await fetch(process.env.API+`/app`)
       const res = await send.json()
       setAppData(res)
   }
@@ -87,6 +85,9 @@ function Myapp({ Component,pageProps}:AppProps) {
 
 Myapp.getInitialProps = async(ctx:AppContext)=>{
     const appProps = await App.getInitialProps(ctx)
+        appProps.pageProps={
+            api : process.env.API
+        }
       return {appProps}
 }
 

@@ -66,4 +66,10 @@ const nextConfig = {
     ]
   }
   }
-module.exports = withOffline()
+module.exports = withOffline(
+  {
+    env:{
+      API:process.env.API
+    }
+  }
+)

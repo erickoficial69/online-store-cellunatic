@@ -1,10 +1,8 @@
 import { AppData } from "../../interfaces/interfaces"
 import fetch from 'isomorphic-fetch'
 
-const API:any = process.env.CELLUNATICBACKEND || 'http://localhost:3001'
-
 export const updateApp = async(app:AppData)=>{
-    const send = await fetch(`${API}/app`, {
+    const send = await fetch(`${process.env.API}/app`, {
             method: 'put',
             body: JSON.stringify({ newData: app }),
             headers: {
@@ -15,12 +13,12 @@ export const updateApp = async(app:AppData)=>{
 }
 
 export const getTasa = async()=>{
-    const req = await fetch(`${API}/app/tasacambio`)
+    const req = await fetch(`${process.env.API}/app/tasacambio`)
     return await req.json()
 }
 
 export const updateTasa = async({monto,_id}:any)=>{
-    const send = await fetch(`${API}/app/tasacambio`, {
+    const send = await fetch(`${process.env.API}/app/tasacambio`, {
             method: 'put',
             body: JSON.stringify({ monto, _id}),
             headers: {

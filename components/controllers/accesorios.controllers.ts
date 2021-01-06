@@ -1,8 +1,6 @@
 import { Accesorio } from "../../interfaces/interfaces"
 import fetch from 'isomorphic-fetch'
 
-const API:any = process.env.API || 'http://localhost:3001'
-
 export const toBase64 = (file:any) => new Promise((resolve,reject) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -12,7 +10,7 @@ export const toBase64 = (file:any) => new Promise((resolve,reject) => {
 
 export const updateAccesorio = async (accesorio:Accesorio) => {
     const newData =accesorio
-    const get = await fetch(`${API}/accesorios`,{
+    const get = await fetch(`${process.env.API}/accesorios`,{
         method:'put',
         body: JSON.stringify({newData,id:accesorio._id}),
         headers:{
@@ -33,7 +31,7 @@ export const createAccesorio = async (accesorio:Accesorio) => {
             producto: accesorio.producto
     }
     
-    const get = await fetch(`${API}/accesorios`,{
+    const get = await fetch(`${process.env.API}/accesorios`,{
         method:'post',
         body: JSON.stringify({newAccesorio}),
         headers:{
@@ -44,7 +42,7 @@ export const createAccesorio = async (accesorio:Accesorio) => {
 }
 
 export const deleteAccesorio = async(accesorio:Accesorio)=>{
-    const get = await fetch(`${API}/accesorios/${accesorio._id}`,{
+    const get = await fetch(`${process.env.API}/accesorios/${accesorio._id}`,{
         method:'delete',
         headers:{
             "content-type":"application/json"
@@ -54,18 +52,18 @@ export const deleteAccesorio = async(accesorio:Accesorio)=>{
 }
 
 export const getAccesorio = async(id:string)=>{
-    const get = await fetch(`${API}/accesorios/detail/${id}`)
+    const get = await fetch(`${process.env.API}/accesorios/detail/${id}`)
     return await get.json()
 }
 
 export const getAccesorios = async(limit?:number)=>{
-    const get = await fetch(`${API}/accesorios/${limit}`)
+    const get = await fetch(`${process.env.API}/accesorios/${limit}`)
     return await get.json()
 }
 
 export const getCustomAccesorio = async(search:string,limit:number)=>{
 
-    const get = await fetch(`${API}/accesorios/filter`,{
+    const get = await fetch(`${process.env.API}/accesorios/filter`,{
         method:'post',
         body:JSON.stringify({search,limit}),
         headers:{
