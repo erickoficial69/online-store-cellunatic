@@ -2,7 +2,7 @@ import App,{AppProps,AppContext} from "next/app";
 import {useEffect,useState} from 'react'
 import { User, AppData, TasaCambio } from '../interfaces/interfaces'
 
-const API:any = process.env.API || 'http://localhost:3001' 
+const API:any = process.env.API || 'https://cellunaticbackend.herokuapp.com' 
 
 const initialApp={
   name:'',
