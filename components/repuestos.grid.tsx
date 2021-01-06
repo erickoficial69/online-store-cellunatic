@@ -77,7 +77,7 @@ export const GridRepuestos = ({repuestos,user,setAlterEvent}:Props)=>{
                                 </Grid>
                             
                             )
-                        }) : <Typography variant="h5" >No hay registros</Typography>
+                        }) : null
                     }
                 </Grid>
     )

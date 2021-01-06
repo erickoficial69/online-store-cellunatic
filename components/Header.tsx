@@ -6,11 +6,11 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import NavigationApp from './Navigation'
 
-type Props = {
-    context: Context
+type Props={
+    context:Context
 }
 
-const Header = ({ context }: Props) => {
+const Header = ({context}:Props) => {
     const { appLocation, setAppLoader, verifySesion } = context
     const { push } = useRouter()
     const [user, setUser] = useState<User>({ correo: '', password: '' })

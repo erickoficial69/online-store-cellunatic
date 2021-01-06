@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Button, Container, Grid, List, ListItem, ListItemSecondaryAction, ListItemText, Typography } from '@material-ui/core'
 import { AddShoppingCart, Share } from '@material-ui/icons'
-import { Repuesto, App, TasaCambio } from '../interfaces/interfaces'
+import { Repuesto, AppData, TasaCambio } from '../interfaces/interfaces'
 import * as repuestoServ from './controllers/repuestos.controllers'
 import Head from 'next/head'
 import { GridRepuestos } from './repuestos.grid'
@@ -15,7 +15,7 @@ type Rela ={
 interface Props {
     id: string
     setAppLoader?: any
-    app:App
+    app:AppData
     tasaCambio:TasaCambio
 }
 

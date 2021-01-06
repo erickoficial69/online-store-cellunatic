@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Button, Container, Grid, List, ListItem, ListItemText, Typography, ListItemSecondaryAction } from '@material-ui/core'
 import { AddShoppingCart, Share } from '@material-ui/icons'
-import { Accesorio, App, TasaCambio } from '../interfaces/interfaces'
+import { Accesorio, AppData, TasaCambio } from '../interfaces/interfaces'
 import * as accesorioServ from './controllers/accesorios.controllers'
 import Head from 'next/head'
 import { GridProducts } from './products.grid'
@@ -15,7 +15,7 @@ interface Props {
     id: string
     setAppLoader?: any
     setModalNewProduct?: any
-    app:App
+    app:AppData
     tasaCambio:TasaCambio
 }
 

@@ -4,26 +4,30 @@ import Head from "next/head";
 import Template from "../components/App";
 import { GridProducts } from "../components/products.grid";
 import { Accesorio, Repuesto,Context} from '../interfaces/interfaces'
+import { GridRepuestos } from "../components/repuestos.grid";
 import {getAccesorios} from '../components/controllers/accesorios.controllers'
 import {getRepuestos} from '../components/controllers/repuestos.controllers'
-import {GetStaticProps,GetStaticPropsContext} from 'next'
-import { GridRepuestos } from "../components/repuestos.grid";
 import {useRouter} from 'next/router'
 
 
-interface Props{
-    context:Context
-    accesorios:Accesorio[]
-    repuestos:Repuesto[]
-}
-
-const Index=({context,accesorios,repuestos}:Props)=>{
-    const {setAppLoader,appLoader} = context
+const Index=({context}:any)=>{
+    const {setAppLoader}:Context = context
     const [alterEvent,setAlterEvent] = useState<boolean>(false)
+    const [accesorios,setAccesorios] = useState<Accesorio[]>([])
+    const [repuestos,setRepuestos] = useState<Repuesto[]>([])
     const {push} = useRouter()
 
+    const startComponent=async()=>{
+
+        const {accesories} = await getAccesorios(6)
+        const {repuestos} = await getRepuestos(6)
+
+        setRepuestos(repuestos)
+        setAccesorios(accesories)
+    }
     useEffect(()=>{
-        setAppLoader(appLoader?false:true)
+        startComponent()
+        setAppLoader(false)
     },[alterEvent])
 
     return(
@@ -34,26 +38,26 @@ const Index=({context,accesorios,repuestos}:Props)=>{
 
             <div style={{
                 position:'relative',
-                backgroundImage:'url(img/wp-home.png)',
-                backgroundColor:'rgba(0,0,0, .7)',
-                backgroundSize:'cover',
-                backgroundBlendMode:'multiply',
                 height:'100vh',
                 maxHeight:'720px',
                 display:'flex',
-                flexFlow:'column',
+                flexFlow:'row wrap',
                 justifyContent:'center',
                 alignItems:'center',
-                alignContent:'center'
+                alignContent:'center',
+                margin:'60px 0 5px 0'
                 }}>
-                
-                    <Typography component="h1" style={{textAlign:'center'}} className="coursive" variant="h3" color="textPrimary" >
+
+                <img width="300px" src="/logo192x192.png" alt="Cellunatic logo"/>
+                <span >
+                <Typography component="h1" style={{textAlign:'center'}} className="coursive" variant="h2" color="textPrimary" >
                         <b>Cellunatic 2017 CG C.A</b>
                     </Typography>
-                    <br/>
-                    <Typography variant="h5" color="textPrimary" >
+                        <br/>
+                    <Typography style={{width:'100%',textAlign:'center'}} variant="h5" color="textPrimary" >
                         Gente que Responde!
                     </Typography>
+                </span>
 
                     <br/>
                     <br/>
@@ -69,20 +73,16 @@ const Index=({context,accesorios,repuestos}:Props)=>{
                     
                             <Button onClick={()=>{setAppLoader(true),push("/accesorios")}} style={{margin:'5px'}} variant="outlined" >Accesorios</Button>
                         
-                        
                             <Button onClick={()=>{setAppLoader(true),push("/repuestos")}} style={{margin:'5px'}} variant="outlined" >repuestos</Button>
                         
-
-                        
                             <Button onClick={()=>{setAppLoader(true),push("/telefonos")}} style={{margin:'5px'}} variant="outlined" >telefonos</Button>
-                        
                         
                             <Button onClick={()=>{setAppLoader(true),push("/serviciotecnico")}} style={{margin:'5px'}} variant="outlined" >Servicio técnico</Button>
                         
                    </div>
             </div>
             <Container>
-                <Typography color="textPrimary" component="h2" variant="h5" style={{textAlign:'center',margin:'20px 0'}} >
+                <Typography color="textPrimary" component="h2" variant="h5" style={{textAlign:'center',margin:'0 0 20px 0'}} >
                         {accesorios.length > 0 ? 'Forros, vidrio templado y más accesorios para telefonos' :null}
                 </Typography>
                 <GridProducts accesorios={accesorios} setAlterEvent={setAlterEvent} />
@@ -91,20 +91,10 @@ const Index=({context,accesorios,repuestos}:Props)=>{
                         {repuestos.length > 0 ? 'Repuestos y partes para telefonos' :null}
                 </Typography>
 
-                <GridRepuestos repuestos={repuestos} setAlterEvent={setAlterEvent}/>
+                <GridRepuestos repuestos={repuestos} setAlterEvent={setAlterEvent} />
             </Container>
         </>
     )
-}
-
-export const getStaticProps:GetStaticProps = async(_:GetStaticPropsContext)=>{
-    const {accesories} = await getAccesorios(6)
-    const {repuestos} = await getRepuestos(6)
-    return {
-        props:{
-            repuestos,accesorios:accesories
-        }
-    }
 }
 
 export default Template(Index)

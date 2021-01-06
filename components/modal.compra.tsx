@@ -1,9 +1,9 @@
-import { App } from '../interfaces/interfaces'
+import { AppData } from '../interfaces/interfaces'
 import { Button, Typography } from '@material-ui/core'
 import { Facebook, Instagram, Mail, Phone, Telegram, Twitter, WhatsApp } from '@material-ui/icons'
 
 type Props = {
-    app: App
+    app: AppData
     setModal:(param:boolean)=>void
 }
 

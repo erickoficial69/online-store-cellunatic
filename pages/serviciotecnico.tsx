@@ -21,7 +21,7 @@ const ServicioTecnico = ({context}:Props)=>{
                 <title>Cellunatic - servicio tectnico</title>
             </Head>
             <div className="banner" style={{position:'relative',width:'100%',height:'100vh',maxHeight:"720px",display:'flex',flexFlow:'column',justifyContent:'center'}}>
-                <img style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute'}} src="/img/300.png" alt="imagen servicio tecnico" />
+                <img style={{width:'100%',height:'100%',objectFit:'cover',position:'absolute'}} src="/img/300.webp" alt="imagen servicio tecnico" />
                 <div style={{width:'100%',height:'100%',position:'absolute',background:'rgba(0,0,0, .7)'}} ></div>
 
                 <Typography component="h1" color="textPrimary" style={{position:'relative',textAlign:'center'}} variant="h4">Servicio Técnico Profesional</Typography>

@@ -11,7 +11,7 @@ interface Props{
 }
 
 const Details=({context,idAccesorio}:Props)=>{
-    const {setAppLoader,verifySesion, app, tasaCambio} = context
+    const {setAppLoader,verifySesion, appData, tasaCambio} = context
     const [user,setUser] = useState<User>({correo:'',password:''})
 
     useEffect(()=>{
@@ -26,7 +26,7 @@ const Details=({context,idAccesorio}:Props)=>{
                  user.rango && user.rango === "administrador" ? (
                     <ManageAccesorio id={idAccesorio} setAppLoader={setAppLoader} />
                 ):(
-                    <DetailsAccesorio tasaCambio={tasaCambio} app={app} id={idAccesorio} setAppLoader={setAppLoader} />
+                    <DetailsAccesorio tasaCambio={tasaCambio} app={appData} id={idAccesorio} setAppLoader={setAppLoader} />
                 )
             } 
         </>

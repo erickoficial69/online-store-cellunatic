@@ -1,19 +1,17 @@
 import { AppBar, Toolbar, CircularProgress, Backdrop, createMuiTheme, ThemeProvider,colors } from '@material-ui/core'
 import Head from 'next/head'
-import ProviderApp, { Consumer } from '../context/Store.app'
 import Header from './Header'
-import { Context } from '../interfaces/interfaces'
 import Footer from './Footer'
 const {green,blue,orange} = colors
 
 const theme = createMuiTheme({
     palette:{
         background:{
-            default:'rgb(20,20,20)',
-            paper:'rgb(20,20,20)'
+            default:'rgba(0,0,0, .7)',
+            paper:'rgba(0,0,0, .7)'
         },
         primary:{
-            main:'rgb(20,20,20)',
+            main:'rgba(0,0,0, .7)',
             dark:'rgb(0,0,0)',
             light:'rgb(50,50,50)',
             contrastText:'rgb(250,250,250)'
@@ -44,12 +42,7 @@ const theme = createMuiTheme({
 const Template = (Page: any) => {
 
     return (props: any) => (
-        <ProviderApp>
-            <Consumer>
-                {(context: any) => {
-                    const { appLoader }: Context = context
-                    return (
-                        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
                             <Head>
                                 <link rel="stylesheet" href="/index.css" />
                                 <link rel="manifest" href="/site.webmanifest.json" />
@@ -66,20 +59,16 @@ const Template = (Page: any) => {
 
                             <AppBar component="header" >
                                 <Toolbar style={{ display: 'flex', flexFlow: 'row nowrap', justifyContent: 'space-between' }}  >
-                                    <Header {...props} context={context} />
+                                    <Header {...props} />
                                 </Toolbar>
                             </AppBar>
-                            <Backdrop open={appLoader ? true : false} style={{ zIndex: 2000 }} >
+                            <Backdrop open={props.context.appLoader ? true : false} style={{ zIndex: 6000 }} >
                                 <CircularProgress color="secondary" />
                             </Backdrop>
-                            <Page {...props} context={context} />
-                            <Footer context={context}/>
+                            <Page {...props}  />
+                            <Footer {...props} />
                         </ThemeProvider>
                     )
-                }}
-            </Consumer>
-        </ProviderApp>
-    )
 }
 
 export default Template

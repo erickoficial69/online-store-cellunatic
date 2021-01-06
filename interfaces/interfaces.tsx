@@ -48,8 +48,8 @@ export type Context = {
     setAppLocation: (param:string)=>string
     verifySesion:()=>User
     destroySesion:()=>User | void
-    app:App
-    setApp:(param:any)=>App
+    appData:AppData
+    setAppData:(param:any)=>AppData
     tasaCambio:TasaCambio
     setTasaCambio:(param:TasaCambio)=>TasaCambio
 }
@@ -66,7 +66,7 @@ export type User = {
     updatedAt?:string | Date
 }
 
-export type App = {
+export type AppData = {
     name:string
     description:string
     keywords?:string

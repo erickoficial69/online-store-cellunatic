@@ -12,7 +12,8 @@ type Props = {
 }
 
 const NavigationApp = ({ context, openDrawer, setOpenDrawer }: Props) => {
-    const { appLocation, setAppLoader, verifySesion } = context
+    const {appLocation, setAppLoader, verifySesion } = context
+    
     const { push } = useRouter()
     const [user, setUser] = useState<User>({ correo: '', password: '' })
 

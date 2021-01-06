@@ -1,9 +1,9 @@
-import { App } from "../../interfaces/interfaces"
+import { AppData } from "../../interfaces/interfaces"
 import fetch from 'isomorphic-fetch'
 
 const API:any = process.env.CELLUNATICBACKEND || 'http://localhost:3001'
 
-export const updateApp = async(app:App)=>{
+export const updateApp = async(app:AppData)=>{
     const send = await fetch(`${API}/app`, {
             method: 'put',
             body: JSON.stringify({ newData: app }),

@@ -23,7 +23,7 @@ export const GridProducts = (props:any)=>{
         await deleteAccesorio(param)
         setAlterEvent(false)
     }
-
+  
     return(
             <Grid container spacing={1} style={{padding:'20px 0'}} >
 
@@ -78,7 +78,7 @@ export const GridProducts = (props:any)=>{
                                 </Grid>
                             
                             )
-                        }) : <Typography variant="h5" >No hay registros</Typography>
+                        }) : null
                     }
                 </Grid>
     )

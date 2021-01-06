@@ -2,15 +2,11 @@ import { Context } from '../interfaces/interfaces'
 import { Button, Container, Grid, Typography } from '@material-ui/core'
 import { Facebook, Instagram, Mail, Phone, Telegram, Twitter, WhatsApp } from '@material-ui/icons'
 
-type Props = {
-    context: Context
-}
 
-const Footer = ({ context }: Props) => {
-    const {app} = context
-
+const Footer = (props:any) => {
+const {appData}:Context = props.context
     return (
-        <footer style={{background:'rgb(10,10,10)',padding:'10px 0',marginTop:'70px'}}>
+        <footer style={{padding:'10px 0',marginTop:'70px',overflow:'hidden'}}>
             <Container>
                 <Typography color="textPrimary" variant="h4" style={{margin:'20px 0',textAlign:'center'}}>Contáctenos</Typography>
                 <Grid container spacing={4} >
@@ -21,41 +17,41 @@ const Footer = ({ context }: Props) => {
                             </Typography>
 
 
-                            <Typography  variant="caption" color="textPrimary" style={{textAlign:'center',margin:'10px',maxWidth:'600px'}} paragraph> {app.addres} </Typography>
+                            <Typography  variant="caption" color="textPrimary" style={{textAlign:'center',margin:'10px',maxWidth:'600px'}} paragraph> {appData?appData.addres:''} </Typography>
                     </Grid>
 
                     <Grid item xs={12} md={6} xl={8}>
                         <Grid container spacing={2} >
                             
-                            {app.contact.phone?(
-                                    <Grid item ><a href={`tel:${app.contact.phone}`}><Button variant="outlined" startIcon={<Phone />} size="small">{app.contact.phone}</Button></a></Grid>
+                            {appData.contact.phone?(
+                                    <Grid item ><a href={`tel:${appData.contact.phone}`}><Button variant="outlined" startIcon={<Phone />} size="small">{appData.contact.phone}</Button></a></Grid>
                             ):null}
                             
 
-                            {app.contact.telegram?(
-                                    <Grid item ><a href={`tel:${app.contact.telegram}`}><Button variant="outlined" startIcon={<Telegram />} size="small">{app.contact.telegram}</Button></a>
+                            {appData.contact.telegram?(
+                                    <Grid item ><a href={`tel:${appData.contact.telegram}`}><Button variant="outlined" startIcon={<Telegram />} size="small">{appData.contact.telegram}</Button></a>
                             </Grid>
                             ):null}
 
                             
-                            {app.contact.whatsapp?(
-                                    <Grid item ><a href={`tel:${app.contact.whatsapp}`}><Button variant="outlined" startIcon={<WhatsApp />} size="small">{app.contact.whatsapp}</Button></a></Grid>
+                            {appData.contact.whatsapp ?(
+                                    <Grid item ><a href={`tel:${appData.contact.whatsapp}`}><Button variant="outlined" startIcon={<WhatsApp />} size="small">{appData.contact.whatsapp}</Button></a></Grid>
                             ):null}
                                   
-                            {app.contact.email?(
-                                    <Grid item ><a href={`mailto:${app.contact.email}`}><Button variant="outlined" startIcon={<Mail />} size="small">{app.contact.email}</Button></a></Grid>
+                            {appData.contact.email?(
+                                    <Grid item ><a href={`mailto:${appData.contact.email}`}><Button variant="outlined" startIcon={<Mail />} size="small">{appData.contact.email}</Button></a></Grid>
                             ):null}
 
-                           {app.contact.facebook?(
-                                    <Grid item ><a href={app.contact.facebook?.replace('http','https')} target="_blank" rel="noopener noreferrer"><Button variant="outlined" startIcon={<Facebook/>} size="small">{app.contact.facebook?.replace(/^https?:\/\//,'')}</Button></a></Grid>
+                           {appData.contact.facebook?(
+                                    <Grid item ><a href={appData.contact.facebook?.replace('http','https')} target="_blank" rel="noopener noreferrer"><Button variant="outlined" startIcon={<Facebook/>} size="small">{appData.contact.facebook?.replace(/^https?:\/\//,'')}</Button></a></Grid>
                             ):null}
 
-                            {app.contact.instagram?(
-                                    <Grid item ><a href={app.contact.instagram?.replace('http','https')}><Button variant="outlined" startIcon={<Instagram/>} size="small">{app.contact.instagram?.replace(/^https?:\/\//,'')}</Button></a></Grid>
+                            {appData.contact.instagram?(
+                                    <Grid item ><a href={appData.contact.instagram?.replace('http','https')}><Button variant="outlined" startIcon={<Instagram/>} size="small">{appData.contact.instagram?.replace(/^https?:\/\//,'')}</Button></a></Grid>
                             ):null}
 
-                            {app.contact.twitter?(
-                                    <Grid item ><a href={app.contact.twitter?.replace('http','https')} target="_blank" rel="noopener noreferrer"><Button variant="outlined" startIcon={<Twitter/>} size="small">{app.contact.twitter?.replace(/^https?:\/\//,'')}</Button></a></Grid>
+                            {appData.contact.twitter?(
+                                    <Grid item ><a href={appData.contact.twitter?.replace('http','https')} target="_blank" rel="noopener noreferrer"><Button variant="outlined" startIcon={<Twitter/>} size="small">{appData.contact.twitter?.replace(/^https?:\/\//,'')}</Button></a></Grid>
                             ):null}
                         </Grid>
                     </Grid>
