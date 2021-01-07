@@ -41,8 +41,8 @@ const LoginForm = ({ context }: Props) => {
             const sesion = await loginUser(userData)
             if(!sesion){
                 alert('error, verifica sus credenciales')
-                return
                 setApploader(false)
+                return
             }
             localStorage.cellunatic = JSON.stringify(sesion)
             push('/cpanel')
