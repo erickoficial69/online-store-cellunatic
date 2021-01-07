@@ -72,7 +72,7 @@ function Myapp({ Component,pageProps}:AppProps) {
   useEffect(()=>{
     getAppData()
     getTasaCambio()
-  },[])
+  },[tasaCambio])
 
   return <Component {...pageProps} context={{
       appLoader,setAppLoader,

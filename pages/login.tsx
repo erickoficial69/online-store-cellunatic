@@ -35,17 +35,29 @@ const LoginForm = ({ context }: Props) => {
 
         if (userData.password === '' || userData.correo === '') return setDisabled(true)
 
-        const send = await loginUser(userData)
-        if (!send) return setAppLoader(false)
-
-        localStorage.cellunatic = JSON.stringify(send)
         setAppLoader(true)
-        push('/cpanel')
+        try{
+
+            const sesion = await loginUser(userData)
+            if(!sesion){
+                alert('error, verifica sus credenciales')
+                return
+                setApploader(false)
+            }
+            localStorage.cellunatic = JSON.stringify(sesion)
+            push('/cpanel')
+        }catch(err){
+            console.log(err)
+            alert('hubo un error de conexion')
+            return
+        }
+        
+        setAppLoader(false)
     }
     useEffect(() => {
         const result = verifySesion()
         
-        if(result.correo === "") push('/login')
+        if(result.correo !== "") push('/cpanel')
 
         setAppLoader(false)
     }, [])
@@ -75,7 +87,7 @@ const LoginForm = ({ context }: Props) => {
                         }} placeholder="*********" />
                     </FormControl>
 
-                    <Button style={{ marginTop: '5px' }} disabled={disabled} variant="contained" color="primary" onClick={login} >Login</Button>
+                    <Button style={{ marginTop: '5px' }} disabled={disabled} variant="contained" color="secondary" onClick={login} >Login</Button>
                     
                     {/* <Typography style={{ marginTop: '20px' }} variant="caption" >Nó tienes cuenta? <b onClick={()=>push('/register')} >Registrate</b></Typography> */}
                 </FormGroup>

@@ -86,8 +86,8 @@ const NavigationApp = ({ context, openDrawer, setOpenDrawer }: Props) => {
                         </ListItem>
                     ) : (
                         <ListItem button onClick={() => {
-                                        if (appLocation !== "/cpanel") setAppLoader(true)
-                                        push("/cpanel")
+                                        if (appLocation !== "/login") setAppLoader(true)
+                                        push("/login")
                                     }} >
                             <ListItemIcon><PersonPin color="secondary"/></ListItemIcon>
                             <ListItemText style={{textTransform:'uppercase'}} >

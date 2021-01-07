@@ -84,8 +84,8 @@ const Header = ({context}:Props) => {
                     ) : (
                             <Hidden mdDown >
                                 <Button startIcon={<PersonPin />} onClick={() => {
-                                        if (appLocation !== "/cpanel") setAppLoader(true)
-                                        push("/cpanel")
+                                        if (appLocation !== "/login") setAppLoader(true)
+                                        push("/login")
                                     }} >
                                     Ingresar
                                 </Button>

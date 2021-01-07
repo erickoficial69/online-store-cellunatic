@@ -75,7 +75,7 @@ const Accesorios=({context}:Props)=>{
                 <input name="search" type="search" onChange={changueSearch} style={{padding:'8px',width:'70%',borderRadius:5,position:'relative',margin:'0 auto'}} placeholder="Buscar"/>
                 <button style={{position:'absolute',top:5,zIndex:10,right:'calc(15% + 24px)',background:'transparent'}}><Search /></button>
             </form>
-            <Container style={{display:'flex',flexFlow:'row nowrap',justifyContent:'center',paddingTop:90}}>
+            <Container style={{display:'flex',flexFlow:'row nowrap',justifyContent:'flex-start',paddingTop:90}}>
                 <Hidden smDown >  
                     <List >
                         <ListItem onClick={()=>setSearch('')} button>

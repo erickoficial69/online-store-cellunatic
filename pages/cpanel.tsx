@@ -24,6 +24,7 @@ const Cpanel = ({ context }: Props) => {
     const [edit,setEdit] = useState<boolean>(false)
     const [productos,setProductos] = useState<Producto[]>([])
     const [producto,setProducto] = useState<Producto>(emptyProduct)
+    const [tmpTasa,setTmpTasa] = useState<any>(0)
     const [editTasaCambio,setEditTasaCambio] = useState<boolean>(false)
 
     const productChange=(param:any,data?:Producto)=>{
@@ -36,7 +37,6 @@ const Cpanel = ({ context }: Props) => {
         if(producto.nombre === '' || producto.seccion === '') return alert('rellene todos los campos')
         setAppLoader(true)
         await productoServ.createProducto(producto)
-        setProducto(emptyProduct)
         getProducts()
     }
     const updateProduct = async () => {
@@ -50,7 +50,14 @@ const Cpanel = ({ context }: Props) => {
 
     const updateTasaCambio = async()=>{
         setAppLoader(true)
-        await updateTasa(tasaCambio)
+        try{
+            const result = await updateTasa(tmpTasa)
+            setTasaCambio(result)
+        }catch(err){
+            console.log(err)
+            alert('algo salió mal')
+        }
+        
         setEditTasaCambio(false)
         setAppLoader(false)
     }
@@ -117,7 +124,7 @@ const Cpanel = ({ context }: Props) => {
                         <Grid item xs={12} sm={6} md={4}>
                             {/****************** Tasa de Cambio ****************/}
 
-                            <Box style={{backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}} >
+                            <Box style={{height:320,backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}} >
                                 <Typography variant="h6" color="textPrimary" >Tasa de cambio</Typography>
                                 <List>
                                     <ListItem>
@@ -125,51 +132,49 @@ const Cpanel = ({ context }: Props) => {
                                             <MonetizationOn />
                                         </ListItemIcon>
                                         <ListItemText style={{color:'white'}} >
-                                            1$ = {tasaCambio.monto} bs
+                                            1$ = {tasaCambio?tasaCambio.monto:null} bs
                                         </ListItemText>
                                     </ListItem>
                                     <ListItemSecondaryAction>
                                         <IconButton onClick={() => setEditTasaCambio(!editTasaCambio?true:false)}><Edit /></IconButton>
                                     </ListItemSecondaryAction>
                                 </List>
+
+                                    {/****************** Formulario para actualizar Tasa de Cambio ****************/}
+
+                                { editTasaCambio?( 
+                                    <FormGroup style={{backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}}>
+                                        <Typography color="textPrimary" variant="h6" >Actualizar Tasa</Typography>
+                                        <FormControl>
+                                            <InputLabel>{tasaCambio?tasaCambio.monto:null} bs</InputLabel>
+                                            <Input inputMode="numeric" onChange={(e:any)=>{
+                                                    setTmpTasa({...tasaCambio,monto:e.target.value})
+                                                }} />
+                                        </FormControl>
+
+                                        <FormControl>
+                                            <Button onClick={updateTasaCambio} variant="contained" >Actializar</Button>
+                                        </FormControl>
+                                        <FormControl style={{margin:'5px 0'}} >
+                                            <Button onClick={() => setEditTasaCambio(!editTasaCambio?true:false)} variant="outlined" >cancelar</Button>
+                                        </FormControl>
+                                    </FormGroup>
+                                ):null}
                             </Box> 
                         </Grid>
 
-                { editTasaCambio?( 
-                        <Grid item xs={12} sm={6} md={4}>
-                        {/****************** Formulario para actualizar Tasa de Cambio ****************/}
-                            <FormGroup style={{backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}}>
-                                <Typography color="textPrimary" variant="h6" >Actualizar Tasa</Typography>
-                                <FormControl>
-                                    <InputLabel>{tasaCambio.monto} bs</InputLabel>
-                                    <Input inputMode="numeric" onChange={(e:any)=>{
-                                            setTasaCambio({...tasaCambio,monto:e.target.value})
-                                        }} />
-                                </FormControl>
-
-                                <FormControl>
-                                    <Button onClick={updateTasaCambio} variant="contained" >Actializar</Button>
-                                </FormControl>
-                            </FormGroup>
-                        </Grid>
-                 ):null}
-
                 { productos.length > 0 ?(
                         <Grid item xs={12} sm={6}>
-                            <Box style={{backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}} >
+                            <Box style={{height:320,backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px',overflowY:'auto'}} >
                                 <Typography color="textPrimary" variant="h6" >Listado de productos</Typography>
                                 <List>
                                     { productos.map((rsProduct:Producto)=>(
-                                        <ListItem style={{border:'1px solid white',borderRadius:5}} key={rsProduct._id} >
+                                        <ListItem key={rsProduct._id} >
                                             <ListItemText style={{color:'white'}} >
                                                 {rsProduct.nombre} <b>seccion: {rsProduct.seccion}</b> 
                                             </ListItemText>
                                             <ListItemIcon>
-                                                {edit?(<IconButton onClick={()=>{setEdit(false),setProducto(emptyProduct)}} ><Cancel />
-                                                    </IconButton>
-                                                ):(<IconButton onClick={()=>{setEdit(edit?false:true),setProducto(rsProduct)}} ><Edit />
-                                                    </IconButton>
-                                                )}
+                                                <IconButton onClick={()=>{setEdit(edit?false:true),setProducto(rsProduct)}} ><Edit /></IconButton>
                                             </ListItemIcon>
                                             <ListItemSecondaryAction>
                                                 <ListItemIcon>
@@ -190,7 +195,7 @@ const Cpanel = ({ context }: Props) => {
                 {/****************** Formulario actualizar o agregar un producto ****************/}
 
                         <Grid item xs={12} sm={6} md={4}>
-                            <FormGroup style={{backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}} >
+                            <FormGroup style={{height:320,backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}} >
                                 <Typography color="textPrimary" variant="h6" >Añadir un producto</Typography>
 
                                 <FormControl style={{margin:'10px 0'}}>
@@ -203,7 +208,7 @@ const Cpanel = ({ context }: Props) => {
                                     <NativeSelect defaultValue="" inputProps={{
                                         name:'seccion'
                                     }} onChange={(param:any)=>productChange(param)} >
-                                        <option value="" >ninguno</option>
+                                        <option value="" defaultValue="" selected >ninguno</option>
                                         <option value="accesorios" >accesorios</option>
                                         <option value="repuestos" >repuestos</option>
                                         <option value="telefonos" >telefonos</option>

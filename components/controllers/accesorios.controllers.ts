@@ -31,7 +31,7 @@ export const createAccesorio = async (accesorio:Accesorio) => {
             producto: accesorio.producto
     }
     
-    try{
+    
         const get = await fetch(`${process.env.API}/accesorios`,{
             method:'post',
             body: JSON.stringify({newAccesorio}),
@@ -40,10 +40,6 @@ export const createAccesorio = async (accesorio:Accesorio) => {
             }
         })
         return  await get.json()
-    }catch(err){
-        console.log(err)
-        return {status:'fail'}
-    }
 }
 
 export const deleteAccesorio = async(accesorio:Accesorio)=>{
