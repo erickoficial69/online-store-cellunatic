@@ -77,8 +77,12 @@ export const ManageAccesorio = ({ setAppLoader, id }: Props) => {
         
         if (accesorio.nombre === '' || !accesorio.imagenes || accesorio.modelo === '' || accesorio.precio === 0 || accesorio.producto === '') return alert('Rellene todos los campos')
         setAppLoader(true)
-        await accesorioServ.createAccesorio(accesorio)
-
+        const result = await accesorioServ.createAccesorio(accesorio)
+        if(result.status==='fail'){
+            setAppLoader(false)
+            alert('Hubo unerror')
+            return
+        }
         push('/cpanel')
     }
 
