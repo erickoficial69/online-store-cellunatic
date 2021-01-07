@@ -49,7 +49,6 @@ const LoginForm = ({ context }: Props) => {
         }catch(err){
             console.log(err)
             alert('hubo un error de conexion')
-            return
         }
         
         setAppLoader(false)
