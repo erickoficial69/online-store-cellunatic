@@ -96,20 +96,20 @@ export const DetailsAccesorio = ({ id, setAppLoader, app, tasaCambio }: Props) =
                     }} >
 
                         <img style={{height: "90%",width: "90%",objectFit: "contain",position: 'relative'}}
-                            src={previewImage}
+                            src={process.env.API+'/'+previewImage}
                             alt={accesorio.nombre+" imagen"} />
 
                         <Grid container style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,background:'rgba(5,5,5,.5)'}}>
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes.imagen1?accesorio.imagenes.imagen1:'/logo192x192.png'} alt={accesorio.producto} />
+                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes.imagen1?process.env.API+'/'+accesorio.imagenes.imagen1:'/logo192x192.png'} alt={accesorio.producto} />
                             </Grid>
 
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes.imagen2?accesorio.imagenes.imagen2:'/logo192x192.png'} alt={accesorio.producto} />
+                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes.imagen2?process.env.API+'/'+accesorio.imagenes.imagen2:'/logo192x192.png'} alt={accesorio.producto} />
                             </Grid>
 
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes.imagen3?accesorio.imagenes.imagen3:'/logo192x192.png'} alt={accesorio.producto} />
+                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes.imagen3?process.env.API+'/'+accesorio.imagenes.imagen3:'/logo192x192.png'} alt={accesorio.producto} />
                             </Grid>
                         </Grid>
                     </div>

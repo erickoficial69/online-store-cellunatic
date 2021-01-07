@@ -36,7 +36,7 @@ export const GridRepuestos = ({repuestos,user,setAlterEvent}:Props)=>{
                                         borderRadius:'5px',
                                         position:'relative',
                                         boxShadow:'0px 0px 1px white',
-                                        width:'100%',
+                                        width:'230px',
                                         height:'300px',
                                         background:'white',
                                         overflow:'hidden',
@@ -49,7 +49,7 @@ export const GridRepuestos = ({repuestos,user,setAlterEvent}:Props)=>{
                                                     width:"90%",
                                                     objectFit:"contain",
                                                     margin:'0 auto',
-                                                    position:'relative'}} src={list.imagenes.imagen1} alt={list.producto} />
+                                                    position:'relative'}} src={process.env.API+'/'+list.imagenes.imagen1} alt={list.producto} />
                                                
                                                 <div style={{
                                                     textAlign:'center',

@@ -91,20 +91,20 @@ export const DetailsRepuesto = ({ id, setAppLoader, app, tasaCambio }: Props) =>
                     }} >
 
                         <img style={{height: "90%",width: "90%",objectFit: "contain",position: 'relative'}}
-                            src={previewImage}
+                            src={process.env.API+'/'+previewImage}
                             alt={""} />
 
                         <Grid container style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10, background:'rgba(5,5,5,.5)'}}>
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes.imagen1?repuesto.imagenes.imagen1:'/logo.png'} alt={repuesto.producto} />
+                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes.imagen1?process.env.API+'/'+repuesto.imagenes.imagen1:'/logo.png'} alt={repuesto.producto} />
                             </Grid>
 
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes.imagen2?repuesto.imagenes.imagen2:'/logo.png'} alt={repuesto.producto} />
+                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes.imagen2?process.env.API+'/'+repuesto.imagenes.imagen2:'/logo.png'} alt={repuesto.producto} />
                             </Grid>
 
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes.imagen3?repuesto.imagenes.imagen3:'/logo.png'} alt={repuesto.producto} />
+                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes.imagen3?process.env.API+'/'+repuesto.imagenes.imagen3:'/logo.png'} alt={repuesto.producto} />
                             </Grid>
                         </Grid>
                     </div>
