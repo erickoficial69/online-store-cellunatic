@@ -48,7 +48,7 @@ const Index=({context}:any)=>{
                 margin:'60px 0 5px 0'
                 }}>
 
-                <img width="300px" src="/logo192x192.png" alt="Cellunatic logo"/>
+                <img width="270px" src="/logo192x192.png" alt="Cellunatic logo"/>
                 <span >
                 <Typography component="h1" style={{textAlign:'center'}} className="coursive" variant="h2" color="textPrimary" >
                         <b>Cellunatic 2017 CG C.A</b>
@@ -73,13 +73,13 @@ const Index=({context}:any)=>{
                         }}>
 
                     
-                            <Button onClick={()=>{setAppLoader(true),push("/accesorios")}} style={{margin:'5px'}} variant="outlined" >Accesorios</Button>
+                            <Button onClick={()=>{setAppLoader(true),push("/accesorios")}} style={{margin:'5px'}} variant="contained" color="primary" >Accesorios</Button>
                         
-                            <Button onClick={()=>{setAppLoader(true),push("/repuestos")}} style={{margin:'5px'}} variant="outlined" >repuestos</Button>
+                            <Button onClick={()=>{setAppLoader(true),push("/repuestos")}} style={{margin:'5px'}} variant="contained" color="primary" >repuestos</Button>
                         
-                            <Button onClick={()=>{setAppLoader(true),push("/telefonos")}} style={{margin:'5px'}} variant="outlined" >telefonos</Button>
+                            <Button onClick={()=>{setAppLoader(true),push("/telefonos")}} style={{margin:'5px'}} variant="contained" color="primary" >telefonos</Button>
                         
-                            <Button onClick={()=>{setAppLoader(true),push("/serviciotecnico")}} style={{margin:'5px'}} variant="outlined" >Servicio técnico</Button>
+                            <Button onClick={()=>{setAppLoader(true),push("/serviciotecnico")}} style={{margin:'5px'}} variant="contained" color="primary" >Servicio técnico</Button>
                         
                    </div>
             </div>

@@ -45,9 +45,23 @@ export const DetailsAccesorio = ({ id, setAppLoader, app, tasaCambio }: Props) =
         try{
             await navigator.share(message)
         }catch(err){
-            let uri = `https://api.whatsapp.com/send?text=${message.text} ${document.location.href}`
-            
-            alert(uri)
+            var aux = document.createElement("input");
+
+            // Asigna el contenido del elemento especificado al valor del campo
+            aux.setAttribute("value", document.location.href);
+
+            // Añade el campo a la página
+            document.body.appendChild(aux);
+
+            // Selecciona el contenido del campo
+            aux.select();
+
+            // Copia el texto seleccionado
+            document.execCommand("copy");
+
+            // Elimina el campo de la página
+            document.body.removeChild(aux);
+            alert('Enlace copiado al portapapeles')
         }
     }
 
@@ -147,14 +161,14 @@ export const DetailsAccesorio = ({ id, setAppLoader, app, tasaCambio }: Props) =
                     <ListItem>
                         <Button onClick={()=>setModalBuy(true)} color="secondary" size="small" variant="contained" startIcon={<AddShoppingCart />} >Comprar</Button>
                         <ListItemSecondaryAction>
-                            <Button variant="outlined" color="secondary" onClick={()=>{
+                            <Button variant="contained" color="primary" onClick={()=>{
                             const message = {
                                 title: accesorio.nombre,
                                 text: `Tenemos las mejores ofertas en ${accesorio.producto}`,
                                 url: document.location.href
                             }
                                 shareApi(message)
-                            }} startIcon={<Share/>}>Compartir</Button>
+                            }} size="small" startIcon={<Share/>}>Compartir</Button>
                         </ListItemSecondaryAction>
                     </ListItem>
                 </Grid>

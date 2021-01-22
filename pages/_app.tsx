@@ -61,12 +61,6 @@ function Myapp({ Component,pageProps}:AppProps) {
   }
   useEffect(()=>{
       setAppLocation(document.location.pathname)
-      window.addEventListener('hashchange',()=>{
-          setAppLocation(document.location.pathname)
-      })
-      window.removeEventListener('hashchange',()=>{
-          setAppLocation(document.location.pathname)
-      })
   },[])
 
   useEffect(()=>{

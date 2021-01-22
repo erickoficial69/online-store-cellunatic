@@ -11,7 +11,7 @@ type Props={
 }
 
 const Header = ({context}:Props) => {
-    const { appLocation, setAppLoader, verifySesion } = context
+    const { appLocation, setAppLoader, verifySesion, setAppLocation } = context
     const { push } = useRouter()
     const [user, setUser] = useState<User>({ correo: '', password: '' })
     const [openDrawer,setOpenDrawer] = useState<boolean>(false)
@@ -20,6 +20,13 @@ const Header = ({context}:Props) => {
         const result = verifySesion()
         setUser(result)
     },[])
+
+    useEffect(()=>{
+      setAppLocation(document.location.pathname)
+      window.addEventListener('hashchange',()=>{
+          setAppLocation(document.location.pathname)
+      })
+  },[])
 
     return (
         <>

@@ -44,9 +44,23 @@ export const DetailsRepuesto = ({ id, setAppLoader, app, tasaCambio }: Props) =>
         try{
             await navigator.share(message)
         }catch(err){
-            let uri = `https://api.whatsapp.com/send?text=${message.text} ${document.location.href}`
-            
-            alert(uri)
+            var aux = document.createElement("input");
+
+            // Asigna el contenido del elemento especificado al valor del campo
+            aux.setAttribute("value", document.location.href);
+
+            // Añade el campo a la página
+            document.body.appendChild(aux);
+
+            // Selecciona el contenido del campo
+            aux.select();
+
+            // Copia el texto seleccionado
+            document.execCommand("copy");
+
+            // Elimina el campo de la página
+            document.body.removeChild(aux);
+            alert('Enlace copiado al portapapeles')
         }
     }
 
@@ -140,16 +154,16 @@ export const DetailsRepuesto = ({ id, setAppLoader, app, tasaCambio }: Props) =>
                         </ListItem>
                         {/** Acciones para este producto */}
                         <ListItem>
-                            <Button onClick={()=>setModalBuy(true)} size="small" variant="contained" style={{ backgroundColor: 'orange' }} startIcon={<AddShoppingCart />} >Comprar</Button>
+                            <Button onClick={()=>setModalBuy(true)} size="small" variant="contained" color="secondary" startIcon={<AddShoppingCart />} >Comprar</Button>
                             <ListItemSecondaryAction>
-                                <Button variant="outlined" color="secondary" onClick={()=>{
+                                <Button variant="contained" color="secondary" onClick={()=>{
                                     const message = {
                                         title: repuesto.nombre,
                                         text: `Tenemos las mejores ofertas en ${repuesto.producto}`,
                                         url: document.location.href
                                     }
                                         shareApi(message)
-                                    }} startIcon={<Share/>} >Compartir</Button>
+                                    }} size="small" startIcon={<Share/>} >Compartir</Button>
                             </ListItemSecondaryAction>
                         </ListItem>
                     </List>
