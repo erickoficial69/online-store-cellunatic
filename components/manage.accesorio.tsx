@@ -41,13 +41,19 @@ export const ManageAccesorio = ({ setAppLoader, id }: Props) => {
         setAppLoader(true)
         const {imagenes} = accesorio
             let img = param.target.name
+            /* 
             let base64: string | any = await accesorioServ.toBase64(param.target.files[0]).catch(err => {
                 return err
-            })
+            }) 
             
             setAccesorio({ ...accesorio, imagenes:{...imagenes, [img]:base64 }})
-            if(img==="imagen1"){
+            */
+            setAccesorio({ ...accesorio, imagenes:{...imagenes, [img]:param.target.value }})
+            /* if(img==="imagen1"){
                 setPreviewImage(base64)
+            } */
+            if(img==="imagen1"){
+                setPreviewImage(param.target.value)
             }
             setAppLoader(false)
     }
@@ -134,17 +140,17 @@ export const ManageAccesorio = ({ setAppLoader, id }: Props) => {
 
                         <Grid container style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10}}>
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen1" type="file" onChange={changeImage} />
+                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen1" type="url" onChange={changeImage} value={accesorio.imagenes?accesorio.imagenes.imagen1:'/logo.png'} />
                                 <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes?accesorio.imagenes.imagen1:'/logo.png'} alt={accesorio.producto} />
                             </Grid>
 
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen2" type="file" onChange={changeImage} />
+                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen2" type="url" onChange={changeImage} value={accesorio.imagenes?accesorio.imagenes.imagen2:'/logo.png'} />
                                 <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes?accesorio.imagenes.imagen2:'/logo.png'} alt={accesorio.producto} />
                             </Grid>
 
                             <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen3" type="file" onChange={changeImage} />
+                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen3" type="url" onChange={changeImage} value={accesorio.imagenes?accesorio.imagenes.imagen3:'/logo.png'} />
                                 <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes?accesorio.imagenes.imagen3:'/logo.png'} alt={accesorio.producto} />
                             </Grid>
                         </Grid>

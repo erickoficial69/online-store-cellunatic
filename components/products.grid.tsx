@@ -50,7 +50,7 @@ export const GridProducts = (props:any)=>{
                                                     width:"90%",
                                                     objectFit:"contain",
                                                     margin:'0 auto',
-                                                    position:'relative'}} src={process.env.API+'/'+list.imagenes.imagen1} alt={list.producto} />
+                                                    position:'relative'}} src={list.imagenes.imagen1} alt={list.producto} />
                                                
                                                 <div style={{
                                                     textAlign:'center',
