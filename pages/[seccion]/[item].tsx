@@ -50,7 +50,7 @@ const Index=({seccion,item,productos}:Props)=>{
         </>
     )
 }
-export const getStaticPaths:GetStaticPaths = async()=>{
+export const unstable_getStaticPaths:GetStaticPaths = async()=>{
     try{
         const req = await fetch(`${process.env.API}/productos/`)
         const res = await req.json()
@@ -68,7 +68,7 @@ export const getStaticPaths:GetStaticPaths = async()=>{
     
 }
 
-export const getStaticProps:GetStaticProps = async({params}:GetStaticPropsContext)=>{
+export const unstable_getStaticProps:GetStaticProps = async({params}:GetStaticPropsContext)=>{
     const {seccion,item}:any = params
     try{
         const req = await fetch(`${process.env.API}/productos/seccion/${seccion}`)
