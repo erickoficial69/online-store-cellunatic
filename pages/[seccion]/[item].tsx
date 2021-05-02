@@ -50,17 +50,17 @@ const Index=({seccion,item,productos}:Props)=>{
         </>
     )
 }
-export const unstable_getStaticPaths:GetStaticPaths = async()=>{
+export const getStaticPaths:GetStaticPaths = async()=>{
     try{
         const req = await fetch(`${process.env.API}/productos/`)
         const res = await req.json()
         const paths = res.map((producto:Producto)=>({
             params:{
-                seccion:producto.seccion,
-                item:producto.url
+                seccion:producto.seccion.toString(),
+                item:producto.url?.toString()
             }
         }))
-        paths.push({params:{item:"all"}})
+        await paths.push({params:{item:"all"}})
         return {paths,fallback:false}
     }catch(err){
         return {paths:[{params:{seccion:"/",item:"all"}}],fallback:false}
@@ -68,11 +68,11 @@ export const unstable_getStaticPaths:GetStaticPaths = async()=>{
     
 }
 
-export const unstable_getStaticProps:GetStaticProps = async({params}:GetStaticPropsContext)=>{
+export const getStaticProps:GetStaticProps = async({params}:GetStaticPropsContext)=>{
     const {seccion,item}:any = params
     try{
         const req = await fetch(`${process.env.API}/productos/seccion/${seccion}`)
-        console.log(params)
+        
         return {props:{
             seccion,
             item,
