@@ -60,7 +60,7 @@ export const getStaticPaths:GetStaticPaths = async()=>{
                 item:producto.url
             }
         }))
-        
+        paths.push({params:{...paths.params, item:"all"}})
         return {paths,fallback:false}
     }catch(err){
         return {paths:[{params:{seccion:"/",item:"all"}}],fallback:false}
