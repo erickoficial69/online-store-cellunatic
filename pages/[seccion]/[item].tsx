@@ -60,10 +60,10 @@ export const getStaticPaths:GetStaticPaths = async()=>{
                 item:producto.url?.toString()
             }
         }))
-        await paths.push({params:{item:"all"}})
+        await paths.push({params:{seccion:"/",item:" "}})
         return {paths,fallback:false}
     }catch(err){
-        return {paths:[{params:{seccion:"/",item:"all"}}],fallback:false}
+        return {paths:[{params:{seccion:"/",item:" "}}],fallback:false}
     }
     
 }
@@ -81,7 +81,7 @@ export const getStaticProps:GetStaticProps = async({params}:GetStaticPropsContex
     }catch(err){
         return {props:{
             seccion:'/',
-            items:'all',
+            items:' ',
             productos:[]
         },revalidate:1}
     }
