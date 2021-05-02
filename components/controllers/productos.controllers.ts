@@ -1,11 +1,10 @@
 import { Producto } from "../../interfaces/interfaces"
-import fetch from 'isomorphic-fetch'
 
-export const updateProducto = async (producto:Producto) => {
+export const updateProducto = async (producto?:Producto) => {
     const newData =producto
     const get = await fetch(`${process.env.API}/productos`,{
         method:'put',
-        body: JSON.stringify({newData,id:producto._id}),
+        body: JSON.stringify({newData,id:producto?._id}),
         headers:{
             "content-type":"application/json"
         }
@@ -28,7 +27,7 @@ export const deleteProducto = async(id:string)=>{
     return await get.json()
 }
 
-export const createProducto = async(param:Producto)=>{
+export const createProducto = async(param?:Producto)=>{
     const get = await fetch(`${process.env.API}/productos`,{
         method:'post',
         body:JSON.stringify({newData:param}),

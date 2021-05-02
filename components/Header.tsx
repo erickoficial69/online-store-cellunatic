@@ -1,112 +1,32 @@
-import { Button, Hidden, IconButton } from '@material-ui/core'
-import { PersonPin, Menu, Storefront, BugReport, Smartphone } from '@material-ui/icons'
-import { Context, User } from '../interfaces/interfaces'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import NavigationApp from './Navigation'
+import {useContext} from 'react'
+import GlobalAppContext from '../context/app/app_state'
+import { SearchBar } from './SearchBar'
 
-type Props={
-    context:Context
-}
-
-const Header = ({context}:Props) => {
-    const { appLocation, setAppLoader, verifySesion, setAppLocation } = context
-    const { push } = useRouter()
-    const [user, setUser] = useState<User>({ correo: '', password: '' })
-    const [openDrawer,setOpenDrawer] = useState<boolean>(false)
-
-    useEffect(() => {
-        const result = verifySesion()
-        setUser(result)
-    },[])
-
-    useEffect(()=>{
-      setAppLocation(document.location.pathname)
-      window.addEventListener('hashchange',()=>{
-          setAppLocation(document.location.pathname)
-      })
-  },[])
-
+const Header = () => {
+    const { setSidebar, loaderCTRL, navBar, setNavBar }:any = useContext(GlobalAppContext)
     return (
-        <>
+        <header>
+            <div className="container header_barr">
 
-            <Link href="/" >
-                <Button color="inherit" onClick={() => {
-                    if (appLocation !== "/") setAppLoader(true)
+                <Link href="/" >
+                    <a className="logo" onClick={() => loaderCTRL('/')} >
+                        <img style={{ margin: '0 5px' }} src="/favicon.ico" alt="cellunatic logo" width="32px" />
+                        <b>Cellunatic</b>
+                    </a>
+                </Link>
 
-                }} >
-                    <img style={{ margin: '0 5px' }} src="/favicon.ico" alt="cellunatic logo" width="32px" />
-                    Cellunatic
-                </Button>
-            </Link>
-            <NavigationApp context={context} openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-            <nav>
-
-                <Hidden mdDown >
-                    <Button startIcon={<Storefront />} onClick={() => {
-                            if (appLocation !== "/accesorios") setAppLoader(true)
-                            push("/accesorios")
-                        }} >
-                            Accesorios
-                    </Button>
-                </Hidden>
-
-                <Hidden mdDown >
-                    <Button startIcon={<Storefront />} onClick={() => {
-                            if (appLocation !== "/repuestos") setAppLoader(true)
-                            push("/repuestos")
-                        }} >
-                            repuestos
-                    </Button>
-                </Hidden>
+                <SearchBar />
                 
-                <Hidden mdDown >
-                    <Button startIcon={<Smartphone />} onClick={() => {
-                            if (appLocation !== "/telefonos") setAppLoader(true)
-                            push("/telefonos")
-                        }} >
-                            telefonos
-                    </Button>
-                </Hidden>
-                <Hidden mdDown >
-                    <Button startIcon={<BugReport />} onClick={() => {
-                            if (appLocation !== "/serviciotecnico") setAppLoader(true)
-                            push("/serviciotecnico")
-                        }} >
-                            servicio tecnico
-                    </Button>
-                </Hidden>
-                {
-                    user.rango && user.rango === "administrador" ? (
-                        
-                            <Hidden mdDown >
-                                <Button startIcon={<PersonPin />} onClick={() => {
-                                        if (appLocation !== "/cpanel") setAppLoader(true)
-                                        push("/cpanel")
-                                    }} >
-                                        cpanel
-                                </Button>
-                            </Hidden>
-                    ) : (
-                            <Hidden mdDown >
-                                <Button startIcon={<PersonPin />} onClick={() => {
-                                        if (appLocation !== "/login") setAppLoader(true)
-                                        push("/login")
-                                    }} >
-                                    Ingresar
-                                </Button>
-                            </Hidden>
-                        )
-                }
+                <div className="nav_header">
+                    <button className="btn_filter" onClick={()=>{setNavBar(!navBar);setSidebar(true)}} >fill</button>
+                    
+                    <Link href="/cpanel" ><button onClick={()=>loaderCTRL('/cpanel')} className="btn_login" >login</button></Link>
+                    <button onClick={()=>{setNavBar(!navBar);setSidebar(false)}} >menu</button>
+                </div>
+            </div>
 
-                <Hidden lgUp >
-                    <IconButton onClick={()=>setOpenDrawer(true)}>
-                        <Menu />
-                    </IconButton>
-                </Hidden>
-            </nav>
-        </>
+        </header>
     )
 }
 export default Header

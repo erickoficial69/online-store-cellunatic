@@ -1,127 +1,105 @@
-import { useState, useEffect } from 'react'
-import { Button, Container, Grid, Input, List, ListItem, ListItemSecondaryAction, Typography, FormControl, InputLabel, FormGroup, Select } from '@material-ui/core'
-import { Update, Delete, PlusOne, ArrowBack } from '@material-ui/icons'
+import { useState, useEffect, useContext } from 'react'
 import { Accesorio, Producto } from '../interfaces/interfaces'
 import * as accesorioServ from './controllers/accesorios.controllers'
-import * as productoServ from './controllers/productos.controllers'
 import { useRouter } from 'next/router'
+import GlobalAppContext from '../context/app/app_state'
 
 interface Props {
-    id: string
-    setAppLoader?: any
-    setModalNewProduct?: any
+    accesorio: Accesorio
 }
-type Input = any
+type input = any
 
-export const ManageAccesorio = ({ setAppLoader, id }: Props) => {
+export const ManageAccesorio = ({ accesorio }: Props) => {
     const initialState = {
         nombre: '',
         color: '',
         estado: false,
         imagenes: {
-            imagen1:'/logo.png',
-            imagen2:'/logo.png',
-            imagen3:'/logo.png'
+            imagen1:'/logo192x192.png',
+            imagen2:'/logo192x192.png',
+            imagen3:'/logo192x192.png'
         },
         modelo: '',
         precio: 0,
         producto: ''
     }
+    const {loaderCTRL,productos,getProductos}:any = useContext(GlobalAppContext)
     const { back, push } = useRouter()
-    const [productos, setProductos] = useState<Producto[]>([])
-    const [accesorio, setAccesorio] = useState<Accesorio>(initialState)
+    const [tmpAccesorio, setTmpAccesorio] = useState<Accesorio>(accesorio?accesorio:initialState)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
 
-    const changeProduct = async (param: Input) => {
+    const changeProduct = async (param: input) => {
 
-        setAccesorio({ ...accesorio, [param.target.name]: param.target.value })
+        setTmpAccesorio({ ...tmpAccesorio, [param.target.name]: param.target.value })
     }
 
-    const changeImage = async (param: Input) => {
-        setAppLoader(true)
-        const {imagenes} = accesorio
+    const changeImage = async (param: input) => {
+        loaderCTRL('load')
+        const {imagenes} = tmpAccesorio
             let img = param.target.name
             /* 
             let base64: string | any = await accesorioServ.toBase64(param.target.files[0]).catch(err => {
                 return err
             }) 
             
-            setAccesorio({ ...accesorio, imagenes:{...imagenes, [img]:base64 }})
+            setTmpAccesorio({ ...accesorio, imagenes:{...imagenes, [img]:base64 }})
             */
-            setAccesorio({ ...accesorio, imagenes:{...imagenes, [img]:param.target.value }})
+            setTmpAccesorio({ ...tmpAccesorio, imagenes:{...imagenes, [img]:param.target.value }})
             /* if(img==="imagen1"){
                 setPreviewImage(base64)
             } */
             if(img==="imagen1"){
                 setPreviewImage(param.target.value)
             }
-            setAppLoader(false)
+            loaderCTRL(false)
     }
 
     const update = async () => {
-        setAppLoader(true)
-        if (accesorio.nombre === '' || !accesorio.imagenes || accesorio.modelo === '' || accesorio.precio === 0 || accesorio.producto === '') return alert('Rellene todos los campos')
-        const res = await accesorioServ.updateAccesorio(accesorio)
-        setAccesorio(res)
+        loaderCTRL('load')
+        if (tmpAccesorio.nombre === '' || !tmpAccesorio.imagenes || tmpAccesorio.modelo === '' || tmpAccesorio.precio === 0 || tmpAccesorio.producto === '') return alert('Rellene todos los campos')
+        const res = await accesorioServ.updateAccesorio(tmpAccesorio)
+        setTmpAccesorio(res)
         back()
     }
 
     const drop = async () => {
-        setAppLoader(true)
-        const res = await accesorioServ.deleteAccesorio(accesorio)
-        setAccesorio(res)
+        loaderCTRL('load')
+        const res = await accesorioServ.deleteAccesorio(tmpAccesorio)
+        setTmpAccesorio(res)
         back()
     }
 
     const clean = () => {
-        setAppLoader(true)
-        setAccesorio(initialState)
-        setAppLoader(false)
+        loaderCTRL('load')
+        setTmpAccesorio(initialState)
+        loaderCTRL(false)
     }
 
     const create = async () => {
         
-        if (accesorio.nombre === '' || !accesorio.imagenes || accesorio.modelo === '' || accesorio.precio === 0 || accesorio.producto === '') return alert('Rellene todos los campos')
-        setAppLoader(true)
+        if (tmpAccesorio.nombre === '' || !tmpAccesorio.imagenes || tmpAccesorio.modelo === '' || tmpAccesorio.precio === 0 || tmpAccesorio.producto === '') return alert('Rellene todos los campos')
+        loaderCTRL('load')
         try{
-            await accesorioServ.createAccesorio(accesorio)
+            await accesorioServ.createAccesorio(tmpAccesorio)
             push('/cpanel')
         }catch(err){
             console.log(err)
             alert('Hubo un error')
         }
-        setAppLoader(false)
-    }
-
-    const fetchAccesorie = async () => {
-        const { accesorie } = await accesorioServ.getAccesorio(id)
-        setAccesorio(accesorie)
-        setPreviewImage(accesorie.imagenes.imagen1)
-        setAppLoader(false)
-    }
-
-    const fetchProducts = async () => {
-        const productos = await productoServ.getProductos()
-        setProductos(productos)
+        loaderCTRL(false)
     }
 
     useEffect(() => {
-        if(id=='new'){
-            fetchProducts()
-            clean()
-            setAppLoader(false)
-        }else{
-            fetchProducts()
-            fetchAccesorie()
-        }
-        
-    }, [])
+        getProductos()
+        setPreviewImage(tmpAccesorio.imagenes.imagen1)
+        loaderCTRL(document.location.pathname)
+    }, [accesorio])
 
     return (
-        <Container >
-            <Grid container spacing={4}>
+        <>
+            <div>
 
-                <Grid item xs={12} sm={6}>
+                <div>
                     <div style={{
                         borderRadius: '5px',
                         boxShadow: '0px 0px 1px black',
@@ -138,116 +116,127 @@ export const ManageAccesorio = ({ setAppLoader, id }: Props) => {
                         <img style={{height: "90%",width: "90%",objectFit: "contain",position: 'relative'}}
                             src={previewImage}/>
 
-                        <Grid container style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10}}>
-                            <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen1" type="url" onChange={changeImage} value={accesorio.imagenes?accesorio.imagenes.imagen1:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes?accesorio.imagenes.imagen1:'/logo.png'} alt={accesorio.producto} />
-                            </Grid>
+                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10}}>
+                            <div style={{position:'relative',textAlign:'center'}} >
+                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen1" type="url" onChange={changeImage} value={tmpAccesorio.imagenes?tmpAccesorio.imagenes.imagen1:'/logo.png'} />
+                                <img onClick={()=>setPreviewImage(tmpAccesorio.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpAccesorio.imagenes?tmpAccesorio.imagenes.imagen1:'/logo.png'} alt={tmpAccesorio.producto} />
+                            </div>
 
-                            <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen2" type="url" onChange={changeImage} value={accesorio.imagenes?accesorio.imagenes.imagen2:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes?accesorio.imagenes.imagen2:'/logo.png'} alt={accesorio.producto} />
-                            </Grid>
+                            <div style={{position:'relative',textAlign:'center'}} >
+                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen2" type="url" onChange={changeImage} value={tmpAccesorio.imagenes?tmpAccesorio.imagenes.imagen2:'/logo.png'} />
+                                <img onClick={()=>setPreviewImage(tmpAccesorio.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpAccesorio.imagenes?tmpAccesorio.imagenes.imagen2:'/logo.png'} alt={tmpAccesorio.producto} />
+                            </div>
 
-                            <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen3" type="url" onChange={changeImage} value={accesorio.imagenes?accesorio.imagenes.imagen3:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(accesorio.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={accesorio.imagenes?accesorio.imagenes.imagen3:'/logo.png'} alt={accesorio.producto} />
-                            </Grid>
-                        </Grid>
+                            <div style={{position:'relative',textAlign:'center'}} >
+                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen3" type="url" onChange={changeImage} value={tmpAccesorio.imagenes?tmpAccesorio.imagenes.imagen3:'/logo.png'} />
+                                <img onClick={()=>setPreviewImage(tmpAccesorio.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpAccesorio.imagenes?tmpAccesorio.imagenes.imagen3:'/logo.png'} alt={tmpAccesorio.producto} />
+                            </div>
+                        </div>
                     </div>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <List >
-                        <FormGroup>
-                            <FormControl>
-                                <InputLabel>Nombre:</InputLabel>
-                                <Input name="nombre" onChange={changeProduct} value={accesorio.nombre} />
-                            </FormControl>
+                </div>
+                <div>
+                    <ul >
+                        <form>
+                            <div>
+                                <label>Nombre:</label>
+                                <input name="nombre" onChange={changeProduct} value={tmpAccesorio.nombre} />
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Color:</InputLabel>
-                                <Input name="color" inputMode="text" onChange={changeProduct} value={accesorio.color} />
-                            </FormControl>
+                            <div>
+                                <label>Color:</label>
+                                <input name="color" type="text" onChange={changeProduct} value={tmpAccesorio.color} />
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Modelo:</InputLabel>
-                                <Input name="modelo" inputMode="text" onChange={changeProduct} value={accesorio.modelo} />
-                            </FormControl>
+                            <div>
+                                <label>Modelo:</label>
+                                <input name="modelo" type="text" onChange={changeProduct} value={tmpAccesorio.modelo} />
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Producto:{accesorio.producto}</InputLabel>
-                                <Select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="producto" onChange={changeProduct}>
+                            <div>
+                                <label>Producto:{tmpAccesorio.producto}</label>
+                                <select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="producto" onChange={changeProduct}>
                                     
                                     {
-                                        productos.map((producto: Producto) => {
+                                        productos.data.map((producto: Producto) => {
                                             return (
-                                                <Typography style={{cursor:'pointer',padding:'4px'}} component="option" key={producto._id} value={producto.nombre} >
+                                                <option style={{cursor:'pointer',padding:'4px'}} key={producto._id} value={producto.nombre} >
                                                     {producto.nombre}
-                                                </Typography>
+                                                </option>
                                             )
                                         })
                                     }
-                                </Select>
-                            </FormControl>
+                                </select>
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Estado:</InputLabel>
-                                <Select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="estado" onChange={changeProduct}>
+                            <div>
+                                <label>Estado:</label>
+                                <select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="estado" onChange={changeProduct}>
                                     
-                                    <Typography style={{cursor:'pointer',padding:'4px'}} component="option" value={1} >
+                                    <option style={{cursor:'pointer',padding:'4px'}} value={1} >
                                         disponible
-                                    </Typography>
-                                    <Typography style={{cursor:'pointer',padding:'4px'}} component="option" value={0} >
+                                    </option>
+                                    <option style={{cursor:'pointer',padding:'4px'}} value={0} >
                                         agotado
-                                    </Typography>
-                                </Select>
-                            </FormControl>
+                                    </option>
+                                </select>
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Precio:</InputLabel>
-                                <Input name="precio" inputMode="decimal" type="number" onChange={changeProduct} value={accesorio.precio} />
-                            </FormControl>
-                        </FormGroup>
+                            <div>
+                                <label>Precio:</label>
+                                <input name="precio" type="number" onChange={changeProduct} value={tmpAccesorio.precio} />
+                            </div>
+                            <div style={{margin:'10px 0'}}>
+                                <label>meta descripcion:</label>
+                                <input type="text" name="description" defaultValue={tmpAccesorio.description} onChange={changeProduct} />
+                                
+                            </div>
 
-                        <ListItem>
+                            <div style={{margin:'10px 0'}}>
+                                <label>meta keywords:</label>
+                                <input type="text" name="keywords" defaultValue={tmpAccesorio.keywords} onChange={changeProduct} />
+                                
+                            </div>
+                        </form>
+
+                        <li>
                             {
-                                id!=='new'?(
+                                accesorio._id?(
                                     <>
-                                        <Button size="small" onClick={update} variant="contained" style={{ backgroundColor: 'purple', width: '120px', color: 'white' }} startIcon={<Update />} >Actualizar</Button>
-                                        <ListItemSecondaryAction>
-                                            <Button size="small" onClick={drop} variant="contained" style={{ backgroundColor: 'darkorange', width: '120px' }} startIcon={<Delete />} >Eliminar</Button>
-                                        </ListItemSecondaryAction>
+                                        <button onClick={update}  style={{ backgroundColor: 'purple', width: '120px', color: 'white' }} >Actualizar</button>
+                                        <>
+                                            <button onClick={drop}  style={{ backgroundColor: 'darkorange', width: '120px' }} >Eliminar</button>
+                                        </>
                                     </>
                                 ):(
                                     <>
-                                        <Button size="small" onClick={create} variant="contained" style={{ backgroundColor: 'green', width: '120px', color: 'white' }} startIcon={<PlusOne />} >Agregar</Button>
-                                        <ListItemSecondaryAction>
-                                            <Button size="small" onClick={()=>{
+                                        <button onClick={create}  style={{ backgroundColor: 'green', width: '120px', color: 'white' }} >Agregar</button>
+                                        <>
+                                            <button onClick={()=>{
                                                 back()
-                                                }} variant="contained" style={{ backgroundColor: 'lightgreen', width: '120px' }} startIcon={<ArrowBack />} >Regresar</Button>
-                                        </ListItemSecondaryAction>
+                                                }}  style={{ backgroundColor: 'lightgreen', width: '120px' }} >Regresar</button>
+                                        </>
                                     </>
                                 )
                             }
-                        </ListItem>
-                        <ListItem>
+                        </li>
+                        <li>
                             {
-                                id!=='new'?(
-                                    <ListItemSecondaryAction style={{margin:'10px 0'}} >
-                                            <Button size="small" onClick={()=>{
-                                                setAppLoader(true)
+                                accesorio._id?(
+                                    
+                                            <button onClick={()=>{
+                                                loaderCTRL('load')
                                                 clean()
                                                 push('/detalleaccesorio/new')
-                                                setAppLoader(false)
-                                                }} variant="contained" style={{ backgroundColor: 'lightgreen', width: '120px',margin:'10px 0'}} >Nuevo</Button>
-                                    </ListItemSecondaryAction>
+                                                loaderCTRL(false)
+                                                }}  style={{ backgroundColor: 'lightgreen', width: '120px',margin:'10px 0'}} >Nuevo</button>
+                                    
                                 ):null
                             }
-                        </ListItem>
-                    </List>
+                        </li>
+                    </ul>
 
-                </Grid>
-            </Grid>
-        </Container>
+                </div>
+            </div>
+        </>
     )
 }

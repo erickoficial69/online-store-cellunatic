@@ -1,5 +1,4 @@
 import { Repuesto } from "../../interfaces/interfaces"
-import fetch from 'isomorphic-fetch'
 
 export const toBase64 = (file:any) => new Promise((resolve,reject) => {
     const reader = new FileReader()

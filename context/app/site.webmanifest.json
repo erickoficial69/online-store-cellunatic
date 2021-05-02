@@ -32,23 +32,15 @@
     {
       "name": "Accesorios",
       "short_name": "Accesorios",
-      "description": "Accesorios, para y dispositivos móviles, computadores y laptops.",
+      "description": "Accesorios, para y dispositivos móviles, computadores u laptops.",
       "url": "/accesorios",
-      "keywords":"",
-      "icons": [{ "src": "logo192x192.png", "sizes": "192x192" },{ "src": "logo512x512.png", "sizes": "512x512" }]
-    },
-    {
-      "name": "Repuestos",
-      "short_name": "Repuestos",
-      "description": "Repuestos, para y dispositivos móviles, computadores y laptops.",
-      "url": "/repuestos",
       "keywords":"",
       "icons": [{ "src": "logo192x192.png", "sizes": "192x192" },{ "src": "logo512x512.png", "sizes": "512x512" }]
     },
     {
       "name": "Servicio Tecnico",
       "short_name": "Servicio_tecnico",
-      "description": "Servicio tecnico profesional especializado en dispositivos móviles, computadores y laptops.",
+      "description": "Servicio tecnico profesional especializado en dispositivos móviles, computadores u laptops.",
       "url": "/servicio_tecnico",
       "keywords":"",
       "icons": [{ "src": "logo192x192.png", "sizes": "192x192" },{ "src": "logo512x512.png", "sizes": "512x512" }]

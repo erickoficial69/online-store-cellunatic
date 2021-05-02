@@ -1,5 +1,4 @@
 import { Accesorio } from "../../interfaces/interfaces"
-import fetch from 'isomorphic-fetch'
 
 export const toBase64 = (file:any) => new Promise((resolve,reject) => {
     const reader = new FileReader()
@@ -71,5 +70,6 @@ export const getCustomAccesorio = async(search:string,limit:number)=>{
             "content-type":"application/json"
         }
     })
+    
     return await get.json()
 }

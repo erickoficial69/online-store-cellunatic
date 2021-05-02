@@ -2,12 +2,15 @@ export type Accesorio = {
     _id?:string
     nombre: string
     color: string
+    description?:string
+    keywords?:string
     estado: boolean
     imagenes: {
         imagen1?:string
         imagen2?:string
         imagen3?:string
     }
+    url?:string
     modelo: string
     precio: number
     producto: string
@@ -19,12 +22,15 @@ export type Repuesto = {
     _id?:string
     nombre: string
     color: string
+    description?:string
+    keywords?:string
     estado: boolean
     imagenes: {
         imagen1?:string
         imagen2?:string
         imagen3?:string
     }
+    url?:string
     modelo: string
     precio: number
     producto: string
@@ -36,22 +42,12 @@ export type Producto = {
     _id?:string
     nombre: string
     seccion:string
+    url?:string
     estado: boolean
+    description?:string
+    keywords?:string
     createdAt?:string | Date
     updatedAt?:string | Date
-}
-
-export type Context = {
-    appLoader: boolean
-    setAppLoader: (param:boolean)=>boolean
-    appLocation: string
-    setAppLocation: (param:string)=>string
-    verifySesion:()=>User
-    destroySesion:()=>User | void
-    appData:AppData
-    setAppData:(param:any)=>AppData
-    tasaCambio:TasaCambio
-    setTasaCambio:(param:TasaCambio)=>TasaCambio
 }
 
 export type User = {
@@ -66,24 +62,49 @@ export type User = {
     updatedAt?:string | Date
 }
 
-export type AppData = {
-    name:string
-    description:string
+export type Seccion= {
+    _id?:string
+    title:string,
+    url?:string,
+    description?:string
     keywords?:string
-    addres?:string
-    contact:{
-        phone?:string
-        whatsapp?:string
-        email?:string
-        facebook?:string
-        instagram?:string
-        telegram?:string
-        twitter?:string
-    }
-    logo:string
+    createdAt?:string | Date
+    updatedAt?:string | Date
 }
 
-export type TasaCambio={
-    monto:number
-    _id?:string
+export type AppData = {
+    appData:{
+        name:string
+        description:string
+        keywords?:string
+        addres?:string
+        contact:{
+            phone?:string
+            whatsapp?:string
+            email?:string
+            facebook?:string
+            instagram?:string
+            telegram?:string
+            twitter?:string
+        }
+        logo:string
+    },
+    tasaCambio:{
+        monto:number
+        _id?:string
+    },
+    store:{
+        accesorios:{
+            data:Accesorio[],
+            count:number
+        },
+        repuestos:{
+            data:Repuesto[],
+            count:number
+        },
+        productos:{
+            data:Producto[],
+            count?:number
+        }
+    }
 }

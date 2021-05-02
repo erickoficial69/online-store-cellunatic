@@ -1,236 +1,225 @@
-import { Container, FormGroup, Input, Typography, FormControl, InputLabel, NativeSelect, Grid, Button, IconButton, Box, List, ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction } from '@material-ui/core'
-import { Cancel, Edit, MonetizationOn, Remove } from '@material-ui/icons'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import Template from '../components/App'
-import { updateTasa } from '../components/controllers/cpanel.controllers'
-import { Context, Producto, User } from '../interfaces/interfaces'
-import * as productoServ from '../components/controllers/productos.controllers'
+import { useContext, useEffect, useMemo, useState } from 'react'
+import { Producto, Seccion, User } from '../interfaces/interfaces'
+import * as userServ from '../components/controllers/usuarios.controllers'
+import * as prodServ from '../components/controllers/productos.controllers'
+import * as seccServ from '../components/controllers/secciones.controllers'
+import GlobalAppContext from '../context/app/app_state'
+import {ManageProduct} from '../components/manage_producto'
+import { ManageSection } from '../components/manage_sections'
+import { CreateAccesorio } from '../components/create_accesorio'
+import { CreateRepuesto } from '../components/create_repuesto'
+import { GetStaticProps, GetStaticPropsContext } from 'next'
 
-interface Props {
-    context: Context
-}
-const emptyProduct:Producto ={
-    nombre:'',
-    seccion:'',
-    estado:true
-} 
 
-const Cpanel = ({ context }: Props) => {
+const Cpanel = () => {
     const { push } = useRouter()
-    const { setAppLoader, verifySesion, destroySesion, tasaCambio, setTasaCambio } = context
+    const { loader,loaderCTRL, tasaCambio, getTasaCambio, updateTasa }:any = useContext(GlobalAppContext)
     const [user, setUser] = useState<User>({ correo: '', password: '' })
-    const [edit,setEdit] = useState<boolean>(false)
-    const [productos,setProductos] = useState<Producto[]>([])
-    const [producto,setProducto] = useState<Producto>(emptyProduct)
     const [tmpTasa,setTmpTasa] = useState<any>(0)
-    const [editTasaCambio,setEditTasaCambio] = useState<boolean>(false)
-
-    const productChange=(param:any,data?:Producto)=>{
-        if(data) return setProducto(data)
-        setProducto({...producto,[param.target.name]:param.target.value})
-    }
-
-    
-    const addProduct = async () => {
-        if(producto.nombre === '' || producto.seccion === '') return alert('rellene todos los campos')
-        setAppLoader(true)
-        await productoServ.createProducto(producto)
-        getProducts()
-    }
-    const updateProduct = async () => {
-        if(producto.nombre === '' || producto.seccion === '') return alert('rellene todos los campos')
-        setAppLoader(true)
-        await productoServ.updateProducto(producto)
-        setProducto(emptyProduct)
-        setEdit(false)
-        getProducts()
-    }
+    const [tmpSecc,setTmpSecc] = useState<Seccion>({title:''})
+    const [tmpProd,setTmpProd] = useState<Producto>({nombre:'',estado:true,seccion:''})
+    const [modal,setModal] = useState<string | boolean>(false)
+    const [productos,setProductos] = useState<Producto[]>([{nombre:'',estado:false,seccion:''}])
+    const [secciones,setSecciones] = useState<Seccion[]>([{title:''}])
 
     const updateTasaCambio = async()=>{
-        setAppLoader(true)
+        loaderCTRL('load')
         try{
-            const result = await updateTasa(tmpTasa)
-            setTasaCambio(result)
+            const result: any = await updateTasa(tmpTasa)
+            getTasaCambio(result)
         }catch(err){
             console.log(err)
             alert('algo salió mal')
         }
         
-        setEditTasaCambio(false)
-        setAppLoader(false)
+        setModal(false)
+        loaderCTRL(false)
     }
-
-    const deleteProduct = async(id:string)=>{
-        setAppLoader(true)
-        await productoServ.deleteProducto(id)
-        getProducts()
+    const getProductos = async()=>{
+        const list = await prodServ.getProductos()
+        setProductos(list)
     }
-
-    const getProducts = async()=>{
-        setAppLoader(true)
-        const res = await productoServ.getProductos()
-        setProductos(res)
-        setAppLoader(false)
+    const getSecciones = async()=>{
+        const list = await seccServ.getSecciones()
+        setSecciones(list)
     }
-
+    const manage_section = useMemo(()=><ManageSection seccion={tmpSecc} setTmpSecc={setTmpSecc} setModal={setModal}/>,[tmpSecc])
+    const create_repuesto = useMemo(()=><CreateRepuesto setModal={setModal}/>,[])
+    const create_accesorio = useMemo(()=><CreateAccesorio setModal={setModal}/>,[])
+    const manage_producto = useMemo(()=><ManageProduct producto={tmpProd} setTmpProd={setTmpProd} setModal={setModal}/>,[tmpProd])
     useEffect(() => {
-        const result = verifySesion()
+        const result = userServ.verifySesion()
 
         if (result.correo === "") push('/login')
 
         setUser(result)
-        getProducts()
-    }, [])
+        getTasaCambio()
+        getProductos()
+        getSecciones()
+        loaderCTRL(document.location.pathname)
+    }, [loader])
 
     return user.rango && user.rango === "administrador" ? (
-                <>
+                <main>
                 <Head>
                     <title>Cellunatic - cpanel</title>
                 </Head>
-                <Container>
-                {/****************** Botones Para tareas principales del administrador ****************/}
-                        <List style={{marginTop:'65px'}} >
-                            <ListItem >
-                                <Button style={{margin:'5px'}} color="primary" variant="contained" size="small" onClick={() => {
-                                        setAppLoader(true)
-                                        push('/detalleaccesorio/new')}} >
-                                            Nuevo Accesorio
-                                </Button>
+                <aside>
+                    <h3>Dashboard</h3>
+                    {/****************** Botones Para tareas principales del administrador ****************/}
+                        <ul className="admin_nav" >
+                            <li onClick={() => setModal('update_tasa_cambio')}>
+                                1$ = {tasaCambio?tasaCambio.monto:null} bs
+                            </li>
+                            <li onClick={() => setModal('manage_productos')} >
+                                Nuevo Producto
+                            </li>
+                            <li onClick={() => setModal('manage_secciones')} >
+                                Nuevo Seccion
+                            </li>
+                            <li onClick={() => setModal('create_accesorio')} >
+                                Nuevo Accesorio
+                            </li>
+                            <li onClick={() => setModal('create_repuesto')} >
+                                Nuevo Repuesto
+                            </li>
+                            <li onClick={() => {const result = userServ.destroySesion();if (result && result.correo === "") push('/login')}}>
+                                Cerrar Sesion :atom
+                            </li>
+                        </ul>
+                </aside>
+                <section >
+                    {
+                        modal=='manage_productos' ?(
+                            manage_producto
+                        ): modal=='manage_secciones'?(
+                            manage_section
+                        ):modal=='create_repuesto'?(
+                            create_repuesto
+                        ):modal=='create_accesorio'?(
+                            create_accesorio
+                        ):modal=='update_tasa_cambio'?(
+                            <div className="component_new_item" >
+                            <div>
+                                <form>
+                                    <h2>Actualizar Tasa</h2>
+                                    <div>
+                                        <label>{tasaCambio?tasaCambio.monto:null} bs</label>
+                                        <input type="number" onChange={(e:any)=>{
+                                                setTmpTasa({...tasaCambio,monto:e.target.value})
+                                            }} />
+                                    </div>
 
-                                <Button style={{margin:'5px'}} color="primary" variant="contained" size="small" onClick={() => {
-                                        setAppLoader(true)
-                                        push('/detallerepuesto/new')}} >
-                                            Nuevo Repuesto
-                                </Button>
+                                    <div>
+                                        <button onClick={updateTasaCambio}>Actializar</button>
+                                        <button onClick={() => setModal(false)} >cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> 
+                        ):null
+                    }
+                        
+                    {/****************** Formulario para actualizar Tasa de Cambio ****************/}
+                    <div className="container_admin_list_box">
+                        <ul className="admin_list_box" >
+                        <h3>Productos</h3>
+                                {
+                                    // Lista de productos
+                                    productos.map((producto:Producto)=>{
+                                        return(
+                                            <li key={producto.nombre} onClick={()=>{setModal('manage_productos');setTmpProd(producto)}} >{producto.url}</li>
+                                        )
+                                    })
+                                }
+                        </ul>
 
-                                <Button style={{margin:'5px'}} color="primary" variant="contained" size="small" onClick={() => {
-                                        setAppLoader(true)
-                                        push('/appsettings')}} >
-                                            App Info
-                                </Button>
-                                <Button style={{margin:'5px'}} color="primary" variant="contained" size="small" onClick={() => {
-                                        const result = destroySesion()
-
-                                        if (result && result.correo === "") push('/login')}} >
-                                            Cerrar Sesion
-                                </Button>
-                            </ListItem>
-                        </List>
-
-                {/****************** Listado de productos en Grid ****************/}
-                    <Grid container spacing={2} >
-                        <Grid item xs={12} sm={6} md={4}>
-                            {/****************** Tasa de Cambio ****************/}
-
-                            <Box style={{height:320,backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}} >
-                                <Typography variant="h6" color="textPrimary" >Tasa de cambio</Typography>
-                                <List>
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <MonetizationOn />
-                                        </ListItemIcon>
-                                        <ListItemText style={{color:'white'}} >
-                                            1$ = {tasaCambio?tasaCambio.monto:null} bs
-                                        </ListItemText>
-                                    </ListItem>
-                                    <ListItemSecondaryAction>
-                                        <IconButton onClick={() => setEditTasaCambio(!editTasaCambio?true:false)}><Edit /></IconButton>
-                                    </ListItemSecondaryAction>
-                                </List>
-
-                                    {/****************** Formulario para actualizar Tasa de Cambio ****************/}
-
-                                { editTasaCambio?( 
-                                    <FormGroup style={{backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}}>
-                                        <Typography color="textPrimary" variant="h6" >Actualizar Tasa</Typography>
-                                        <FormControl>
-                                            <InputLabel>{tasaCambio?tasaCambio.monto:null} bs</InputLabel>
-                                            <Input inputMode="numeric" onChange={(e:any)=>{
-                                                    setTmpTasa({...tasaCambio,monto:e.target.value})
-                                                }} />
-                                        </FormControl>
-
-                                        <FormControl>
-                                            <Button onClick={updateTasaCambio} variant="contained" >Actializar</Button>
-                                        </FormControl>
-                                        <FormControl style={{margin:'5px 0'}} >
-                                            <Button onClick={() => setEditTasaCambio(!editTasaCambio?true:false)} variant="outlined" >cancelar</Button>
-                                        </FormControl>
-                                    </FormGroup>
-                                ):null}
-                            </Box> 
-                        </Grid>
-
-                { productos.length > 0 ?(
-                        <Grid item xs={12} sm={6}>
-                            <Box style={{height:320,backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px',overflowY:'auto'}} >
-                                <Typography color="textPrimary" variant="h6" >Listado de productos</Typography>
-                                <List>
-                                    { productos.map((rsProduct:Producto)=>(
-                                        <ListItem key={rsProduct._id} >
-                                            <ListItemText style={{color:'white'}} >
-                                                {rsProduct.nombre} <b>seccion: {rsProduct.seccion}</b> 
-                                            </ListItemText>
-                                            <ListItemIcon>
-                                                <IconButton onClick={()=>{setEdit(edit?false:true),setProducto(rsProduct)}} ><Edit /></IconButton>
-                                            </ListItemIcon>
-                                            <ListItemSecondaryAction>
-                                                <ListItemIcon>
-                                                    <IconButton onClick={()=>{
-                                                            if(edit) return
-                                                            deleteProduct(rsProduct._id?rsProduct._id:'')
-                                                        }} >
-                                                        <Remove />
-                                                    </IconButton>
-                                                </ListItemIcon>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>
-                                    ))} 
-                                </List>
-                            </Box>
-                        </Grid> ): null }   
-                
-                {/****************** Formulario actualizar o agregar un producto ****************/}
-
-                        <Grid item xs={12} sm={6} md={4}>
-                            <FormGroup style={{height:320,backgroundColor:'rgba(0,0,0, .7)',padding:'5px',borderRadius:'5px'}} >
-                                <Typography color="textPrimary" variant="h6" >Añadir un producto</Typography>
-
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel>Nombre</InputLabel>
-                                    <Input name="nombre" value={producto.nombre} onChange={productChange}/>
-                                </FormControl>
-
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel>Seccion:</InputLabel>
-                                    <NativeSelect defaultValue="" inputProps={{
-                                        name:'seccion'
-                                    }} onChange={(param:any)=>productChange(param)} >
-                                        <option value="" defaultValue="" selected >ninguno</option>
-                                        <option value="accesorios" >accesorios</option>
-                                        <option value="repuestos" >repuestos</option>
-                                        <option value="telefonos" >telefonos</option>
-                                        <option value="serviciotecnico" >servicio tecnico</option>
-                                    </NativeSelect>
-                                </FormControl>
-
-                                <FormControl style={{margin:'10px 0'}}>
-                                    {
-                                        edit?(
-                                            <>
-                                            <Button style={{margin:'5px'}} onClick={updateProduct} variant="contained" >actualizar</Button>
-                                            <Button style={{margin:'5px'}} onClick={()=>{setEdit(false),setProducto(emptyProduct)}} variant="contained" >cancelar</Button>
-                                            </>
-                                        ):<Button variant="contained" onClick={addProduct}>Añadir</Button>
-                                    }
-                                </FormControl>
-                            </FormGroup>
-                        </Grid>                         
-                    </Grid>
-                </Container>
-            </> ):null
+                        <ul className="admin_list_box" >
+                        <h3>Secciones</h3>
+                                {
+                                    // Lista de secciones
+                                    secciones.map((seccion:Seccion)=>{
+                                        return(
+                                            <li key={seccion.title} onClick={()=>{setModal('manage_secciones');setTmpSecc(seccion)}} >{seccion.url}</li>
+                                        )
+                                    })
+                                }
+                        </ul>
+                    </div>
+                           
+                </section>
+                <style>{`
+                        .admin_nav > li{
+                            border-bottom:1px solid var(--font-color);
+                            cursor:pointer;
+                            padding:5px 0;
+                        }
+                        .container_admin_list_box{
+                            display:grid;
+                            grid-template-columns:1fr;
+                        }
+                        .admin_list_box{
+                            max-height:700px;
+                            overflow-y:auto;
+                            overflow-x:hidden;
+                            padding:5px ;
+                            border-radius:3px;
+                            background:var(--primary-color);
+                            margin:10px;
+                            display:grid;
+                            grid-template-columns:repeat(2,1fr);
+                            gap:5px;
+                        }
+                        .admin_list_box > h3{
+                            grid-column:1 / span 2;
+                            text-align:center;
+                        }
+                        .admin_list_box > li{
+                            height:30px;
+                            line-height:2;
+                            overflow:hidden;
+                            cursor:pointer;
+                            box-shadow:0px 0px 1px var(--font-color);
+                            padding:0 5px;
+                        }
+                        @media(min-width:512px){
+                            .container_admin_list_box{
+                                grid-template-columns:repeat(2,1fr);
+                            }
+                            
+                        }
+                        @media(min-width:800px){
+                            .admin_list_box{
+                                grid-template-columns:repeat(3,1fr);
+                            }
+                            .admin_list_box > h3{
+                                grid-column:1 / span 3;
+                            }
+                        }
+                        @media(min-width:1024px){
+                            .admin_list_box{
+                                grid-template-columns:repeat(2,1fr);
+                            }
+                            .admin_list_box > h3{
+                                grid-column:1 / span 2;
+                            }
+                        }
+                    `}
+                </style>
+            </main> ):null
 }
-
-export default Template(Cpanel)
+export const getStaticProps:GetStaticProps = async(_:GetStaticPropsContext)=>{
+    try{
+        return {props:{
+            secciones:[]
+        },revalidate:1}
+    }catch(err){
+        console.log(err)
+        return {props:{
+            secciones:[]
+        },revalidate:1}
+    }
+}
+export default Cpanel

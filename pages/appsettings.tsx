@@ -1,39 +1,34 @@
-import { Container, FormGroup, Input, Typography, FormControl, InputLabel, Button, Grid, List, ListItem, ListItemSecondaryAction, ListItemText, IconButton } from '@material-ui/core'
-import { Email, Facebook, Instagram, Phone, Telegram, Twitter, Update, WhatsApp, ArrowBack } from '@material-ui/icons'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
-import Template from '../components/App'
-import { updateApp } from '../components/controllers/cpanel.controllers'
-import { Context, User } from '../interfaces/interfaces'
+import { ChangeEvent, useContext, useEffect, useState } from 'react'
+import { verifySesion } from '../components/controllers/usuarios.controllers'
+import GlobalAppContext from '../context/app/app_state'
+import { User } from '../interfaces/interfaces'
 
-interface Props {
-    context: Context
-}
 
 type InputTarget = ChangeEvent<HTMLInputElement>
 
-const App_settings = ({ context }: Props) => {
+const AppSettings = () => {
     const { push, back } = useRouter()
-    const { setAppLoader, verifySesion, appData, setAppData } = context
+    const { loaderState, appData, updateApp }:any = useContext(GlobalAppContext)
     const [user, setUser] = useState<User>({ correo: '', password: '' })
 
     const setContact = (e: InputTarget) => {
         const { contact } = appData
 
-        setAppData({ ...appData, contact: { ...contact, [e.target.name]: e.target.value } })
+        updateApp({ ...appData, contact: { ...contact, [e.target.name]: e.target.value } })
     }
 
     const app_change_data = (e: InputTarget) => {
 
-        setAppData({ ...appData, [e.target.name]: e.target.value })
+        updateApp({ ...appData, [e.target.name]: e.target.value })
     }
 
 
     const saveChanges = async () => {
-        setAppLoader(true)
+        loaderState('loading')
         await updateApp(appData)
-        setAppLoader(false)
+        loaderState('loaded')
     }
 
 
@@ -43,93 +38,87 @@ const App_settings = ({ context }: Props) => {
         if (result.correo === "") push('/login')
 
         setUser(result)
-        setAppLoader(false)
+        loaderState(document.location.pathname)
     }, [])
 
     return user.rango && user.rango === "administrador" ? ( <>
             <Head>
                 <title>Cellunatic - App settings</title>
             </Head>
-               <List style={{ marginTop: '65px' }}>
-                    <ListItem>
-                        <ListItemText style={{color:'white'}} >{appData.name}</ListItemText>
-                    </ListItem>
-                    <ListItemSecondaryAction>
-                        <IconButton onClick={() => back()}><ArrowBack /></IconButton>
-                    </ListItemSecondaryAction>
-                </List>
+               <ul style={{ marginTop: '65px' }}>
+                    <li>
+                        <p style={{color:'white'}} >{appData.name}</p>
+                    </li>
+                    <li>
+                        <button onClick={() => back()}>atras</button>
+                    </li>
+                </ul>
 
-                <Container>
-                    <Grid container spacing={2} >    
+                <>
+                    <div >    
 
-                        <Grid item xs={12} md="auto">
-                            <FormGroup style={{position: 'relative' }}>
+                        <div>
+                            <form style={{position: 'relative' }}>
 
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Typography>Keywords</Typography></InputLabel>
-                                    <Input onChange={app_change_data} inputMode="text" name="keywords" value={appData.keywords} />
-                                </FormControl>
-
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Typography>Dirección</Typography></InputLabel>
-                                    <Input onChange={app_change_data} inputMode="text" name="addres" value={appData.addres} />
-                                </FormControl>
-
-                                <Button size="small" style={{ marginTop: '10px' }} variant="contained" onClick={saveChanges} startIcon={<Update />} >Actualizar</Button>
-                            </FormGroup>
-                        </Grid>
-
-                        <Grid item xs={12} md="auto">
-                            <FormGroup style={{ position: 'relative' }}>
+                                
+                                    <label>Keywords</label>
+                                    <input onChange={app_change_data} type="text" name="keywords" value={appData.keywords} />
                                 
 
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Email /></InputLabel>
-                                    <Input inputMode="email" name="email" onChange={setContact} value={appData.contact.email} />
-                                </FormControl>
+                                
+                                    <label>Dirección</label>
+                                    <input onChange={app_change_data} type="text" name="addres" value={appData.addres} />
+                                
 
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Facebook /></InputLabel>
-                                    <Input inputMode="url" name="facebook" onChange={setContact} value={appData.contact.facebook} />
-                                </FormControl>
+                                <button style={{ marginTop: '10px' }} onClick={saveChanges} >Actualizar</button>
+                            </form>
+                        </div>
 
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Instagram /></InputLabel>
-                                    <Input inputMode="url" name="instagram" onChange={setContact} value={appData.contact.instagram} />
-                                </FormControl>
+                        <div >
+                            <form style={{ position: 'relative' }}>
+                                
 
-                                <Button size="small" style={{ marginTop: '10px' }} variant="contained" onClick={saveChanges} startIcon={<Update />} >Actualizar</Button>
-                            </FormGroup>
-                        </Grid>
+                                
+                                    
+                                    <input type="email" name="email" onChange={setContact} value={appData.contact.email} />
+                                
+                                    <input type="url" name="facebook" onChange={setContact} value={appData.contact.facebook} />
+                      
+                                    <input type="url" name="instagram" onChange={setContact} value={appData.contact.instagram} />
+                                
 
-                        <Grid item xs={12} md="auto">
-                            <FormGroup style={{ position: 'relative' }}>
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Twitter /></InputLabel>
-                                    <Input inputMode="url" name="twitter" onChange={setContact} value={appData.contact.twitter} />
-                                </FormControl>
+                                <button style={{ marginTop: '10px' }} onClick={saveChanges} >Actualizar</button>
+                            </form>
+                        </div>
 
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Phone /></InputLabel>
-                                    <Input inputMode="tel" type="tel" name="phone" onChange={setContact} value={appData.contact.phone} />
-                                </FormControl>
+                        <div >
+                            <form style={{ position: 'relative' }}>
+                                
+                                    
+                                    <input type="url" name="twitter" onChange={setContact} value={appData.contact.twitter} />
+                                
 
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><WhatsApp /></InputLabel>
-                                    <Input inputMode="tel" type="tel" name="whatsapp" onChange={setContact} value={appData.contact.whatsapp} />
-                                </FormControl>
+                                
+                                    
+                                    <input type="tel" name="phone" onChange={setContact} value={appData.contact.phone} />
+                                
 
-                                <FormControl style={{margin:'10px 0'}}>
-                                    <InputLabel><Telegram /></InputLabel>
-                                    <Input inputMode="url" name="telegram" onChange={setContact} value={appData.contact.telegram} />
-                                </FormControl>
+                                
+                                    
+                                    <input type="tel" name="whatsapp" onChange={setContact} value={appData.contact.whatsapp} />
+                                
 
-                                <Button size="small" style={{ marginTop: '10px' }} variant="contained" onClick={saveChanges} startIcon={<Update />} >Actualizar</Button>
-                            </FormGroup>
-                        </Grid>
-                    </Grid>
-                </Container>
+                                
+                                    
+                                    <input type="url" name="telegram" onChange={setContact} value={appData.contact.telegram} />
+                                
+
+                                <button style={{ marginTop: '10px' }} onClick={saveChanges} >Actualizar</button>
+                            </form>
+                        </div>
+                    </div>
+                </>
             </>) : null
 }
 
-export default Template(App_settings)
+export default AppSettings

@@ -1,23 +1,19 @@
-import { Container, Input, InputLabel, FormControl, Button, FormGroup, Typography } from '@material-ui/core'
-import Template from '../components/App'
-import { useEffect, useState } from 'react'
-import {  Context } from '../interfaces/interfaces'
-import { loginUser } from '../components/controllers/usuarios.controllers'
+import { useEffect, useState, useContext } from 'react'
+import * as userServ from '../components/controllers/usuarios.controllers'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import GlobalAppContext from '../context/app/app_state'
 
-interface Props {
-    context: Context
-}
 
-const LoginForm = ({ context }: Props) => {
-    const { setAppLoader, verifySesion } = context
+
+const LoginForm = () => {
+    const { loaderCTRL }:any = useContext(GlobalAppContext)
     const { push } = useRouter()
     const [disabled, setDisabled] = useState<boolean>(false)
 
-    const login = async () => {
-        const correo:any = document.getElementById('correo')
-        const password:any = document.getElementById('password')
+    const login = async (e:any) => {
+        e.preventDefault()
+        const {correo,password}:any = e.target
 
             if(correo.value === "" || password.value === ""){
                 setDisabled(true)
@@ -26,13 +22,13 @@ const LoginForm = ({ context }: Props) => {
                 },2000)
                 return
             }
-            setAppLoader(true)
+            loaderCTRL(true)
             try{
 
-                const sesion = await loginUser({correo:correo.value,password:password.value})
+                const sesion = await userServ.loginUser({correo:correo.value,password:password.value})
                 if(!sesion){
                     alert('error, verifica sus credenciales')
-                    return setAppLoader(false)        
+                    return loaderCTRL(false)        
                 }
                 localStorage.cellunatic = JSON.stringify(sesion)
                 push('/cpanel')
@@ -42,45 +38,45 @@ const LoginForm = ({ context }: Props) => {
                     alert('hubo un error de conexion')
             }
         
-        setAppLoader(false)
+        loaderCTRL(false)
     }
 
     useEffect(() => {
-        const result = verifySesion()
+        const result = userServ.verifySesion()
         
         if(result.correo !== "") push('/cpanel')
 
-        setAppLoader(false)
+        loaderCTRL(document.location.pathname)
     }, [])
 
     return (
-        <Container>
+        <>
             <Head>
                 <title>Cellunatic - Login</title>
             </Head>
             <div className="containerForm">
-                <FormGroup style={{padding:10,borderRadius:5,background:'rgb(20,20,20)'}}>
-                    <Typography color="textPrimary" style={{ marginBottom: '10px', textAlign:'center' }} variant="h4" >Login</Typography>
+                <form onSubmit={login} style={{padding:10,borderRadius:5,background:'rgb(20,20,20)'}}>
+                    <h3 style={{ marginBottom: '10px', textAlign:'center' }} >Login</h3>
 
-                    <FormControl style={{margin:5}}>
-                        <InputLabel >{disabled?'no puede estar vacio':'Email' }</InputLabel>
-                        <Input error={disabled} type="email" id="correo" placeholder="Jhon@gmail.com" />
-                    </FormControl>
+                    <div style={{margin:5}}>
+                        <label >{disabled?'no puede estar vacio':'Email' }</label>
+                        <input disabled={disabled} type="email" name="correo" placeholder="Jhon@gmail.com" />
+                    </div>
 
-                    <FormControl style={{margin:5}}>
-                        <InputLabel>{disabled?'no puede estar vacio':'Contraseña'}</InputLabel>
+                    <div style={{margin:5}}>
+                        <label>{disabled?'no puede estar vacio':'Contraseña'}</label>
 
-                        <Input error={disabled} type="password" id="password" placeholder="*********" />
-                    </FormControl>
+                        <input disabled={disabled} type="password" name="password" placeholder="*********" />
+                    </div>
 
-                    <Button style={{ marginTop: '5px' }} disabled={disabled} variant="outlined" onClick={login} >Login</Button>
+                    <button style={{ marginTop: '5px' }} disabled={disabled} >Login</button>
                     
                     {/* <Typography style={{ marginTop: '20px' }} variant="caption" >Nó tienes cuenta? <b onClick={()=>push('/register')} >Registrate</b></Typography> */}
-                </FormGroup>
+                </form>
             </div>
 
-        </Container>
+        </>
     )
 }
 
-export default Template(LoginForm)
+export default LoginForm

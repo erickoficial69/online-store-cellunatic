@@ -1,6 +1,8 @@
 {
   "name": "cellunatic",
-  "version": "1.0.0",
+  "description": "Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en dispositivos móviles, computadores y laptops",
+  "url": "cellunatic.store",
+  "version": "1.8.0",
   "engines": {
     "node": "12.x"
   },
@@ -12,20 +14,12 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "install": "^0.13.0",
-    "isomorphic-fetch": "^2.2.1",
     "next": "latest",
     "next-offline": "^5.0.2",
-    "next-with-workbox": "^1.2.4",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "workbox-precaching": "^5.1.3",
-    "workbox-window": "^5.1.3"
+    "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@types/isomorphic-fetch": "0.0.35",
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",

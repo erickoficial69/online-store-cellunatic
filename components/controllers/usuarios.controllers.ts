@@ -1,5 +1,4 @@
 import { User } from "../../interfaces/interfaces"
-import fetch from 'isomorphic-fetch'
 
 export const getUser = async(param:string)=>{
     const get = await fetch(`${process.env.API}/user`,{
@@ -39,4 +38,27 @@ export const loginUser = async(user:User)=>{
     })
 
     return await get.json()
+}
+
+
+export const verifySesion = ()=>{
+    let user:User = {
+        correo:'',
+        password:''
+    }
+    if(localStorage.cellunatic){
+        return JSON.parse(localStorage.cellunatic)
+    }
+    return user
+}
+export const destroySesion = ()=>{
+    let user:User = {
+        correo:'',
+        password:''
+    }
+    if(localStorage.cellunatic){
+        localStorage.removeItem("cellunatic")
+        return user
+    }
+    return
 }

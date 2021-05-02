@@ -1,118 +1,105 @@
-import { useState, useEffect } from 'react'
-import { Button, Container, Grid, Input, List, ListItem, ListItemSecondaryAction, Typography, FormControl, InputLabel, FormGroup, Select } from '@material-ui/core'
-import { Update, Delete, PlusOne, ArrowBack } from '@material-ui/icons'
+import { useState, useEffect, useContext } from 'react'
 import { Repuesto, Producto } from '../interfaces/interfaces'
-import * as repuestoServ from './controllers/repuestos.controllers'
-import * as productoServ from './controllers/productos.controllers'
+import * as itemServ from './controllers/repuestos.controllers'
 import { useRouter } from 'next/router'
+import GlobalAppContext from '../context/app/app_state'
 
 interface Props {
-    id: string
-    setAppLoader?: any
-    setModalNewProduct?: any
+    item: Repuesto
 }
-type Input = any
+type input = any
 
-export const ManageRepuesto = ({ setAppLoader, id }: Props) => {
+export const ManageRepuesto = ({ item }: Props) => {
     const initialState = {
         nombre: '',
         color: '',
         estado: false,
         imagenes: {
-            imagen1:'/logo.png',
-            imagen2:'/logo.png',
-            imagen3:'/logo.png'
+            imagen1:'/logo192x192.png',
+            imagen2:'/logo192x192.png',
+            imagen3:'/logo192x192.png'
         },
         modelo: '',
         precio: 0,
         producto: ''
     }
+    const {loaderCTRL,productos,getProductos}:any = useContext(GlobalAppContext)
     const { back, push } = useRouter()
-    const [productos, setProductos] = useState<Producto[]>([])
-    const [repuesto, setRepuesto] = useState<Repuesto>(initialState)
+    const [tmpItem, setTmpItem] = useState<Repuesto>(item?item:initialState)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
 
-    const changeRepuesto = async (param: Input) => {
+    const changeProduct = async (param: input) => {
 
-        setRepuesto({ ...repuesto, [param.target.name]: param.target.value })
+        setTmpItem({ ...tmpItem, [param.target.name]: param.target.value })
     }
 
-    const changeImage = async (param: Input) => {
-        setAppLoader(true)
-        const {imagenes} = repuesto
+    const changeImage = async (param: input) => {
+        loaderCTRL('load')
+        const {imagenes} = tmpItem
             let img = param.target.name
             /* 
-            let base64: string | any = await repuestoServ.toBase64(param.target.files[0]).catch(err => {
+            let base64: string | any = await itemServ.toBase64(param.target.files[0]).catch(err => {
                 return err
             }) 
             
-            setRepuesto({ ...repuesto, imagenes:{...imagenes, [img]:base64 }})
+            setTmpItem({ ...accesorio, imagenes:{...imagenes, [img]:base64 }})
             */
-            setRepuesto({ ...repuesto, imagenes:{...imagenes, [img]:param.target.value }})
+            setTmpItem({ ...tmpItem, imagenes:{...imagenes, [img]:param.target.value }})
             /* if(img==="imagen1"){
                 setPreviewImage(base64)
             } */
             if(img==="imagen1"){
                 setPreviewImage(param.target.value)
             }
-            setAppLoader(false)
+            loaderCTRL(false)
     }
 
     const update = async () => {
-        
+        loaderCTRL('load')
+        if (tmpItem.nombre === '' || !tmpItem.imagenes || tmpItem.modelo === '' || tmpItem.precio === 0 || tmpItem.producto === '') return alert('Rellene todos los campos')
+        const res = await itemServ.updateRepuesto(tmpItem)
+        setTmpItem(res)
         back()
     }
 
     const drop = async () => {
-        setAppLoader(true)
-        const res = await repuestoServ.deleteRepuesto(repuesto)
-        setRepuesto(res)
+        loaderCTRL('load')
+        const res = await itemServ.deleteRepuesto(tmpItem)
+        setTmpItem(res)
         back()
     }
 
     const clean = () => {
-        setAppLoader(true)
-        setRepuesto(initialState)
-        setAppLoader(false)
+        loaderCTRL('load')
+        setTmpItem(initialState)
+        loaderCTRL(false)
     }
 
     const create = async () => {
-        if (repuesto.nombre === '' || !repuesto.imagenes || repuesto.modelo === '' || repuesto.precio === 0 || repuesto.producto === '') return alert('Rellene todos los campos')
-        setAppLoader(true)
-        await repuestoServ.createRepuesto(repuesto)
-
-        push('/cpanel')
-    }
-    
-    const setComponent = async () => {
-        setAppLoader(true)
-        if(id=='new'){
-            clean()
-            fetchProducts()
-            setAppLoader(false)
-            return
+        
+        if (tmpItem.nombre === '' || !tmpItem.imagenes || tmpItem.modelo === '' || tmpItem.precio === 0 || tmpItem.producto === '') return alert('Rellene todos los campos')
+        loaderCTRL('load')
+        try{
+            await itemServ.createRepuesto(tmpItem)
+            push('/cpanel')
+        }catch(err){
+            console.log(err)
+            alert('Hubo un error')
         }
-        const { repuesto } = await repuestoServ.getRepuesto(id)
-        fetchProducts()
-        setRepuesto(repuesto)
-        setPreviewImage(repuesto.imagenes.imagen1)
-        setAppLoader(false)
-    }
-
-    const fetchProducts = async () => {
-        const productos = await productoServ.getProductos()
-        setProductos(productos)
+        loaderCTRL(false)
     }
 
     useEffect(() => {
-        setComponent()
-    }, [])
+        getProductos()
+        setPreviewImage(tmpItem.imagenes.imagen1)
+        loaderCTRL(document.location.pathname)
+    }, [item])
 
     return (
-        <Container >
-            <Grid container spacing={4} direction="row" alignContent="center" >
+        <>
+            <div>
 
-                <Grid item xs={12} sm={6} >
+                <div>
                     <div style={{
                         borderRadius: '5px',
                         boxShadow: '0px 0px 1px black',
@@ -129,116 +116,127 @@ export const ManageRepuesto = ({ setAppLoader, id }: Props) => {
                         <img style={{height: "90%",width: "90%",objectFit: "contain",position: 'relative'}}
                             src={previewImage}/>
 
-                        <Grid container style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10}}>
-                            <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen1" type="url" onChange={changeImage} value={repuesto.imagenes?repuesto.imagenes.imagen1:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes?repuesto.imagenes.imagen1:'/logo.png'} alt={repuesto.producto} />
-                            </Grid>
+                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10}}>
+                            <div style={{position:'relative',textAlign:'center'}} >
+                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen1" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen1:'/logo.png'} />
+                                <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen1:'/logo.png'} alt={tmpItem.producto} />
+                            </div>
 
-                            <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen2" type="url" onChange={changeImage} value={repuesto.imagenes?repuesto.imagenes.imagen2:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes?repuesto.imagenes.imagen2:'/logo.png'} alt={repuesto.producto} />
-                            </Grid>
+                            <div style={{position:'relative',textAlign:'center'}} >
+                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen2" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen2:'/logo.png'} />
+                                <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen2:'/logo.png'} alt={tmpItem.producto} />
+                            </div>
 
-                            <Grid item xs={4} style={{position:'relative',textAlign:'center'}} >
-                                <Input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px" }} className="inputImage" name="imagen3" type="url" onChange={changeImage} value={repuesto.imagenes?repuesto.imagenes.imagen3:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(repuesto.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={repuesto.imagenes?repuesto.imagenes.imagen3:'/logo.png'} alt={repuesto.producto} />
-                            </Grid>
-                        </Grid>
+                            <div style={{position:'relative',textAlign:'center'}} >
+                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen3" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen3:'/logo.png'} />
+                                <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen3:'/logo.png'} alt={tmpItem.producto} />
+                            </div>
+                        </div>
                     </div>
-                </Grid>
-                <Grid item xs={12} sm={6} >
-                    <List style={{maxWidth:'480px'}} >
-                        <FormGroup>
-                            <FormControl>
-                                <InputLabel>Nombre:</InputLabel>
-                                <Input name="nombre" onChange={changeRepuesto} value={repuesto.nombre} />
-                            </FormControl>
+                </div>
+                <div>
+                    <ul >
+                        <form>
+                            <div>
+                                <label>Nombre:</label>
+                                <input name="nombre" onChange={changeProduct} value={tmpItem.nombre} />
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Color:</InputLabel>
-                                <Input name="color" inputMode="text" onChange={changeRepuesto} value={repuesto.color} />
-                            </FormControl>
+                            <div>
+                                <label>Color:</label>
+                                <input name="color" type="text" onChange={changeProduct} value={tmpItem.color} />
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Modelo:</InputLabel>
-                                <Input name="modelo" inputMode="text" onChange={changeRepuesto} value={repuesto.modelo} />
-                            </FormControl>
+                            <div>
+                                <label>Modelo:</label>
+                                <input name="modelo" type="text" onChange={changeProduct} value={tmpItem.modelo} />
+                            </div>
 
-                            <FormControl>
-                            <InputLabel>Producto:{repuesto.producto} </InputLabel>
-                                <Select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="producto" onChange={changeRepuesto}>
+                            <div>
+                                <label>Producto:{tmpItem.producto}</label>
+                                <select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="producto" onChange={changeProduct}>
                                     
                                     {
-                                        productos.map((producto: Producto) => {
+                                        productos.data.map((producto: Producto) => {
                                             return (
-                                                <Typography style={{cursor:'pointer',padding:'4px'}} component="option" key={producto._id} value={producto.nombre} >
+                                                <option style={{cursor:'pointer',padding:'4px'}} key={producto._id} value={producto.nombre} >
                                                     {producto.nombre}
-                                                </Typography>
+                                                </option>
                                             )
                                         })
                                     }
-                                </Select>
-                            </FormControl>
+                                </select>
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Estado:</InputLabel>
-                                <Select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="estado" onChange={changeRepuesto}>
+                            <div>
+                                <label>Estado:</label>
+                                <select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="estado" onChange={changeProduct}>
                                     
-                                    <Typography style={{cursor:'pointer',padding:'4px'}} component="option" value={1} >
+                                    <option style={{cursor:'pointer',padding:'4px'}} value={1} >
                                         disponible
-                                    </Typography>
-                                    <Typography style={{cursor:'pointer',padding:'4px'}} component="option" value={0} >
+                                    </option>
+                                    <option style={{cursor:'pointer',padding:'4px'}} value={0} >
                                         agotado
-                                    </Typography>
-                                </Select>
-                            </FormControl>
+                                    </option>
+                                </select>
+                            </div>
 
-                            <FormControl>
-                                <InputLabel>Precio:</InputLabel>
-                                <Input name="precio" inputMode="decimal" type="number" onChange={changeRepuesto} value={repuesto.precio} />
-                            </FormControl>
-                        </FormGroup>
+                            <div>
+                                <label>Precio:</label>
+                                <input name="precio" type="number" onChange={changeProduct} value={tmpItem.precio} />
+                            </div>
+                            <div style={{margin:'10px 0'}}>
+                                <label>meta descripcion:</label>
+                                <input type="text" name="description" defaultValue={tmpItem.description} onChange={changeProduct} />
+                                
+                            </div>
 
-                        <ListItem>
+                            <div style={{margin:'10px 0'}}>
+                                <label>meta keywords:</label>
+                                <input type="text" name="keywords" defaultValue={tmpItem.keywords} onChange={changeProduct} />
+                                
+                            </div>
+                        </form>
+
+                        <li>
                             {
-                                id!=='new'?(
+                                item._id?(
                                     <>
-                                        <Button size="small" onClick={update} variant="contained" style={{ backgroundColor: 'purple', width: '120px', color: 'white' }} startIcon={<Update />} >Actualizar</Button>
-                                        <ListItemSecondaryAction>
-                                            <Button size="small" onClick={drop} variant="contained" style={{ backgroundColor: 'darkorange', width: '120px' }} startIcon={<Delete />} >Eliminar</Button>
-                                        </ListItemSecondaryAction>
+                                        <button onClick={update}  style={{ backgroundColor: 'purple', width: '120px', color: 'white' }} >Actualizar</button>
+                                        <>
+                                            <button onClick={drop}  style={{ backgroundColor: 'darkorange', width: '120px' }} >Eliminar</button>
+                                        </>
                                     </>
                                 ):(
                                     <>
-                                        <Button size="small" onClick={create} variant="contained" style={{ backgroundColor: 'green', width: '120px', color: 'white' }} startIcon={<PlusOne />} >Agregar</Button>
-                                        <ListItemSecondaryAction>
-                                            <Button size="small" onClick={()=>{
+                                        <button onClick={create}  style={{ backgroundColor: 'green', width: '120px', color: 'white' }} >Agregar</button>
+                                        <>
+                                            <button onClick={()=>{
                                                 back()
-                                                }} variant="contained" style={{ backgroundColor: 'lightgreen', width: '120px' }} startIcon={<ArrowBack />} >Regresar</Button>
-                                        </ListItemSecondaryAction>
+                                                }}  style={{ backgroundColor: 'lightgreen', width: '120px' }} >Regresar</button>
+                                        </>
                                     </>
                                 )
                             }
-                        </ListItem>
-                        <ListItem>
+                        </li>
+                        <li>
                             {
-                                id!=='new'?(
-                                    <ListItemSecondaryAction style={{margin:'10px 0'}} >
-                                            <Button size="small" onClick={()=>{
-                                                setAppLoader(true)
+                                item._id?(
+                                    
+                                            <button onClick={()=>{
+                                                loaderCTRL('load')
                                                 clean()
-                                                push('/detallerepuesto/new')
-                                                setAppLoader(false)
-                                                }} variant="contained" style={{ backgroundColor: 'lightgreen', width: '120px',margin:'10px 0'}} >Nuevo</Button>
-                                    </ListItemSecondaryAction>
+                                                push('/detalleaccesorio/new')
+                                                loaderCTRL(false)
+                                                }}  style={{ backgroundColor: 'lightgreen', width: '120px',margin:'10px 0'}} >Nuevo</button>
+                                    
                                 ):null
                             }
-                        </ListItem>
-                    </List>
+                        </li>
+                    </ul>
 
-                </Grid>
-            </Grid>
-        </Container>
+                </div>
+            </div>
+        </>
     )
 }
