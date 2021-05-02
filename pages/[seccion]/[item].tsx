@@ -56,14 +56,14 @@ export const getStaticPaths:GetStaticPaths = async()=>{
         const res = await req.json()
         const paths = res.map((producto:Producto)=>({
             params:{
-                seccion:producto.seccion.toString(),
-                item:producto.url?.toString()
+                seccion:producto.seccion,
+                item:producto.url?producto.url:'all'
             }
         }))
-        await paths.push({params:{seccion:"/",item:" "}})
+        await paths.push({params:{seccion:"/",item:"all"}})
         return {paths,fallback:false}
     }catch(err){
-        return {paths:[{params:{seccion:"/",item:" "}}],fallback:false}
+        return {paths:[{params:{seccion:"/",item:"all"}}],fallback:false}
     }
     
 }
@@ -81,7 +81,7 @@ export const getStaticProps:GetStaticProps = async({params}:GetStaticPropsContex
     }catch(err){
         return {props:{
             seccion:'/',
-            items:' ',
+            items:'all',
             productos:[]
         },revalidate:1}
     }
