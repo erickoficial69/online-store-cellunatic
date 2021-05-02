@@ -80,8 +80,8 @@ export const getStaticProps:GetStaticProps = async({params}:GetStaticPropsContex
         },revalidate:1}
     }catch(err){
         return {props:{
-            seccion:'',
-            items:'',
+            seccion:'/',
+            items:'all',
             productos:[]
         },revalidate:1}
     }
