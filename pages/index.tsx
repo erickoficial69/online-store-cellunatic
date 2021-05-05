@@ -35,14 +35,14 @@ const Index = ({sections}:any) => {
                 <meta property="og:description" content="Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en dispositivos móviles, computadores y laptops" />
                 <meta property="og:url" content="https://online-store-cellunatic.vercel.app/" />
                 <meta property="og:site_name" content="cellunatic.store" />
-                <meta property="og:image" content="/logo512x512.png" />
-                <meta property="og:image:secure_url" content="/logo512x512.png" />
+                <meta property="og:image" content="https://online-store-cellunatic.vercel.app/logo512x512.png" />
+                <meta property="og:image:secure_url" content="https://online-store-cellunatic.vercel.app/logo512x512.png" />
                 <meta property="og:image:width" content="32" />
                 <meta property="og:image:height" content="32" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:description" content="Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en dispositivos móviles, computadores y laptops" />
                 <meta name="twitter:title" content="Cellunatic" />
-                <meta name="twitter:image" content="/logo512x512.png" />
+                <meta name="twitter:image" content="https://online-store-cellunatic.vercel.app/logo512x512.png" />
                 <link rel="shortlink" href="https://online-store-cellunatic.vercel.app/" />
 
 

@@ -31,14 +31,14 @@ const Repuestos=({productos,metas}:Props)=>{
                 <meta property="og:description" content={metas?metas.description:""} />
                 <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"/repuestos"}`} />
                 <meta property="og:site_name" content="cellunatic.store" />
-                <meta property="og:image" content="/logo512x512.png" />
-                <meta property="og:image:secure_url" content="/logo512x512.png" />
+                <meta property="og:image" content="https://online-store-cellunatic.vercel.app/logo512x512.png" />
+                <meta property="og:image:secure_url" content="https://online-store-cellunatic.vercel.app/logo512x512.png" />
                 <meta property="og:image:width" content="32" />
                 <meta property="og:image:height" content="32" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:description" content={metas?metas.description:""} />
                 <meta name="twitter:title" content="Repuestos para computadoras y telefonos - Cellunatic" />
-                <meta name="twitter:image" content="/logo512x512.png" />
+                <meta name="twitter:image" content="https://online-store-cellunatic.vercel.app/logo512x512.png" />
                 <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"/repuestos"}`} />
             </Head>
                
