@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect } from "react";
 import Head from "next/head";
 import GlobalAppContext from "../context/app/app_state";
 import {GetStaticProps,GetStaticPropsContext} from 'next'
 import Link from 'next/link'
 import { Producto } from "../interfaces/interfaces";
-import Grid_similars_items from "../components/grid_similar_items";
 
 type Props={
     metas:Producto
@@ -12,17 +11,9 @@ type Props={
 }
 
 const Repuestos=({productos,metas}:Props)=>{
-    const {getRepuestos,repuestos,loaderCTRL}:any = useContext(GlobalAppContext)
-    
-    const [limit,setLimit] = useState<number>(12)
-
-    const comp_repuestos = useMemo(()=><Grid_similars_items items={repuestos.data} />,[repuestos])
-    const moreRepuestos=()=>{
-        setLimit(limit+12)
-    }
+    const {loaderCTRL}:any = useContext(GlobalAppContext)
 
     useEffect(()=>{
-        getRepuestos("",limit)
         loaderCTRL(document.location.pathname)
     },[])
 
@@ -66,11 +57,45 @@ const Repuestos=({productos,metas}:Props)=>{
             </aside>
 
             <section> 
-                <div className="container_items">
-                    {comp_repuestos}
-                </div>
+            <h1>Los mejores accesorios para Celulares</h1>
+                    <p>
+                        La venta Smartphones sigue creciendo tanto en nuestro país
+                        como en todo el planeta. 
+                        <br/>
+                        Los problemas de los teléfonos móviles a veces pueden parecer los más invasivos y las
+                        soluciones no siempre son fáciles de encontrar. Dependemos de nuestros teléfonos
+                        móviles cada vez más cada día, así que cuando nos encontramos con dificultades con
+                        ellos y tenemos que llevarlos a algún lugar para arreglarlos, puede ser un verdadero
+                        dolor. Afortunadamente, tenemos para ti una variedad de repuestos y servicio tecnico profesional para cada caso.
+                    </p>
+                    <article>
+                        <h3>La batería no funciona</h3>
+                        <p>
+                            ¿Cómo puedes usar tu teléfono si no se mantiene vivo el tiempo suficiente?
+                            Los
+                            <b>problemas de batería son una de las fallas más comunes en los teléfonos</b>,
+                            generalmente causados por el abuso del usuario.
+                        </p>
+                    </article>
 
-                {repuestos.length>12?<button onClick={moreRepuestos} >Mostrar más</button>:null}
+                    <article>
+                        <h3>Pantalla está rota</h3>
+                        <p>
+                            Como las pantallas de nuestros teléfonos son de vidrio, no es sorprendente que a veces un fuerte impacto con el suelo pueda hacer que se rompan. Las grietas pueden
+                            causar problemas en la respuesta de la pantalla táctil o dejar entrar la humedad, por lo que es importante reparar el teléfono después de que la pantalla se
+                            dañe.
+                        </p>
+                    </article>
+
+                    <article>
+                        <h3>Teléfono no carga (El puerto de carga dejó de funcionar)</h3>
+                        <p>
+                            Al igual que con las baterías de los teléfonos, con el tiempo los cables de carga y el
+                            puerto se desgastarán. En el teléfono, las pequeñas lengüetas metálicas alrededor de
+                            la abertura donde enchufas el cargador pueden dañarse o ensuciarse, lo que puede
+                            complicar o ralentizar su capacidad de carga.
+                        </p>
+                    </article>
             </section> 
         </main>
     )
