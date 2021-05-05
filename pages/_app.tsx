@@ -11,6 +11,12 @@ import * as repServ from '../components/controllers/repuestos.controllers'
 import * as prodServ from '../components/controllers/productos.controllers'
 import Navigation from "../components/Navigation";
 
+
+export function reportWebVitals(metric:any) {
+  console.log(metric)
+}
+
+
 function Myapp({ Component,pageProps}:AppProps) {
   const [sidebar,setSidebar] = useState<boolean>(false)
   const [loader,setLoader] = useState<boolean>(true)

@@ -16,6 +16,7 @@ const Index = ({sections}:any) => {
         , [repuestos,limit])
    
     useEffect(() => {
+        setLimit(3)
         getAccesorios("", limit)
         getRepuestos("",limit)
         loaderCTRL(document.location.pathname)
