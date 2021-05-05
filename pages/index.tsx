@@ -25,24 +25,25 @@ const Index = ({sections}:any) => {
     return (
         <main>
             <Head>
-                <title>home</title>
-                <meta name="description" content="la misma puta desc" />
-                <link rel="canonical" href="https://cellunatic.store/" />
+                <title>Cellunatic</title>
+                <meta name="description" content="Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en dispositivos móviles, computadores y laptops" />
+                <meta name="keywords" content="cellunatic, servicio tecnico a domicilio carabobo, servicio tecnico domicilio valencia, repuestos para telefonos, accesorios para telefonos"/>
+                <link rel="canonical" href="https://online-store-cellunatic.vercel.app/" />
                 <meta property="og:locale" content="es_ES" />
                 <meta property="og:type" content="website" />
-                <meta property="og:title" content="el mismo puto titulo" />
-                <meta property="og:description" content="la misma puta desc" />
-                <meta property="og:url" content="https://cellunatic.store/" />
+                <meta property="og:title" content="Cellunatic" />
+                <meta property="og:description" content="Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en dispositivos móviles, computadores y laptops" />
+                <meta property="og:url" content="https://online-store-cellunatic.vercel.app/" />
                 <meta property="og:site_name" content="cellunatic.store" />
-                <meta property="og:image" content="https://la-misma-imagen.jpg" />
-                <meta property="og:image:secure_url" content="https://la-misma-imagen.jpg" />
-                <meta property="og:image:width" content="900" />
-                <meta property="og:image:height" content="432" />
+                <meta property="og:image" content="/favicon.ico" />
+                <meta property="og:image:secure_url" content="/favicon.ico" />
+                <meta property="og:image:width" content="32" />
+                <meta property="og:image:height" content="32" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:description" content="la misma puta desc" />
-                <meta name="twitter:title" content="el mismo puto titulo" />
-                <meta name="twitter:image" content="https://la-misma-imagen.jpg" />
-                <link rel="shortlink" href="https://cellunatic.store/" />
+                <meta name="twitter:description" content="Cellunatic, tienda de accesorios, repuestos y servicio técnico profesional en dispositivos móviles, computadores y laptops" />
+                <meta name="twitter:title" content="Cellunatic" />
+                <meta name="twitter:image" content="/favicon.ico" />
+                <link rel="shortlink" href="https://online-store-cellunatic.vercel.app/" />
 
 
             </Head>

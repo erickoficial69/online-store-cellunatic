@@ -53,7 +53,6 @@ export const CreateRepuesto = ({setModal}:any) => {
         
         if (repuesto.nombre === '' || !repuesto.imagenes || repuesto.modelo === '' || repuesto.precio === 0 || repuesto.producto === '') return alert('Rellene todos los campos')
         
-        console.log(repuesto)
         try{
             await repServ.createRepuesto(repuesto)
             setModal(false)

@@ -53,10 +53,9 @@ export const DetailItem = ({ item }: Props) => {
     }
   
     useEffect(() => {
-        console.log(item)
         getTasaCambio()
         setPreviewImage(item.imagenes.imagen1)
-    }, [item])
+    }, [])
 
     return (
         <article className="box_detail_item">

@@ -11,7 +11,7 @@ const Header = () => {
 
                 <Link href="/" >
                     <a className="logo" onClick={() => loaderCTRL('/')} >
-                        <img style={{ margin: '0 5px' }} src="/favicon.ico" alt="cellunatic logo" width="32px" />
+                        <img style={{ margin: '0 5px' }} src="/favicon.ico" alt="cellunatic logo" width="32px" height="32px" />
                         <b>Cellunatic</b>
                     </a>
                 </Link>
