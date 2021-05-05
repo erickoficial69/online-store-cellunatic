@@ -1,4 +1,4 @@
-import {AppProps} from "next/app";
+import {AppProps, NextWebVitalsMetric} from "next/app";
 import Head from 'next/head'
 import {useReducer,Reducer, ReducerAction, useState} from 'react'
 import GlobalAppContext,{initialApp} from "../context/app/app_state";
@@ -12,7 +12,7 @@ import * as prodServ from '../components/controllers/productos.controllers'
 import Navigation from "../components/Navigation";
 
 
-export function reportWebVitals(metric:any) {
+export function reportWebVitals(metric:NextWebVitalsMetric) {
   console.log(metric)
 }
 

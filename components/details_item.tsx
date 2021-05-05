@@ -22,7 +22,7 @@ export const DetailItem = ({ item }: Props) => {
         precio: 0,
         producto: ''
     }
-    const { tasaCambio, loaderCTRL, getTasaCambio }: any = useContext(GlobalAppContext)
+    const { tasaCambio,  getTasaCambio }: any = useContext(GlobalAppContext)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
     
     const [modalBuy, setModalBuy] = useState<boolean>(false)
@@ -55,7 +55,6 @@ export const DetailItem = ({ item }: Props) => {
     useEffect(() => {
         getTasaCambio()
         setPreviewImage(item.imagenes.imagen1)
-        loaderCTRL(false)
     }, [item])
 
     return (

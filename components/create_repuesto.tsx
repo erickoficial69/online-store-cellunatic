@@ -19,7 +19,7 @@ export const CreateRepuesto = ({setModal}:any) => {
         precio: 0,
         producto: ''
     }
-    const {loaderCTRL,productos,getProductos}:any = useContext(GlobalAppContext)
+    const {productos,getProductos}:any = useContext(GlobalAppContext)
     const [repuesto, setRepuesto] = useState<Repuesto>(initialState)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
 
@@ -29,7 +29,7 @@ export const CreateRepuesto = ({setModal}:any) => {
     }
 
     const changeImage = async (param: input) => {
-        loaderCTRL('load')
+        
         const {imagenes} = repuesto
             let img = param.target.name
             /* 
@@ -46,13 +46,13 @@ export const CreateRepuesto = ({setModal}:any) => {
             if(img==="imagen1"){
                 setPreviewImage(param.target.value)
             }
-            loaderCTRL(false)
+            
     }
 
     const create = async () => {
         
         if (repuesto.nombre === '' || !repuesto.imagenes || repuesto.modelo === '' || repuesto.precio === 0 || repuesto.producto === '') return alert('Rellene todos los campos')
-        loaderCTRL('load')
+        
         console.log(repuesto)
         try{
             await repServ.createRepuesto(repuesto)
@@ -62,7 +62,7 @@ export const CreateRepuesto = ({setModal}:any) => {
             alert('Hubo un error')
             setModal(false)
         }
-        loaderCTRL(false)
+        
     }
 
 

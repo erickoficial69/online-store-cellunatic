@@ -19,17 +19,18 @@ export const CreateAccesorio = ({setModal}:any) => {
         precio: 0,
         producto: ''
     }
-    const {loaderCTRL,productos,getProductos}:any = useContext(GlobalAppContext)
+    const {productos,getProductos}:any = useContext(GlobalAppContext)
     const [accesorio, setAccesorio] = useState<Accesorio>(initialState)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
 
     const changeProduct = async (param: input) => {
-
+        
         setAccesorio({ ...accesorio, [param.target.name]: param.target.value })
+        
     }
 
     const changeImage = async (param: input) => {
-        loaderCTRL('load')
+        
         const {imagenes} = accesorio
             let img = param.target.name
             /* 
@@ -46,13 +47,13 @@ export const CreateAccesorio = ({setModal}:any) => {
             if(img==="imagen1"){
                 setPreviewImage(param.target.value)
             }
-            loaderCTRL(false)
+        
     }
 
     const create = async () => {
         
         if (accesorio.nombre === '' || !accesorio.imagenes || accesorio.modelo === '' || accesorio.precio === 0 || accesorio.producto === '') return alert('Rellene todos los campos')
-        loaderCTRL('load')
+        
         console.log(accesorio)
         try{
             await accesorioServ.createAccesorio(accesorio)
@@ -62,7 +63,7 @@ export const CreateAccesorio = ({setModal}:any) => {
             alert('Hubo un error')
             setModal(false)
         }
-        loaderCTRL(false)
+        
     }
 
 
