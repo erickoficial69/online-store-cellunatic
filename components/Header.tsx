@@ -21,7 +21,10 @@ const Header = () => {
                 <div className="nav_header">
                     <button className="btn_filter" onClick={()=>{setNavBar(!navBar);setSidebar(true)}} >fill</button>
                     
-                    <Link href="/cpanel" ><button onClick={()=>loaderCTRL('/cpanel')} className="btn_login" >login</button></Link>
+                    <Link href="/cpanel" >
+                        <button onClick={()=>loaderCTRL('/cpanel')} className="btn_login" >Cpanel</button>
+                    </Link>
+                    
                     <button onClick={()=>{setNavBar(!navBar);setSidebar(false)}} >menu</button>
                 </div>
             </div>

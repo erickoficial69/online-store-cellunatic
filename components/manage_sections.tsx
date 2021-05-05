@@ -1,5 +1,3 @@
-import { useContext } from 'react'
-import GlobalAppContext from '../context/app/app_state'
 import { Seccion } from '../interfaces/interfaces'
 import * as prodServ from '../components/controllers/secciones.controllers'
 
@@ -10,40 +8,40 @@ type Props={
 }
 
 export const ManageSection = ({seccion,setModal,setTmpSecc}:Props) => {
-    const {loaderCTRL}:any = useContext(GlobalAppContext)
     
     const addProduct = async () => {
         if(seccion.title === '') return alert('rellene todos los campos')
+        
         try{
-            loaderCTRL('load')
-            setModal(false)
-            loaderCTRL(false)
+            await prodServ.createSeccion(seccion)
+            setTmpSecc({title:''})
         }catch(err){
             alert('hubo un error con el servidor')
-            loaderCTRL(false)
             return console.log(err)
         }
+        setModal(false)
+        
     }
     const updateProduct = async () => {
         if(seccion.title === '' ) return alert('rellene todos los campos')
+        
         try{
-            loaderCTRL('load')
             await prodServ.updateSeccion(seccion)
-            setModal(false)
-            loaderCTRL(false)
+            setTmpSecc({title:''})
         }catch(err){
             alert('hubo un error con el servidor')
-            loaderCTRL(false)
             return console.log(err)
         }
+        setModal(false)
+        
     }
 
     const deleteProduct = async(id?:string)=>{
         if(id!==''){
-            loaderCTRL('load')
+            
             await prodServ.deleteSeccion(id?id:'')
+            setTmpSecc({title:''})
             setModal(false)
-            loaderCTRL(false)
         }
     }
 
@@ -57,7 +55,9 @@ export const ManageSection = ({seccion,setModal,setTmpSecc}:Props) => {
 
                 <div style={{margin:'10px 0'}}>
                     <label>meta descripcion:</label>
-                    <input type="text" name="description" defaultValue={seccion.description} onChange={(e)=>setTmpSecc({...seccion,description:e.target.value})} />
+                    <textarea name="description" defaultValue={seccion.description} onChange={(e)=>setTmpSecc({...seccion,description:e.target.value})} >
+
+                    </textarea>
                     
                 </div>
                 <div style={{margin:'10px 0'}}>

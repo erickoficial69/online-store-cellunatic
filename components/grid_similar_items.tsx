@@ -10,10 +10,8 @@ type Item = Repuesto | Accesorio
 
 const Grid_similars_items = ({items}:Props)=>{
     const [user,setUser] = useState<User>({correo:'',password:''})
-    const [path,setPath] = useState('')
 
     useEffect(()=>{
-        setPath(document.location.pathname)
         setUser(userServ.verifySesion)
     },[])
 
@@ -42,9 +40,9 @@ const Grid_similars_items = ({items}:Props)=>{
                                         padding:'5px 0',
                                         width:'100%'
                                     }}>
-                                        <p style={{height:'22px', overflow:'hidden', color:'white',fontWeight:'bold'}} >{path}</p>
+                                        <p style={{height:'22px', overflow:'hidden', color:'white',fontWeight:'bold'}} >{list.nombre}</p>
                                         
-                                        <p style={{height:'20px', overflow:'hidden', color:'white'}} >{list.precio} $</p>
+                                        <p style={{height:'20px', overflow:'hidden', color:'white'}} >$ {list.precio}</p>
                                     </div>
 
                                     {

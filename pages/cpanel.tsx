@@ -1,96 +1,75 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Producto, Seccion, User } from '../interfaces/interfaces'
 import * as userServ from '../components/controllers/usuarios.controllers'
-import * as prodServ from '../components/controllers/productos.controllers'
 import * as seccServ from '../components/controllers/secciones.controllers'
 import GlobalAppContext from '../context/app/app_state'
 import {ManageProduct} from '../components/manage_producto'
 import { ManageSection } from '../components/manage_sections'
 import { CreateAccesorio } from '../components/create_accesorio'
 import { CreateRepuesto } from '../components/create_repuesto'
-import { GetStaticProps, GetStaticPropsContext } from 'next'
-
+import { List_products_admin, List_Sections_Admin } from '../components/cpane_compnents/Lists'
+import { Admin_menu } from '../components/cpane_compnents/Admin_menu'
+import { Manage_Tasa_Cambio } from '../components/cpane_compnents/Manage_tasa_cambio'
 
 const Cpanel = () => {
     const { push } = useRouter()
-    const { loader,loaderCTRL, tasaCambio, getTasaCambio, updateTasa }:any = useContext(GlobalAppContext)
+    const { loaderCTRL, tasaCambio, productos, getProductos, getTasaCambio }:any = useContext(GlobalAppContext)
     const [user, setUser] = useState<User>({ correo: '', password: '' })
-    const [tmpTasa,setTmpTasa] = useState<any>(0)
     const [tmpSecc,setTmpSecc] = useState<Seccion>({title:''})
-    const [tmpProd,setTmpProd] = useState<Producto>({nombre:'',estado:true,seccion:''})
+    const [tmpProd,setTmpProd] = useState<Producto>(productos.data)
     const [modal,setModal] = useState<string | boolean>(false)
-    const [productos,setProductos] = useState<Producto[]>([{nombre:'',estado:false,seccion:''}])
     const [secciones,setSecciones] = useState<Seccion[]>([{title:''}])
-
-    const updateTasaCambio = async()=>{
-        loaderCTRL('load')
-        try{
-            const result: any = await updateTasa(tmpTasa)
-            getTasaCambio(result)
-        }catch(err){
-            console.log(err)
-            alert('algo salió mal')
-        }
-        
-        setModal(false)
-        loaderCTRL(false)
-    }
-    const getProductos = async()=>{
-        const list = await prodServ.getProductos()
-        setProductos(list)
-    }
-    const getSecciones = async()=>{
-        const list = await seccServ.getSecciones()
-        setSecciones(list)
-    }
+    
     const manage_section = useMemo(()=><ManageSection seccion={tmpSecc} setTmpSecc={setTmpSecc} setModal={setModal}/>,[tmpSecc])
     const create_repuesto = useMemo(()=><CreateRepuesto setModal={setModal}/>,[])
     const create_accesorio = useMemo(()=><CreateAccesorio setModal={setModal}/>,[])
     const manage_producto = useMemo(()=><ManageProduct producto={tmpProd} setTmpProd={setTmpProd} setModal={setModal}/>,[tmpProd])
+    const list_sections = useMemo(()=><List_Sections_Admin secciones={secciones} setTmpSecc={setTmpSecc} setModal={setModal}/>,[secciones])
+    const list_products = useMemo(()=><List_products_admin productos={productos.data} setTmpProd={setTmpProd} setModal={setModal}/>,[productos])
+    const admin_menu = useMemo(()=><Admin_menu tasaCambio={tasaCambio} setModal={setModal} />,[tasaCambio])
+    const manage_tasa_cambio = useMemo(()=><Manage_Tasa_Cambio setModal={setModal}/>,[])
+    
+    const getSecciones = async()=>{
+        const list = await seccServ.getSecciones()
+        setSecciones(list)
+    }
     useEffect(() => {
         const result = userServ.verifySesion()
-
         if (result.correo === "") push('/login')
 
         setUser(result)
+    }, [])
+    const tasa = useCallback(()=>{
         getTasaCambio()
-        getProductos()
+    },[tasaCambio])
+
+    useEffect(()=>{
+        tasa()
+        getProductos() 
+        loaderCTRL(document.location.pathname)        
+    },[])
+
+    useEffect(()=>{   
+    },[])
+    
+    useEffect(()=>{
         getSecciones()
-        loaderCTRL(document.location.pathname)
-    }, [loader])
+    },[tmpSecc])
 
     return user.rango && user.rango === "administrador" ? (
                 <main>
                 <Head>
                     <title>Cellunatic - cpanel</title>
                 </Head>
-                <aside>
-                    <h3>Dashboard</h3>
-                    {/****************** Botones Para tareas principales del administrador ****************/}
-                        <ul className="admin_nav" >
-                            <li onClick={() => setModal('update_tasa_cambio')}>
-                                1$ = {tasaCambio?tasaCambio.monto:null} bs
-                            </li>
-                            <li onClick={() => setModal('manage_productos')} >
-                                Nuevo Producto
-                            </li>
-                            <li onClick={() => setModal('manage_secciones')} >
-                                Nuevo Seccion
-                            </li>
-                            <li onClick={() => setModal('create_accesorio')} >
-                                Nuevo Accesorio
-                            </li>
-                            <li onClick={() => setModal('create_repuesto')} >
-                                Nuevo Repuesto
-                            </li>
-                            <li onClick={() => {const result = userServ.destroySesion();if (result && result.correo === "") push('/login')}}>
-                                Cerrar Sesion :atom
-                            </li>
-                        </ul>
-                </aside>
-                <section >
+                <section className="full_width" >
+                    <ul>
+                        <h3>Dashboard</h3>
+                        {admin_menu}
+                    </ul>
+                    
+                
                     {
                         modal=='manage_productos' ?(
                             manage_producto
@@ -101,52 +80,14 @@ const Cpanel = () => {
                         ):modal=='create_accesorio'?(
                             create_accesorio
                         ):modal=='update_tasa_cambio'?(
-                            <div className="component_new_item" >
-                            <div>
-                                <form>
-                                    <h2>Actualizar Tasa</h2>
-                                    <div>
-                                        <label>{tasaCambio?tasaCambio.monto:null} bs</label>
-                                        <input type="number" onChange={(e:any)=>{
-                                                setTmpTasa({...tasaCambio,monto:e.target.value})
-                                            }} />
-                                    </div>
-
-                                    <div>
-                                        <button onClick={updateTasaCambio}>Actializar</button>
-                                        <button onClick={() => setModal(false)} >cancelar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div> 
+                            manage_tasa_cambio
                         ):null
                     }
                         
                     {/****************** Formulario para actualizar Tasa de Cambio ****************/}
                     <div className="container_admin_list_box">
-                        <ul className="admin_list_box" >
-                        <h3>Productos</h3>
-                                {
-                                    // Lista de productos
-                                    productos.map((producto:Producto)=>{
-                                        return(
-                                            <li key={producto.nombre} onClick={()=>{setModal('manage_productos');setTmpProd(producto)}} >{producto.url}</li>
-                                        )
-                                    })
-                                }
-                        </ul>
-
-                        <ul className="admin_list_box" >
-                        <h3>Secciones</h3>
-                                {
-                                    // Lista de secciones
-                                    secciones.map((seccion:Seccion)=>{
-                                        return(
-                                            <li key={seccion.title} onClick={()=>{setModal('manage_secciones');setTmpSecc(seccion)}} >{seccion.url}</li>
-                                        )
-                                    })
-                                }
-                        </ul>
+                        {list_sections}
+                        {list_products}
                     </div>
                            
                 </section>
@@ -210,16 +151,5 @@ const Cpanel = () => {
                 </style>
             </main> ):null
 }
-export const getStaticProps:GetStaticProps = async(_:GetStaticPropsContext)=>{
-    try{
-        return {props:{
-            secciones:[]
-        },revalidate:1}
-    }catch(err){
-        console.log(err)
-        return {props:{
-            secciones:[]
-        },revalidate:1}
-    }
-}
+
 export default Cpanel

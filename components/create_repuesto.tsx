@@ -164,7 +164,9 @@ export const CreateRepuesto = ({setModal}:any) => {
 
                         <div style={{margin:'10px 0'}}>
                             <label>meta descripcion:</label>
-                            <input type="text" name="description" defaultValue={repuesto.description} onChange={changeProduct} />
+                            <textarea name="description" defaultValue={repuesto.description} onChange={changeProduct} >
+                                
+                            </textarea>
                             
                         </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useContext, useMemo } from "react";
+import { useEffect, useContext, useMemo, useState } from "react";
 import Link from 'next/link'
 import Head from "next/head";
 import GlobalAppContext from "../context/app/app_state";
@@ -7,17 +7,17 @@ import Grid_similars_items from "../components/grid_similar_items";
 
 const Index = ({sections}:any) => {
     const { loaderCTRL, getAccesorios, accesorios, repuestos, getRepuestos }: any = useContext(GlobalAppContext)
-
+    const [limit,setLimit] = useState(3)
     const comp_accesorios = useMemo(() =>
         <Grid_similars_items items={accesorios.data} />
-        , [accesorios])
+        , [accesorios,limit])
     const comp_repuestos = useMemo(() =>
         <Grid_similars_items items={repuestos.data} />
-        , [repuestos])
+        , [repuestos,limit])
    
     useEffect(() => {
-        getAccesorios("", 3)
-        getRepuestos("",3)
+        getAccesorios("", limit)
+        getRepuestos("",limit)
         loaderCTRL(document.location.pathname)
     }, [])
 
@@ -68,7 +68,11 @@ const Index = ({sections}:any) => {
                         <article>
                             <h2>Los accesorios mas populares en Cellunatic</h2>
                             <p>
-                                Estos son algunos de los accesorios más populares de nuestros visitantes, podras encontrar forros, vidrios templados, audifonos y mucho más.
+                               Es casi imprescindible contar con alguno de estos
+                                complementos para poder disfrutar aún más de nuestro
+                                móvil e incluso potenciar el uso del mismo con este tipo de
+                                artículos. Cellunatic hace un repaso de los accesorios
+                                más comprados, populares e innovadores del momento.
                             </p>
 
                             <ul className="container_items">
@@ -86,9 +90,9 @@ const Index = ({sections}:any) => {
                 {repuestos.data.length > 0 ?
                     <section>
                         <article>
-                            <h2>Los repuestos mas populares en Cellunatic</h2>
+                            <h2>Los repuestos mas vendidos en Cellunatic</h2>
                             <p>
-                                Estos son algunos de los repuestos más populares de nuestros visitantes, podras encontrar forros, vidrios templados, audifonos y mucho más.
+                                Estos son algunos de los repuestos más adquiridos por nuestros visitantes, podras encontrar forros, vidrios templados, audifonos y mucho más.
                             </p>
 
                             <ul className="container_items" >
@@ -115,7 +119,7 @@ export const getStaticProps:GetStaticProps = async (_:GetStaticPropsContext)=>{
             sections:res
         },revalidate:1}
     }catch(err){
-        console.log(err)
+        console.error(err)
         return {props:{
             sections:[]
         },revalidate:1}

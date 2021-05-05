@@ -163,7 +163,9 @@ export const CreateAccesorio = ({setModal}:any) => {
                         </div>
                         <div style={{margin:'10px 0'}}>
                             <label>meta descripcion:</label>
-                            <input type="text" name="description" defaultValue={accesorio.description} onChange={changeProduct} />
+                            <textarea name="description" defaultValue={accesorio.description} onChange={changeProduct} >
+
+                            </textarea>
                             
                         </div>
 

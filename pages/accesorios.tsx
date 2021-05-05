@@ -1,27 +1,15 @@
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import Head from "next/head";
 import GlobalAppContext from "../context/app/app_state";
 import ProductsList from "../components/products.list";
 import {GetStaticProps,GetStaticPropsContext} from 'next'
-import Grid_similars_items from "../components/grid_similar_items";
 
 const Accesorios = ({productos}:any) => {
-    const { loaderCTRL, getAccesorios, accesorios}: any = useContext(GlobalAppContext)
-
-    const [limit, setLimit] = useState<number>(12)
+    const { loaderCTRL }: any = useContext(GlobalAppContext)
 
     const sidebar_memo = useMemo(() => <ProductsList productos={productos} />, [productos])
 
-    const comp_accesorios = useMemo(() =>
-        <Grid_similars_items items={accesorios.data} />
-        , [accesorios])
-
-    const moreAccesorios = () => {
-        setLimit(limit + 12)
-    }
-
     useEffect(() => {
-        getAccesorios("", limit)
         loaderCTRL(document.location.pathname)
     }, [])
 
@@ -37,11 +25,49 @@ const Accesorios = ({productos}:any) => {
 
             <section>
                 <section>
+                    <h1>Los mejores accesorios para Celulares</h1>
+                    <p>
+                        La venta Smartphones sigue creciendo tanto en nuestro país
+                        como en todo el planeta. 
+                        <br/>
+                        Es casi imprescindible contar con alguno de estos
+                        complementos para poder disfrutar aún más de nuestro
+                        móvil e incluso potenciar el uso del mismo con este tipo de
+                        artículos. Cellunatic hace un repaso de los accesorios
+                        más comprados, populares e innovadores del momento.
+                    </p>
                     <article>
-                        <div className="container_items">
-                            {comp_accesorios}
-                        </div>
-                        {accesorios.count > 12 ? <button onClick={moreAccesorios} >Mostrar más</button> : null}
+                        <h3>Cable USB y Cargador</h3>
+                        <p>
+                            son productos muy
+                            importantes. Existen cargadores que se enchufan mediante el
+                            encendedor del auto o vía USB al estéreo para salir de algún
+                            apuro y darle una carga rápida al dispositivo. Son muy útiles
+                            cuando se va a realizar un viaje largo.
+                        </p>
+                    </article>
+
+                    <article>
+                        <h3>Vidrio templado o protectores de pantalla</h3>
+                        <p>
+                            Estas delgadas láminas cubren y cuidan la pantalla de
+                            nuestro teléfono contra los rayones. Existe una nueva
+                            tecnología en estos lms llamados Gorilla Glass que es una
+                            pequeña capa de vidrio que se coloca sobre la pantalla para
+                            protegerla de los daños exteriores que podrían originarse.
+                        </p>
+                    </article>
+
+                    <article>
+                        <h3>Auriculares</h3>
+                        <p>
+                            Son artículos muy usados. Tienen un alto
+                            nivel de ventas.También son muy
+                            personales tenemos variedad segun la calidad de sonido y marcas,
+                            por lo que es recomendable comprar
+                            distintos audífonos y no utilizar los estándar que vienen
+                            incluidos cuando comprás un celular.
+                        </p>
                     </article>
                 </section>
             </section>

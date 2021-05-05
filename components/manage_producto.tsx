@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import GlobalAppContext from '../context/app/app_state'
 import { Producto, Seccion } from '../interfaces/interfaces'
 import * as prodServ from './controllers/productos.controllers'
@@ -11,35 +11,35 @@ type Props={
 }
 
 export const ManageProduct = ({producto,setModal,setTmpProd}:Props) => {
-    const {loaderCTRL}:any = useContext(GlobalAppContext)
     const [secciones,setSecciones] = useState<Seccion[]>([{title:''}])
+    const {getProductos}:any = useContext(GlobalAppContext)
     const addProduct = async () => {
         if(producto.nombre === '' || producto.seccion === '') return alert('rellene todos los campos')
         
         try{
-            loaderCTRL('load')
+            
             await prodServ.createProducto(producto)
+            getProductos()
             setModal(false)
-            loaderCTRL(false)
+            
         }catch(err){
             alert('Hubo un error con el servidor')
-            loaderCTRL(false)
+            
             return console.log(err)
         }
     }
     const updateProduct = async () => {
         if(producto.nombre === '' || producto.seccion === '') return alert('rellene todos los campos')
         try{
-            loaderCTRL('load')
+            
             await prodServ.updateProducto(producto)
-            setTmpProd({estado:false,nombre:'',seccion:''})
+            getProductos()
             setModal(false)
-            loaderCTRL(false)
+            
         }catch(err){
             alert('Hubo un error con el servidor')
-            setTmpProd({estado:false,nombre:'',seccion:''})
             setModal(false)
-            loaderCTRL(false)
+            
             return console.log(err)
         }
     }
@@ -47,16 +47,16 @@ export const ManageProduct = ({producto,setModal,setTmpProd}:Props) => {
     const deleteProduct = async(id?:string)=>{
         if(id!==''){
             try{
-                loaderCTRL('load')
+                
                 await prodServ.deleteProducto(id?id:'')
                 setTmpProd({estado:false,nombre:'',seccion:''})
+                getProductos()
                 setModal(false)
-                loaderCTRL(false)
+                
             }catch(err){
                 alert('Hubo un error con el servidor')
                 setTmpProd({estado:false,nombre:'',seccion:''})
                 setModal(false)
-                loaderCTRL(false)
                 return console.log(err)
             }
         }
@@ -91,7 +91,9 @@ export const ManageProduct = ({producto,setModal,setTmpProd}:Props) => {
                         </div>
                         <div style={{margin:'10px 0'}}>
                             <label>meta descripcion:</label>
-                            <input type="text" name="description" defaultValue={producto.description} onChange={(e)=>setTmpProd({...producto,description:e.target.value})} />
+                            <textarea name="description" defaultValue={producto.description} onChange={(e)=>setTmpProd({...producto,description:e.target.value})}>
+
+                            </textarea>
                             
                         </div>
 

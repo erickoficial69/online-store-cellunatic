@@ -24,7 +24,7 @@ export const ManageRepuesto = ({ item }: Props) => {
         producto: ''
     }
     const {loaderCTRL,productos,getProductos}:any = useContext(GlobalAppContext)
-    const { back, push } = useRouter()
+    const { back } = useRouter()
     const [tmpItem, setTmpItem] = useState<Repuesto>(item?item:initialState)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
 
@@ -68,27 +68,6 @@ export const ManageRepuesto = ({ item }: Props) => {
         setTmpItem(res)
         back()
     }
-
-    const clean = () => {
-        loaderCTRL('load')
-        setTmpItem(initialState)
-        loaderCTRL(false)
-    }
-
-    const create = async () => {
-        
-        if (tmpItem.nombre === '' || !tmpItem.imagenes || tmpItem.modelo === '' || tmpItem.precio === 0 || tmpItem.producto === '') return alert('Rellene todos los campos')
-        loaderCTRL('load')
-        try{
-            await itemServ.createRepuesto(tmpItem)
-            push('/cpanel')
-        }catch(err){
-            console.log(err)
-            alert('Hubo un error')
-        }
-        loaderCTRL(false)
-    }
-
     useEffect(() => {
         getProductos()
         setPreviewImage(tmpItem.imagenes.imagen1)
@@ -96,147 +75,102 @@ export const ManageRepuesto = ({ item }: Props) => {
     }, [item])
 
     return (
-        <>
-            <div>
+            <article className="box_detail_item" >
+                <section>
+                    <div className="container_img_item">
+                        <img src={previewImage} alt={tmpItem.nombre} />
+                    </div>
 
-                <div>
-                    <div style={{
-                        borderRadius: '5px',
-                        boxShadow: '0px 0px 1px black',
-                        height: '300px',
-                        background: 'white',
-                        overflow: 'hidden',
-                        display: 'flex',
-                        flexFlow: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'relative'
-                    }} >
+                    <div className="container_inputs_item">
+                        <div>
+                            <input name="imagen1" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen1:'/logo.png'} />
+                            <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen1:'/logo.png'} alt={tmpItem.producto} />
+                        </div>
 
-                        <img style={{height: "90%",width: "90%",objectFit: "contain",position: 'relative'}}
-                            src={previewImage}/>
+                        <div>
+                            <input name="imagen2" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen2:'/logo.png'} />
+                            <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen2:'/logo.png'} alt={tmpItem.producto} />
+                        </div>
 
-                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10}}>
-                            <div style={{position:'relative',textAlign:'center'}} >
-                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen1" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen1:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen1)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen1:'/logo.png'} alt={tmpItem.producto} />
-                            </div>
-
-                            <div style={{position:'relative',textAlign:'center'}} >
-                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen2" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen2:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen2)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen2:'/logo.png'} alt={tmpItem.producto} />
-                            </div>
-
-                            <div style={{position:'relative',textAlign:'center'}} >
-                                <input style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex:10,height:"30px",color:'black' }} className="inputImage" name="imagen3" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen3:'/logo.png'} />
-                                <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen3:'/logo.png'} alt={tmpItem.producto} />
-                            </div>
+                        <div>
+                            <input name="imagen3" type="url" onChange={changeImage} value={tmpItem.imagenes?tmpItem.imagenes.imagen3:'/logo.png'} />
+                            <img onClick={()=>setPreviewImage(tmpItem.imagenes.imagen3)} style={{height: "60px",width: "60px",margin:'0 auto',objectFit: "contain",position: 'relative'}} src={tmpItem.imagenes?tmpItem.imagenes.imagen3:'/logo.png'} alt={tmpItem.producto} />
                         </div>
                     </div>
-                </div>
-                <div>
-                    <ul >
-                        <form>
-                            <div>
-                                <label>Nombre:</label>
-                                <input name="nombre" onChange={changeProduct} value={tmpItem.nombre} />
-                            </div>
+                </section>
+                <section> 
+                    <form className="container_details_item" >
+                        <div>
+                            <label>Nombre:</label>
+                            <input name="nombre" onChange={changeProduct} value={tmpItem.nombre} />
+                        </div>
 
-                            <div>
-                                <label>Color:</label>
-                                <input name="color" type="text" onChange={changeProduct} value={tmpItem.color} />
-                            </div>
+                        <div>
+                            <label>Color:</label>
+                            <input name="color" type="text" onChange={changeProduct} value={tmpItem.color} />
+                        </div>
 
-                            <div>
-                                <label>Modelo:</label>
-                                <input name="modelo" type="text" onChange={changeProduct} value={tmpItem.modelo} />
-                            </div>
+                        <div>
+                            <label>Modelo:</label>
+                            <input name="modelo" type="text" onChange={changeProduct} value={tmpItem.modelo} />
+                        </div>
 
-                            <div>
-                                <label>Producto:{tmpItem.producto}</label>
-                                <select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="producto" onChange={changeProduct}>
-                                    
-                                    {
-                                        productos.data.map((producto: Producto) => {
-                                            return (
-                                                <option style={{cursor:'pointer',padding:'4px'}} key={producto._id} value={producto.nombre} >
-                                                    {producto.nombre}
-                                                </option>
-                                            )
-                                        })
-                                    }
-                                </select>
-                            </div>
-
-                            <div>
-                                <label>Estado:</label>
-                                <select style={{ padding: '5px', minWidth: '200px', background: 'transparent', borderBottom: '1px solid orange' }} name="estado" onChange={changeProduct}>
-                                    
-                                    <option style={{cursor:'pointer',padding:'4px'}} value={1} >
-                                        disponible
-                                    </option>
-                                    <option style={{cursor:'pointer',padding:'4px'}} value={0} >
-                                        agotado
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label>Precio:</label>
-                                <input name="precio" type="number" onChange={changeProduct} value={tmpItem.precio} />
-                            </div>
-                            <div style={{margin:'10px 0'}}>
-                                <label>meta descripcion:</label>
-                                <input type="text" name="description" defaultValue={tmpItem.description} onChange={changeProduct} />
+                        <div>
+                            <label>Producto:</label>
+                            <select name="producto" onChange={changeProduct}>
                                 
-                            </div>
+                                {
+                                    productos.data.map((producto: Producto) => {
+                                        return (
+                                            <option key={producto._id} value={producto.nombre} >
+                                                {producto.nombre}
+                                            </option>
+                                        )
+                                    })
+                                }
+                            </select>
+                        </div>
 
-                            <div style={{margin:'10px 0'}}>
-                                <label>meta keywords:</label>
-                                <input type="text" name="keywords" defaultValue={tmpItem.keywords} onChange={changeProduct} />
+                        <div>
+                            <label>Estado:</label>
+                            <select name="estado" onChange={changeProduct}>
                                 
-                            </div>
-                        </form>
+                                <option value={1} >
+                                    disponible
+                                </option>
+                                <option value={0} >
+                                    agotado
+                                </option>
+                            </select>
+                        </div>
 
-                        <li>
-                            {
-                                item._id?(
-                                    <>
-                                        <button onClick={update}  style={{ backgroundColor: 'purple', width: '120px', color: 'white' }} >Actualizar</button>
-                                        <>
-                                            <button onClick={drop}  style={{ backgroundColor: 'darkorange', width: '120px' }} >Eliminar</button>
-                                        </>
-                                    </>
-                                ):(
-                                    <>
-                                        <button onClick={create}  style={{ backgroundColor: 'green', width: '120px', color: 'white' }} >Agregar</button>
-                                        <>
-                                            <button onClick={()=>{
-                                                back()
-                                                }}  style={{ backgroundColor: 'lightgreen', width: '120px' }} >Regresar</button>
-                                        </>
-                                    </>
-                                )
-                            }
-                        </li>
-                        <li>
-                            {
-                                item._id?(
-                                    
-                                            <button onClick={()=>{
-                                                loaderCTRL('load')
-                                                clean()
-                                                push('/detalleaccesorio/new')
-                                                loaderCTRL(false)
-                                                }}  style={{ backgroundColor: 'lightgreen', width: '120px',margin:'10px 0'}} >Nuevo</button>
-                                    
-                                ):null
-                            }
-                        </li>
-                    </ul>
+                        <div>
+                            <label>Precio:</label>
+                            <input name="precio" type="number" onChange={changeProduct} value={tmpItem.precio} />
+                        </div>
+                        <div style={{margin:'10px 0'}}>
+                            <label>meta descripcion:</label>
+                            <input type="text" name="description" defaultValue={tmpItem.description} onChange={changeProduct} />
+                            
+                        </div>
 
-                </div>
-            </div>
-        </>
+                        <div style={{margin:'10px 0'}}>
+                            <label>meta keywords:</label>
+                            <input type="text" name="keywords" defaultValue={tmpItem.keywords} onChange={changeProduct} />
+                            
+                        </div>
+                    </form>
+
+                    <nav>
+                    
+                        <button onClick={update} style={{ backgroundColor: 'purple', width: '120px', color: 'white' }} >Actualizar</button>
+                        
+                        <button onClick={drop} style={{ backgroundColor: 'darkorange', width: '120px' }} >Eliminar</button>
+                        
+                        <button onClick={()=>{back()}} style={{ backgroundColor: 'lightgreen', width: '120px' }} >Regresar</button>
+                                
+                    </nav>
+                </section>
+            </article>
     )
 }

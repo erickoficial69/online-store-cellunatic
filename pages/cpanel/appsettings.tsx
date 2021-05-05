@@ -1,16 +1,16 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
-import { verifySesion } from '../components/controllers/usuarios.controllers'
-import GlobalAppContext from '../context/app/app_state'
-import { User } from '../interfaces/interfaces'
+import { verifySesion } from '../../components/controllers/usuarios.controllers'
+import GlobalAppContext from '../../context/app/app_state'
+import { User } from '../../interfaces/interfaces'
 
 
 type InputTarget = ChangeEvent<HTMLInputElement>
 
 const AppSettings = () => {
     const { push, back } = useRouter()
-    const { loaderState, appData, updateApp }:any = useContext(GlobalAppContext)
+    const { loaderCTRL, appData, updateApp }:any = useContext(GlobalAppContext)
     const [user, setUser] = useState<User>({ correo: '', password: '' })
 
     const setContact = (e: InputTarget) => {
@@ -26,9 +26,9 @@ const AppSettings = () => {
 
 
     const saveChanges = async () => {
-        loaderState('loading')
+        loaderCTRL('load')
         await updateApp(appData)
-        loaderState('loaded')
+        loaderCTRL(false)
     }
 
 
@@ -38,24 +38,23 @@ const AppSettings = () => {
         if (result.correo === "") push('/login')
 
         setUser(result)
-        loaderState(document.location.pathname)
+        loaderCTRL(document.location.pathname)
     }, [])
 
-    return user.rango && user.rango === "administrador" ? ( <>
+    return user.rango && user.rango === "administrador" ? ( <main>
             <Head>
                 <title>Cellunatic - App settings</title>
             </Head>
-               <ul style={{ marginTop: '65px' }}>
-                    <li>
-                        <p style={{color:'white'}} >{appData.name}</p>
-                    </li>
-                    <li>
-                        <button onClick={() => back()}>atras</button>
-                    </li>
-                </ul>
-
-                <>
-                    <div >    
+                <section className="full_width" >
+                <ul style={{ marginTop: '65px' }}>
+                        <li>
+                            <p style={{color:'white'}} >{appData.name}</p>
+                        </li>
+                        <li>
+                            <button onClick={() => back()}>atras</button>
+                        </li>
+                    </ul>
+                   
 
                         <div>
                             <form style={{position: 'relative' }}>
@@ -116,9 +115,9 @@ const AppSettings = () => {
                                 <button style={{ marginTop: '10px' }} onClick={saveChanges} >Actualizar</button>
                             </form>
                         </div>
-                    </div>
-                </>
-            </>) : null
+                    
+                </section>
+            </main>) : null
 }
 
 export default AppSettings

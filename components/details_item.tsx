@@ -3,14 +3,12 @@ import { Accesorio, Repuesto } from '../interfaces/interfaces'
 import Head from 'next/head'
 import ModalCompra from './modal.compra'
 import GlobalAppContext from '../context/app/app_state'
-import Grid_similars_items from './grid_similar_items'
 
 interface Props {
     item: Accesorio | Repuesto
-    relacionados: Accesorio[] | Repuesto[]
 }
 
-export const DetailItem = ({ item, relacionados }: Props) => {
+export const DetailItem = ({ item }: Props) => {
     const initialState = {
         nombre: '',
         color: '',
@@ -24,7 +22,7 @@ export const DetailItem = ({ item, relacionados }: Props) => {
         precio: 0,
         producto: ''
     }
-    const { tasaCambio, loaderCTRL }: any = useContext(GlobalAppContext)
+    const { tasaCambio, loaderCTRL, getTasaCambio }: any = useContext(GlobalAppContext)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
     
     const [modalBuy, setModalBuy] = useState<boolean>(false)
@@ -53,109 +51,85 @@ export const DetailItem = ({ item, relacionados }: Props) => {
             alert('Enlace copiado al portapapeles')
         }
     }
-
   
     useEffect(() => {
+        getTasaCambio()
         setPreviewImage(item.imagenes.imagen1)
         loaderCTRL(false)
     }, [item])
 
     return (
-        <>
+        <article className="box_detail_item">
             <Head>
                 <title>{item.nombre}</title>
             </Head>
-
-                    <h1>{item.nombre}</h1>
-
-
-                    <div style={{
-                        borderRadius: '5px',
-                        boxShadow: '0px 0px 1px black',
-                        height: '300px',
-                        background: 'white',
-                        overflow: 'hidden',
-                        display: 'flex',
-                        flexFlow: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'relative'
-                    }} >
-
-                        <img style={{ height: "90%", width: "90%", objectFit: "contain", position: 'relative' }}
-                            src={previewImage}
-                            alt={item.nombre + " imagen"} />
-
-                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10, background: 'rgba(5,5,5,.5)' }}>
-                            <div style={{ position: 'relative', textAlign: 'center' }} >
-                                <img onClick={() => setPreviewImage(item.imagenes.imagen1)} style={{ height: "60px", width: "60px", margin: '0 auto', objectFit: "contain", position: 'relative' }} src={item.imagenes.imagen1 ? item.imagenes.imagen1 : '/logo192x192.png'} alt={item.producto} />
-                            </div>
-
-                            <div style={{ position: 'relative', textAlign: 'center' }} >
-                                <img onClick={() => setPreviewImage(item.imagenes.imagen2)} style={{ height: "60px", width: "60px", margin: '0 auto', objectFit: "contain", position: 'relative' }} src={item.imagenes.imagen2 ? item.imagenes.imagen2 : '/logo192x192.png'} alt={item.producto} />
-                            </div>
-
-                            <div style={{ position: 'relative', textAlign: 'center' }} >
-                                <img onClick={() => setPreviewImage(item.imagenes.imagen3)} style={{ height: "60px", width: "60px", margin: '0 auto', objectFit: "contain", position: 'relative' }} src={item.imagenes.imagen3 ? item.imagenes.imagen3 : '/logo192x192.png'} alt={item.producto} />
-                            </div>
-                        </div>
+            <section>
+                <div className="container_img_item">
+                    <img loading="lazy" src={previewImage} alt={item.nombre} />
+                </div>
+                <div className="container_inputs_item">
+                    <div style={{ position: 'relative', textAlign: 'center' }} >
+                        <img loading="lazy" onClick={() => setPreviewImage(item.imagenes.imagen1)} src={item.imagenes.imagen1 ? item.imagenes.imagen1 : '/logo192x192.png'} alt={item.nombre+"_1"} />
                     </div>
 
+                    <div style={{ position: 'relative', textAlign: 'center' }} >
+                        <img loading="lazy" onClick={() => setPreviewImage(item.imagenes.imagen2)} src={item.imagenes.imagen2 ? item.imagenes.imagen2 : '/logo192x192.png'} alt={item.nombre+"_2"} />
+                    </div>
 
-                    <ul>
-                        {item.color !== "" ? (
-                            <li>
-                                <p>Color:</p>
-                                <p>{item.color}</p>
-                            </li>
-                        ) : null}
-                        <li style={{ color: 'white' }} >
-                            <p>Producto:</p>
-                            <p>{item.producto}</p>
-                        </li>
-                        {
-                            item.modelo !== "" ? (
-                                <li style={{ color: 'white' }} >
-                                    <p>Modelo:</p>
-                                    <p>{item.modelo}</p>
-                                </li>
-                            ) : null
-                        }
-                        <li style={{ color: 'white' }} >
-                            <p>Estado:</p>
-                            <p>{item.estado ? "disponible" : "agotado"}</p>
-                        </li>
-                        <li style={{ color: 'white' }} >
-                            <p>Precio:</p>
-                            <p>{item.precio} $ / {item.precio * tasaCambio.monto} bs</p>
-                        </li>
-                    </ul>
-                    {/** Acciones para este producto */}
-                    <li>
-                        <button onClick={() => setModalBuy(true)} >Comprar</button>
+                    <div style={{ position: 'relative', textAlign: 'center' }} >
+                        <img loading="lazy" onClick={() => setPreviewImage(item.imagenes.imagen3)} src={item.imagenes.imagen3 ? item.imagenes.imagen3 : '/logo192x192.png'} alt={item.nombre+"_3"} />
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <ul className="container_details_item">
+                    {item.color !== "" ? (
                         <li>
-                            <button color="primary" onClick={() => {
-                                const message = {
-                                    title: item.nombre,
-                                    text: `Tenemos las mejores ofertas en ${item.producto}`,
-                                    url: document.location.href
-                                }
-                                shareApi(message)
-                            }} >Compartir</button>
+                            <p>Color:</p>
+                            <p>{item.color}</p>
                         </li>
+                    ) : null}
+                    <li style={{ color: 'white' }} >
+                        <p>Producto:</p>
+                        <p>{item.producto}</p>
                     </li>
+                    {
+                        item.modelo !== "" ? (
+                            <li style={{ color: 'white' }} >
+                                <p>Modelo:</p>
+                                <p>{item.modelo}</p>
+                            </li>
+                        ) : null
+                    }
+                    <li style={{ color: 'white' }} >
+                        <p>Estado:</p>
+                        <p>{item.estado ? "disponible" : "agotado"}</p>
+                    </li>
+                    <li style={{ color: 'white' }} >
+                        <p>Precio:</p>
+                        <p>{item.precio} $ / {item.precio * tasaCambio.monto} bs</p>
+                    </li>
+                </ul>
+                {/** Acciones para este producto */}
+                <nav>
+                    <button onClick={() => setModalBuy(true)} >Comprar</button>
+                    
+                        <button color="primary" onClick={() => {
+                            const message = {
+                                title: item.nombre,
+                                text: `Tenemos las mejores ofertas en ${item.producto}`,
+                                url: document.location.href
+                            }
+                            shareApi(message)
+                        }} >Compartir</button>
+                    
+                </nav>
+            </section>
 
-                    <br /><br />
-                    <h2>
-                        {item.producto} más populares
-                    </h2>
-                    <div className="container_items">
-                        <Grid_similars_items items={relacionados} />
-                    </div>
+            {/**Modal Compra */}
 
-                    {/**Modal Compra */}
-
-                    {modalBuy ? <ModalCompra setModal={setModalBuy} /> : null}
-        </>
+            {modalBuy ? <ModalCompra setModal={setModalBuy} /> : null}
+        </article>
     )
 }
