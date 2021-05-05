@@ -1,9 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import Head from "next/head";
 import GlobalAppContext from "../context/app/app_state";
 import {GetStaticProps,GetStaticPropsContext} from 'next'
-import Link from 'next/link'
 import { Producto } from "../interfaces/interfaces";
+import ProductsList from "../components/products.list";
 
 type Props={
     metas:Producto
@@ -12,7 +12,7 @@ type Props={
 
 const Repuestos=({productos,metas}:Props)=>{
     const {loaderCTRL}:any = useContext(GlobalAppContext)
-
+    const sidebar_memo = useMemo(() => <ProductsList productos={productos} />, [productos])
     useEffect(()=>{
         loaderCTRL(document.location.pathname)
     },[])
@@ -22,38 +22,29 @@ const Repuestos=({productos,metas}:Props)=>{
         <main>
             <Head>
             <title>Repuestos para computadoras y telefonos - Cellunatic</title>
-            <meta name="description" content={metas.description} />
-                <meta name="keywords" content={metas.keywords}/>
-                <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/${metas.url}`} />
+            <meta name="description" content={metas?metas.description:""} />
+                <meta name="keywords" content={metas?metas.keywords:""}/>
+                <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"repuestos"}`} />
                 <meta property="og:locale" content="es_ES" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Cellunatic" />
-                <meta property="og:description" content={metas.description} />
-                <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/${metas.url}`} />
+                <meta property="og:description" content={metas?metas.description:""} />
+                <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"/repuestos"}`} />
                 <meta property="og:site_name" content="cellunatic.store" />
                 <meta property="og:image" content="/favicon.ico" />
                 <meta property="og:image:secure_url" content="/favicon.ico" />
                 <meta property="og:image:width" content="32" />
                 <meta property="og:image:height" content="32" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:description" content={metas.description} />
+                <meta name="twitter:description" content={metas?metas.description:""} />
                 <meta name="twitter:title" content="Repuestos para computadoras y telefonos - Cellunatic" />
                 <meta name="twitter:image" content="/favicon.ico" />
-                <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/${metas.url}`} />
+                <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"/repuestos"}`} />
             </Head>
                
             <aside>
                 <h3>Filtrar busqueda</h3>
-                <ul className="admin_list_box" >
-                    {
-                        // Lista de productos
-                        productos.map((producto:Producto)=>{
-                            return(
-                                <Link key={producto._id} href={`/${producto.seccion}/${producto.url}`} ><li>{producto.nombre}</li></Link>
-                            )
-                        })
-                    }
-                </ul>
+                {sidebar_memo}
             </aside>
 
             <section> 

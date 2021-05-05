@@ -17,24 +17,24 @@ const ServicioTecnico = ({metas}:Props) => {
         <main>
             <Head>
                 <title>Servicio tecnico profesional - Cellunatic</title>
-                <meta name="description" content={metas.description} />
-                <meta name="keywords" content={metas.keywords}/>
-                <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/${metas.url}`} />
+                <meta name="description" content={metas?metas.description:""} />
+                <meta name="keywords" content={metas?metas.keywords:""}/>
+                <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"/servicio-tecnico"}`} />
                 <meta property="og:locale" content="es_ES" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Cellunatic" />
-                <meta property="og:description" content={metas.description} />
-                <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/${metas.url}`} />
+                <meta property="og:description" content={metas?metas.description:""} />
+                <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"/servicio-tecnico"}`} />
                 <meta property="og:site_name" content="cellunatic.store" />
                 <meta property="og:image" content="/favicon.ico" />
                 <meta property="og:image:secure_url" content="/favicon.ico" />
                 <meta property="og:image:width" content="32" />
                 <meta property="og:image:height" content="32" />
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:description" content={metas.description} />
+                <meta name="twitter:description" content={metas?metas.description:""} />
                 <meta name="twitter:title" content="Servicio tecnico profesional - Cellunatic" />
                 <meta name="twitter:image" content="/favicon.ico" />
-                <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/${metas.url}`} />
+                <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/${metas?metas.url:"/servicio-tecnico"}`} />
             </Head>
             <section className="full_width" >
                 <section className="banner" style={{ position: 'relative', width: '100%', height: '100vh', maxHeight: "720px", display: 'flex', flexFlow: 'column', justifyContent: 'center' }}>
