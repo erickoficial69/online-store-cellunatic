@@ -23,7 +23,7 @@ export const ManageRepuesto = ({ item }: Props) => {
         precio: 0,
         producto: ''
     }
-    const {loaderCTRL,productos,getProductos}:any = useContext(GlobalAppContext)
+    const {productos,getProductos}:any = useContext(GlobalAppContext)
     const { back } = useRouter()
     const [tmpItem, setTmpItem] = useState<Repuesto>(item?item:initialState)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
@@ -34,7 +34,7 @@ export const ManageRepuesto = ({ item }: Props) => {
     }
 
     const changeImage = async (param: input) => {
-        loaderCTRL('load')
+        
         const {imagenes} = tmpItem
             let img = param.target.name
             /* 
@@ -51,11 +51,11 @@ export const ManageRepuesto = ({ item }: Props) => {
             if(img==="imagen1"){
                 setPreviewImage(param.target.value)
             }
-            loaderCTRL(false)
+            
     }
 
     const update = async () => {
-        loaderCTRL('load')
+        
         if (tmpItem.nombre === '' || !tmpItem.imagenes || tmpItem.modelo === '' || tmpItem.precio === 0 || tmpItem.producto === '') return alert('Rellene todos los campos')
         const res = await itemServ.updateRepuesto(tmpItem)
         setTmpItem(res)
@@ -63,7 +63,7 @@ export const ManageRepuesto = ({ item }: Props) => {
     }
 
     const drop = async () => {
-        loaderCTRL('load')
+        
         const res = await itemServ.deleteRepuesto(tmpItem)
         setTmpItem(res)
         back()
@@ -71,8 +71,7 @@ export const ManageRepuesto = ({ item }: Props) => {
     useEffect(() => {
         getProductos()
         setPreviewImage(tmpItem.imagenes.imagen1)
-        loaderCTRL(document.location.pathname)
-    }, [item])
+    }, [])
 
     return (
             <article className="box_detail_item" >

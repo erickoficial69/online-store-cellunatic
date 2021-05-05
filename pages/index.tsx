@@ -114,7 +114,7 @@ const Index = ({sections}:any) => {
 }
 export const getStaticProps:GetStaticProps = async (_:GetStaticPropsContext)=>{
     try{
-        const req = await fetch('http://localhost:4000/sections')
+        const req = await fetch(`${process.env.API}/sections`)
         const res = await req.json()
         return {props:{
             sections:res

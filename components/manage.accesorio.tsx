@@ -23,7 +23,7 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
         precio: 0,
         producto: ''
     }
-    const {loaderCTRL,productos,getProductos}:any = useContext(GlobalAppContext)
+    const {productos,getProductos}:any = useContext(GlobalAppContext)
     const { back } = useRouter()
     const [tmpAccesorio, setTmpAccesorio] = useState<Accesorio>(accesorio?accesorio:initialState)
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
@@ -34,7 +34,7 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
     }
 
     const changeImage = async (param: input) => {
-        loaderCTRL('load')
+        
         const {imagenes} = tmpAccesorio
             let img = param.target.name
             /* 
@@ -51,11 +51,11 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
             if(img==="imagen1"){
                 setPreviewImage(param.target.value)
             }
-            loaderCTRL(false)
+            
     }
 
     const update = async () => {
-        loaderCTRL('load')
+        
         if (tmpAccesorio.nombre === '' || !tmpAccesorio.imagenes || tmpAccesorio.modelo === '' || tmpAccesorio.precio === 0 || tmpAccesorio.producto === '') return alert('Rellene todos los campos')
         const res = await accesorioServ.updateAccesorio(tmpAccesorio)
         setTmpAccesorio(res)
@@ -63,7 +63,7 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
     }
 
     const drop = async () => {
-        loaderCTRL('load')
+        
         const res = await accesorioServ.deleteAccesorio(tmpAccesorio)
         setTmpAccesorio(res)
         back()
@@ -72,8 +72,7 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
     useEffect(() => {
         getProductos()
         setPreviewImage(tmpAccesorio.imagenes.imagen1)
-        loaderCTRL(document.location.pathname)
-    }, [accesorio])
+    }, [])
 
     return (
         <article className="box_detail_item">
