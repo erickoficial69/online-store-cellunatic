@@ -54,7 +54,7 @@ export const CreateAccesorio = ({setModal}:any) => {
         
         if (accesorio.nombre === '' || !accesorio.imagenes || accesorio.modelo === '' || accesorio.precio === 0 || accesorio.producto === '') return alert('Rellene todos los campos')
         
-        console.log(accesorio)
+        
         try{
             await accesorioServ.createAccesorio(accesorio)
             setModal(false)

@@ -21,14 +21,7 @@ export const updateAccesorio = async (accesorio:Accesorio) => {
 
 export const createAccesorio = async (accesorio:Accesorio) => {
     
-    const newAccesorio = {
-            color: accesorio.color,
-            imagenes: accesorio.imagenes,
-            modelo: accesorio.modelo,
-            nombre: accesorio.nombre,
-            precio: accesorio.precio,
-            producto: accesorio.producto
-    }
+    const newAccesorio = accesorio
     
     
         const get = await fetch(`${process.env.API}/accesorios`,{

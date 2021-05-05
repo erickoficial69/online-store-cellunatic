@@ -29,7 +29,7 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
     const [previewImage, setPreviewImage] = useState<string | undefined>(initialState.imagenes.imagen1)
 
     const changeProduct = async (param: input) => {
-
+        
         setTmpAccesorio({ ...tmpAccesorio, [param.target.name]: param.target.value })
     }
 

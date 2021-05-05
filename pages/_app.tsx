@@ -155,7 +155,7 @@ function Myapp({ Component,pageProps}:AppProps) {
           ):null
         }
 
-        <style>
+        <style jsx global>
           {
             `
             @font-face {

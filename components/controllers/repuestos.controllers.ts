@@ -21,14 +21,7 @@ export const updateRepuesto = async (repuesto:Repuesto) => {
 
 export const createRepuesto = async (repuesto:Repuesto) => {
     
-    const newRepuesto = {
-            color: repuesto.color,
-            imagenes: repuesto.imagenes,
-            modelo: repuesto.modelo,
-            nombre: repuesto.nombre,
-            precio: repuesto.precio,
-            producto: repuesto.producto
-    }
+    const newRepuesto = repuesto
     
     const get = await fetch(`${process.env.API}/repuestos`,{
         method:'post',

@@ -53,6 +53,7 @@ export const DetailItem = ({ item }: Props) => {
     }
   
     useEffect(() => {
+        console.log(item)
         getTasaCambio()
         setPreviewImage(item.imagenes.imagen1)
     }, [item])
@@ -82,6 +83,7 @@ export const DetailItem = ({ item }: Props) => {
             </section>
 
             <section>
+                <h1>{item.nombre}</h1>
                 <ul className="container_details_item">
                     {item.color !== "" ? (
                         <li>
