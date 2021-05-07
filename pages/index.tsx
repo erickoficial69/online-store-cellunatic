@@ -47,7 +47,7 @@ const Index = ({sections}:any) => {
 
 
             </Head>
-            <section className="full_width" >
+            <section className="full_width" style={{background:'transparent'}} >
                 <section>
                     <article className="intro" >
 

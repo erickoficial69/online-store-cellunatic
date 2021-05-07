@@ -9,17 +9,17 @@ type Props={
 }
 const ProductsList = ({productos,seccion}:Props)=>{
     const {loaderCTRL}:any = useContext(GlobalAppContext)
-    return <ul style={{width:'100%'}} >
+    return <ul>
         {
             productos.length > 0 ?productos.map((producto:Producto)=>{
                 if(producto.seccion == seccion){
                     return (
-                        <Link key={producto._id} href={`/${producto.seccion}/${producto.url}`} ><li onClick={()=>loaderCTRL(`/${producto.seccion}/${producto.url}`)} style={{width:'100%',color:'white',cursor:'pointer',padding:'5px 0',borderBottom:'1px solid var(--font-color)',background:'var(--primary-color)'}}>{producto.nombre}</li></Link>
+                        <li onClick={()=>loaderCTRL(`/${producto.seccion}/${producto.url}`)} key={producto._id} ><Link href={`/${producto.seccion}/${producto.url}`} ><a>{producto.nombre}</a></Link></li>
                     )
                 }
                 if(seccion == "*"){
                     return (
-                        <Link key={producto._id} href={`/${producto.seccion}/${producto.url}`} ><li onClick={()=>loaderCTRL(`/${producto.seccion}/${producto.url}`)} style={{width:'100%',color:'white',cursor:'pointer',padding:'5px 0',borderBottom:'1px solid var(--font-color)',background:'var(--primary-color)'}}>{producto.nombre}</li></Link>
+                        <li onClick={()=>loaderCTRL(`/${producto.seccion}/${producto.url}`)}  key={producto._id} ><Link href={`/${producto.seccion}/${producto.url}`} ><a>{producto.nombre}</a></Link></li>
                     )
                 }
             }):null 

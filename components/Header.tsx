@@ -4,7 +4,7 @@ import GlobalAppContext from '../context/app/app_state'
 import { SearchBar } from './SearchBar'
 
 const Header = () => {
-    const { setSidebar, loaderCTRL, navBar, setNavBar }:any = useContext(GlobalAppContext)
+    const {  loaderCTRL, navBar, setNavBar }:any = useContext(GlobalAppContext)
     return (
         <header>
             <div className="container header_barr">
@@ -19,13 +19,11 @@ const Header = () => {
                 <SearchBar />
                 
                 <div className="nav_header">
-                    <button className="btn_filter" onClick={()=>{setNavBar(!navBar);setSidebar(true)}} >fill</button>
-                    
                     <Link href="/cpanel" >
                         <button onClick={()=>loaderCTRL('/cpanel')} className="btn_login" >Cpanel</button>
                     </Link>
                     
-                    <button onClick={()=>{setNavBar(!navBar);setSidebar(false)}} >menu</button>
+                    <button onClick={()=>setNavBar(!navBar)} >menu</button>
                 </div>
             </div>
 

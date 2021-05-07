@@ -19,7 +19,6 @@ NextWebVitalsMetric se importa de next/app
 } */
 
 function Myapp({ Component,pageProps}:AppProps) {
-  const [sidebar,setSidebar] = useState<boolean>(false)
   const [loader,setLoader] = useState<boolean>(true)
   const [navBar,setNavBar] = useState<boolean>(false)
   const [buscador,setBuscador] = useState({
@@ -139,7 +138,7 @@ function Myapp({ Component,pageProps}:AppProps) {
     productos:state.store.productos,
     repuestos:state.store.repuestos,
     tasaCambio:state.tasaCambio,
-    sidebar,navBar,buscador,setBuscador,setNavBar,setSidebar,loaderCTRL,getAppData,updateApp,getTasaCambio,updateTasa,getAccesorios,getProductos,getRepuestos
+    navBar,buscador,setBuscador,setNavBar,loaderCTRL,getAppData,updateApp,getTasaCambio,updateTasa,getAccesorios,getProductos,getRepuestos
     }}>
         <Head>
             <link rel="manifest" href="/site.webmanifest.json" />
@@ -184,10 +183,13 @@ function Myapp({ Component,pageProps}:AppProps) {
           }
           :root{
               --height-header:55px;
-              --secondary-color:white;
-              --primary-color:rgba(26, 25, 25, 1);
+              --secondary-color:orange;
+              --alfa:rgba(0,0,0, .3);
+              --darken:rgba(0,0,0, .9);
+              --primary-color:rgba(25, 25, 25, 1);
               --font-color:white;
-              --shadow:0px 0px 2px var(--font-color);
+              --shadow:0px 0px 2px var(--secondary-color);
+              --radius:8px;
           }
           body{
               background:url('/img/bg.webp') center;
@@ -210,7 +212,7 @@ function Myapp({ Component,pageProps}:AppProps) {
               margin: 0 auto;
           }
           button{
-              border-radius:2px;
+              border-radius:4px;
               box-shadow: var(--shadow);
               background: var(--primary-color);
               margin: 5px;
@@ -227,9 +229,13 @@ function Myapp({ Component,pageProps}:AppProps) {
           }
           main > section{
               width:100%;
-              padding: 0 5px;
               position:relative;
           }
+          main > section,aside{
+              background:var(--primary-color);
+              border-radius:var(--radius);
+              padding:4px;
+            }
           /*creador de items*/
           .component_new_item{
             position:fixed;
@@ -247,7 +253,7 @@ function Myapp({ Component,pageProps}:AppProps) {
             margin:3px auto;
             background:var(--primary-color);
             width:100%;
-            border-radius:5px;
+            border-radius:var(--radius);
             box-shadow:var(--shadow);
             padding:5px;
           }
@@ -266,7 +272,7 @@ function Myapp({ Component,pageProps}:AppProps) {
             padding:5px;
             box-shadow: var(--shadow);
             background:var(--primary-color);
-            border-radius:5px;
+            border-radius:var(--radius);
           }
           .component_new_item .form div > label{
               box-shadow: unset;
@@ -300,7 +306,7 @@ function Myapp({ Component,pageProps}:AppProps) {
           }
           .header_barr .search_items_store{
               background: rgba(0,0,0, .1);
-              border-radius: 5px;
+              border-radius: var(--radius);
               padding: 4px;
               box-shadow: var(--shadow);
               width: 90%;
@@ -333,8 +339,20 @@ function Myapp({ Component,pageProps}:AppProps) {
           aside > h3, nav.principal > h3{
               height: var(--height-header);
               text-transform: uppercase;
-              border-bottom: 1px solid rgba(0,0,0, .8);
+              border-bottom: 1px solid var(--darken);
               line-height: 3;
+          }
+          aside > ul li, nav.principal > ul li{
+            padding:8px 3px;
+            border-bottom:1px solid var(--secondary-color);
+            text-transform: uppercase;
+            cursor:pointer;
+          }
+          aside a,nav.principal a{
+            display:block;
+          }
+          aside > ul li:hover, nav.principal > ul li:hover{
+            background:var(--alfa);
           }
           /*/////////*/
           .containerForm {
@@ -396,7 +414,7 @@ function Myapp({ Component,pageProps}:AppProps) {
               gap:10px;
           }
           .item{
-              border-radius:5px;
+              border-radius:var(--radius);
               position:relative;
               box-shadow:var(--shadow);
               width:100%;
@@ -471,6 +489,9 @@ function Myapp({ Component,pageProps}:AppProps) {
                   display: block;
                   height:max-content;
                   position: fixed;
+                  background:var(--primary-color);
+                  padding: 5px ;
+                  border-radius:7px;
               }
               .full_width{
                   grid-column: 1 / span 2;
