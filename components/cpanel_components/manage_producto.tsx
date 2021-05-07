@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
-import GlobalAppContext from '../context/app/app_state'
-import { Producto, Seccion } from '../interfaces/interfaces'
-import * as prodServ from './controllers/productos.controllers'
-import * as seccServ from './controllers/secciones.controllers'
+import GlobalAppContext from '../../context/app/app_state'
+import { Producto, Seccion } from '../../interfaces/interfaces'
+import * as prodServ from '../controllers/productos.controllers'
+import * as seccServ from '../controllers/secciones.controllers'
 
 type Props={
     producto:Producto
@@ -13,52 +13,42 @@ type Props={
 export const ManageProduct = ({producto,setModal,setTmpProd}:Props) => {
     const [secciones,setSecciones] = useState<Seccion[]>([{title:''}])
     const {getProductos}:any = useContext(GlobalAppContext)
+    
     const addProduct = async () => {
         if(producto.nombre === '' || producto.seccion === '') return alert('rellene todos los campos')
         
         try{
-            
             await prodServ.createProducto(producto)
-            getProductos()
-            setModal(false)
+            await getProductos()
             
         }catch(err){
             alert('Hubo un error con el servidor')
-            
             return console.log(err)
         }
+        setModal(false)
     }
     const updateProduct = async () => {
         if(producto.nombre === '' || producto.seccion === '') return alert('rellene todos los campos')
         try{
-            
             await prodServ.updateProducto(producto)
-            getProductos()
-            setModal(false)
-            
+            await getProductos()
         }catch(err){
             alert('Hubo un error con el servidor')
-            setModal(false)
-            
             return console.log(err)
         }
+        setModal(false)
     }
-
     const deleteProduct = async(id?:string)=>{
         if(id!==''){
             try{
-                
                 await prodServ.deleteProducto(id?id:'')
-                setTmpProd({estado:false,nombre:'',seccion:''})
-                getProductos()
-                setModal(false)
+                await getProductos()
                 
             }catch(err){
                 alert('Hubo un error con el servidor')
-                setTmpProd({estado:false,nombre:'',seccion:''})
-                setModal(false)
                 return console.log(err)
             }
+            setModal(false)
         }
     }
     useEffect(() => {

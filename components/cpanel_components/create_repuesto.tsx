@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
-import { Repuesto, Producto } from '../interfaces/interfaces'
-import * as repServ from './controllers/repuestos.controllers'
-import GlobalAppContext from '../context/app/app_state'
+import { Repuesto, Producto } from '../../interfaces/interfaces'
+import * as repServ from '../controllers/repuestos.controllers'
+import GlobalAppContext from '../../context/app/app_state'
 
 type input = any
 

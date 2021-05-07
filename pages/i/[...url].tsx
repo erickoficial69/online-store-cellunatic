@@ -4,8 +4,9 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { verifySesion } from '../../components/controllers/usuarios.controllers';
 import GlobalAppContext from '../../context/app/app_state';
 import { DetailItem } from '../../components/details_item';
-import { ManageAccesorio } from '../../components/manage.accesorio';
-import { ManageRepuesto } from '../../components/manage.repuesto';
+import { ManageAccesorio } from '../../components/cpanel_components/manage.accesorio';
+import { ManageRepuesto } from '../../components/cpanel_components/manage.repuesto';
+import Head from 'next/head'
 import Grid_similars_items from '../../components/grid_similar_items';
 
 interface Props{
@@ -25,6 +26,28 @@ const Details=({item,relacionados,seccion}:Props)=>{
 
     return(
         <main>
+            <Head>
+                <title>{item.nombre} - Cellunatic</title>
+                <meta name="description" content={item?item.description:""} />
+                <meta name="keywords" content={item?item.keywords:""}/>
+                <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/${item?item.url:""}`} />
+                <meta property="og:locale" content="es_ES" />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="Cellunatic" />
+                <meta property="og:description" content={item?item.description:""} />
+                <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/${item?item.url:""}`} />
+                <meta property="og:site_name" content="cellunatic.store" />
+                <meta property="og:image" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
+                <meta property="og:image:secure_url" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
+                <meta property="og:image:width" content="32" />
+                <meta property="og:image:height" content="32" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:description" content={item?item.description:""} />
+                <meta name="twitter:title" content={`${item.nombre} - Cellunatic"`} />
+                <meta name="twitter:image" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
+                <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/${item?item.url:""}`} />
+            </Head>
+
             <section className="full_width" >
                 {
                     user.rango == "administrador" ?(
@@ -34,8 +57,7 @@ const Details=({item,relacionados,seccion}:Props)=>{
                         <DetailItem item={item} />
                     )
                 }
-            </section>
-            <section className="full_width">
+
                 {
                     relacionados.length > 1?(
                     <>
@@ -43,6 +65,11 @@ const Details=({item,relacionados,seccion}:Props)=>{
                             {item.producto.replace("-"," ")} más populares
                         </h2>
                         <div className="container_items">
+                            <Grid_similars_items items={relacionados} />
+                            <Grid_similars_items items={relacionados} />
+                            <Grid_similars_items items={relacionados} />
+                            <Grid_similars_items items={relacionados} />
+                            <Grid_similars_items items={relacionados} />
                             <Grid_similars_items items={relacionados} />
                         </div>
                     </>
@@ -57,6 +84,7 @@ const Details=({item,relacionados,seccion}:Props)=>{
                         display:grid;
                         grid-template-columns: 1fr;
                         gap:10px;
+                        background:var(--primary-color);
                     }
                     .box_detail_item > section{
                         width:100%;
@@ -64,8 +92,14 @@ const Details=({item,relacionados,seccion}:Props)=>{
                         position:relative;
                         border-radius:5px;
                         overflow:hidden;
-                        background:var(--primary-color);
                         padding:5px;
+                    }
+                    .box_detail_item > section:nth-child(2){
+                        box-shadow:var(--shadow);
+                    }
+                    .box_detail_item > section > h1{
+                        padding: 5px 2px;
+                        font-size:22px;
                     }
                     .container_inputs_item{
                         width:100%;
@@ -132,10 +166,23 @@ const Details=({item,relacionados,seccion}:Props)=>{
                     }
                     @media(min-width:720px){
                         .box_detail_item{
-                            grid-template-columns: 1fr 300px;
+                            grid-template-columns: 1fr 350px;
                         }
                         .box_detail_item > section > .container_details_item > div, .container_details_item > li{
-                            grid-template-columns:repeat(2,1fr);
+                            grid-template-columns:1fr, 200px;
+                        }
+                        .container_details_item > li > b{
+                           padding:10px 4px;
+                           border-bottom:1px solid orange;
+                           height:max-content;
+                        }
+                        .container_details_item > li > p{
+                            align-self:center;
+                        }
+                    }
+                    @media(min-width:1080px){
+                        .box_detail_item{
+                            grid-template-columns: 1fr 400px;
                         }
                     }
                     `

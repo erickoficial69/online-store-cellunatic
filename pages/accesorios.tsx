@@ -12,7 +12,7 @@ type Props={
 const Accesorios = ({productos,metas}:Props) => {
     const { loaderCTRL }: any = useContext(GlobalAppContext)
 
-    const sidebar_memo = useMemo(() => <ProductsList productos={productos} />, [productos])
+    const sidebar_memo = useMemo(() => <ProductsList productos={productos} seccion={metas.url?metas.url:''} />, [productos])
 
     useEffect(() => {
         loaderCTRL(document.location.pathname)
@@ -48,7 +48,7 @@ const Accesorios = ({productos,metas}:Props) => {
 
             <section>
                 <section>
-                    <h1>Los mejores accesorios para Celulares</h1>
+                    <h1>Los mejores accesorios para Celulares </h1>
                     <p>
                         La venta Smartphones sigue creciendo tanto en nuestro país
                         como en todo el planeta. 

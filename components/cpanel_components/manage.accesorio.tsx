@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
-import { Accesorio, Producto } from '../interfaces/interfaces'
-import * as accesorioServ from './controllers/accesorios.controllers'
+import { Accesorio, Producto } from '../../interfaces/interfaces'
+import * as accesorioServ from '../controllers/accesorios.controllers'
 import { useRouter } from 'next/router'
-import GlobalAppContext from '../context/app/app_state'
+import GlobalAppContext from '../../context/app/app_state'
 
 interface Props {
     accesorio: Accesorio
@@ -116,12 +116,12 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
 
                     <div>
                         <label>Producto:</label>
-                        <select name="producto" onChange={changeProduct}>
+                        <select name="producto" defaultValue={tmpAccesorio.producto} onChange={changeProduct}>
                             
                             {
                                 productos.data.map((producto: Producto) => {
                                     return (
-                                        <option key={producto._id} value={producto.nombre} >
+                                        <option key={producto._id} value={producto.url} >
                                             {producto.nombre}
                                         </option>
                                     )
@@ -132,7 +132,7 @@ export const ManageAccesorio = ({ accesorio }: Props) => {
 
                     <div>
                         <label>Estado:</label>
-                        <select name="estado" onChange={changeProduct}>
+                        <select name="estado" defaultValue={tmpAccesorio.estado?1:0} onChange={changeProduct}>
                             
                             <option value={1} >
                                 disponible

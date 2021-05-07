@@ -1,20 +1,21 @@
-import { Seccion } from '../interfaces/interfaces'
-import * as prodServ from '../components/controllers/secciones.controllers'
+import { Seccion } from '../../interfaces/interfaces'
+import * as prodServ from '../controllers/secciones.controllers'
 
 type Props={
     seccion:Seccion
     setTmpSecc:(param:Seccion)=>void
     setModal:(param:string | boolean)=>void
+    setSecciones:(param:Seccion[])=>void
 }
 
-export const ManageSection = ({seccion,setModal,setTmpSecc}:Props) => {
+export const ManageSection = ({seccion,setModal,setTmpSecc,setSecciones}:Props) => {
     
     const addProduct = async () => {
         if(seccion.title === '') return alert('rellene todos los campos')
         
         try{
             await prodServ.createSeccion(seccion)
-            setTmpSecc({title:''})
+            setSecciones(await prodServ.getSecciones())
         }catch(err){
             alert('hubo un error con el servidor')
             return console.log(err)
@@ -27,7 +28,7 @@ export const ManageSection = ({seccion,setModal,setTmpSecc}:Props) => {
         
         try{
             await prodServ.updateSeccion(seccion)
-            setTmpSecc({title:''})
+            setSecciones(await prodServ.getSecciones())
         }catch(err){
             alert('hubo un error con el servidor')
             return console.log(err)
@@ -40,7 +41,7 @@ export const ManageSection = ({seccion,setModal,setTmpSecc}:Props) => {
         if(id!==''){
             
             await prodServ.deleteSeccion(id?id:'')
-            setTmpSecc({title:''})
+            setSecciones(await prodServ.getSecciones())
             setModal(false)
         }
     }

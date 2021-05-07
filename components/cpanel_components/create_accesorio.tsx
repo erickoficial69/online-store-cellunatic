@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
-import { Accesorio, Producto } from '../interfaces/interfaces'
-import * as accesorioServ from './controllers/accesorios.controllers'
-import GlobalAppContext from '../context/app/app_state'
+import { Accesorio, Producto } from '../../interfaces/interfaces'
+import * as accesorioServ from '../controllers/accesorios.controllers'
+import GlobalAppContext from '../../context/app/app_state'
 
 type input = any
 

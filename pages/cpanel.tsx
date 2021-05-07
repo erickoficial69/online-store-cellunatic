@@ -5,24 +5,24 @@ import { Producto, Seccion, User } from '../interfaces/interfaces'
 import * as userServ from '../components/controllers/usuarios.controllers'
 import * as seccServ from '../components/controllers/secciones.controllers'
 import GlobalAppContext from '../context/app/app_state'
-import {ManageProduct} from '../components/manage_producto'
-import { ManageSection } from '../components/manage_sections'
-import { CreateAccesorio } from '../components/create_accesorio'
-import { CreateRepuesto } from '../components/create_repuesto'
-import { List_products_admin, List_Sections_Admin } from '../components/cpane_compnents/Lists'
-import { Admin_menu } from '../components/cpane_compnents/Admin_menu'
-import { Manage_Tasa_Cambio } from '../components/cpane_compnents/Manage_tasa_cambio'
+import {ManageProduct} from '../components/cpanel_components/manage_producto'
+import { ManageSection } from '../components/cpanel_components/manage_sections'
+import { CreateAccesorio } from '../components/cpanel_components/create_accesorio'
+import { CreateRepuesto } from '../components/cpanel_components/create_repuesto'
+import { List_products_admin, List_Sections_Admin } from '../components/cpanel_components/Lists'
+import { Admin_menu } from '../components/cpanel_components/Admin_menu'
+import { Manage_Tasa_Cambio } from '../components/cpanel_components/Manage_tasa_cambio'
 
 const Cpanel = () => {
     const { push } = useRouter()
     const { loaderCTRL, tasaCambio, productos, getProductos, getTasaCambio }:any = useContext(GlobalAppContext)
     const [user, setUser] = useState<User>({ correo: '', password: '' })
     const [tmpSecc,setTmpSecc] = useState<Seccion>({title:''})
-    const [tmpProd,setTmpProd] = useState<Producto>(productos.data)
+    const [tmpProd,setTmpProd] = useState<Producto>({nombre:'',estado:false,seccion:''})
     const [modal,setModal] = useState<string | boolean>(false)
     const [secciones,setSecciones] = useState<Seccion[]>([{title:''}])
     
-    const manage_section = useMemo(()=><ManageSection seccion={tmpSecc} setTmpSecc={setTmpSecc} setModal={setModal}/>,[tmpSecc])
+    const manage_section = useMemo(()=><ManageSection setSecciones={setSecciones} seccion={tmpSecc} setTmpSecc={setTmpSecc} setModal={setModal}/>,[tmpSecc])
     const create_repuesto = useMemo(()=><CreateRepuesto setModal={setModal}/>,[])
     const create_accesorio = useMemo(()=><CreateAccesorio setModal={setModal}/>,[])
     const manage_producto = useMemo(()=><ManageProduct producto={tmpProd} setTmpProd={setTmpProd} setModal={setModal}/>,[tmpProd])
@@ -31,10 +31,6 @@ const Cpanel = () => {
     const admin_menu = useMemo(()=><Admin_menu tasaCambio={tasaCambio} setModal={setModal} />,[tasaCambio])
     const manage_tasa_cambio = useMemo(()=><Manage_Tasa_Cambio setModal={setModal}/>,[])
     
-    const getSecciones = async()=>{
-        const list = await seccServ.getSecciones()
-        setSecciones(list)
-    }
     useEffect(() => {
         const result = userServ.verifySesion()
         if (result.correo === "") push('/login')
@@ -46,17 +42,13 @@ const Cpanel = () => {
     },[tasaCambio])
 
     useEffect(()=>{
-        tasa()
-        getProductos() 
-        loaderCTRL(document.location.pathname)        
+        (async()=>{
+            setSecciones(await seccServ.getSecciones())
+            tasa()
+            getProductos() 
+            loaderCTRL(document.location.pathname)   
+        })()
     },[])
-
-    useEffect(()=>{   
-    },[])
-    
-    useEffect(()=>{
-        getSecciones()
-    },[tmpSecc])
 
     return user.rango && user.rango === "administrador" ? (
                 <main>

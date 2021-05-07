@@ -12,7 +12,7 @@ type Props={
 
 const Repuestos=({productos,metas}:Props)=>{
     const {loaderCTRL}:any = useContext(GlobalAppContext)
-    const sidebar_memo = useMemo(() => <ProductsList productos={productos} />, [productos])
+    const sidebar_memo = useMemo(() => <ProductsList productos={productos} seccion={metas.url?metas.url:''} />, [productos])
     useEffect(()=>{
         loaderCTRL(document.location.pathname)
     },[])

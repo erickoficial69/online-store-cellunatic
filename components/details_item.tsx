@@ -54,6 +54,7 @@ export const DetailItem = ({ item }: Props) => {
   
     useEffect(() => {
         getTasaCambio()
+        console.log(item)
         setPreviewImage(item.imagenes.imagen1)
     }, [])
 
@@ -79,35 +80,36 @@ export const DetailItem = ({ item }: Props) => {
                         <img loading="lazy" onClick={() => setPreviewImage(item.imagenes.imagen3)} src={item.imagenes.imagen3 ? item.imagenes.imagen3 : '/logo192x192.png'} alt={item.nombre+"_3"} />
                     </div>
                 </div>
+
+                <h1>{item.nombre}</h1>
             </section>
 
             <section>
-                <h1>{item.nombre}</h1>
                 <ul className="container_details_item">
                     {item.color !== "" ? (
                         <li>
-                            <p>Color:</p>
+                            <b>Color:</b>
                             <p>{item.color}</p>
                         </li>
                     ) : null}
                     <li style={{ color: 'white' }} >
-                        <p>Producto:</p>
+                        <b>Producto:</b>
                         <p>{item.producto}</p>
                     </li>
                     {
                         item.modelo !== "" ? (
                             <li style={{ color: 'white' }} >
-                                <p>Modelo:</p>
+                                <b>Modelo:</b>
                                 <p>{item.modelo}</p>
                             </li>
                         ) : null
                     }
                     <li style={{ color: 'white' }} >
-                        <p>Estado:</p>
+                        <b>Estado:</b>
                         <p>{item.estado ? "disponible" : "agotado"}</p>
                     </li>
                     <li style={{ color: 'white' }} >
-                        <p>Precio:</p>
+                        <b>Precio:</b>
                         <p>{item.precio} $ / {item.precio * tasaCambio.monto} bs</p>
                     </li>
                 </ul>

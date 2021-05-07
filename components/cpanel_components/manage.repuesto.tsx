@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
-import { Repuesto, Producto } from '../interfaces/interfaces'
-import * as itemServ from './controllers/repuestos.controllers'
+import { Repuesto, Producto } from '../../interfaces/interfaces'
+import * as itemServ from '../controllers/repuestos.controllers'
 import { useRouter } from 'next/router'
-import GlobalAppContext from '../context/app/app_state'
+import GlobalAppContext from '../../context/app/app_state'
 
 interface Props {
     item: Repuesto
@@ -116,12 +116,12 @@ export const ManageRepuesto = ({ item }: Props) => {
 
                         <div>
                             <label>Producto:</label>
-                            <select name="producto" onChange={changeProduct}>
+                            <select name="producto" defaultValue={tmpItem.producto} onChange={changeProduct}>
                                 
                                 {
                                     productos.data.map((producto: Producto) => {
                                         return (
-                                            <option key={producto._id} value={producto.nombre} >
+                                            <option key={producto._id} value={producto.url} >
                                                 {producto.nombre}
                                             </option>
                                         )
@@ -132,7 +132,7 @@ export const ManageRepuesto = ({ item }: Props) => {
 
                         <div>
                             <label>Estado:</label>
-                            <select name="estado" onChange={changeProduct}>
+                            <select name="estado" defaultValue={tmpItem.estado?1:0} onChange={changeProduct}>
                                 
                                 <option value={1} >
                                     disponible

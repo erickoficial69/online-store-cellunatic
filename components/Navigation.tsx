@@ -1,15 +1,17 @@
 import Link from 'next/link'
-import {useContext, useMemo } from 'react'
+import {useContext, useEffect, useMemo} from 'react'
 import GlobalAppContext from '../context/app/app_state'
 import ProductsList from './products.list'
 import * as manifest from '../public/site.webmanifest.json'
 
 
 const Navigation = () => {
-    const { sidebar,loaderCTRL, navBar, setNavBar, productos }:any = useContext(GlobalAppContext)
-    
-    const sidebar_memo = useMemo(()=><ProductsList productos={productos.data} />,[productos])
-
+    const { sidebar,loaderCTRL, navBar, setNavBar, productos, getProductos }:any = useContext(GlobalAppContext)
+   
+    const sidebar_memo = useMemo(()=><ProductsList productos={productos.data} seccion="*" />,[productos,sidebar])
+    useEffect(()=>{
+        getProductos()
+    },[])
     return  navBar ?(
             <>
                 <div onClick={()=>setNavBar(!navBar)} className="effect_menu"></div>

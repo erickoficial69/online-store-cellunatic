@@ -1,6 +1,6 @@
-import {AppProps, NextWebVitalsMetric} from "next/app";
+import {AppProps} from "next/app";
 import Head from 'next/head'
-import {useReducer,Reducer, ReducerAction, useState} from 'react'
+import {useReducer,Reducer, ReducerAction, useState } from 'react'
 import GlobalAppContext,{initialApp} from "../context/app/app_state";
 import appReducer from '../context/app/app_reducer'
 import { AppData } from '../interfaces/interfaces'
@@ -12,26 +12,32 @@ import * as prodServ from '../components/controllers/productos.controllers'
 import Navigation from "../components/Navigation";
 
 
-export function reportWebVitals(metric:NextWebVitalsMetric) {
-  console.log(metric)
-}
-
+/*
+NextWebVitalsMetric se importa de next/app
+  export function reportWebVitals(metric:NextWebVitalsMetric) {
+    console.log()
+} */
 
 function Myapp({ Component,pageProps}:AppProps) {
   const [sidebar,setSidebar] = useState<boolean>(false)
   const [loader,setLoader] = useState<boolean>(true)
   const [navBar,setNavBar] = useState<boolean>(false)
-  
+  const [buscador,setBuscador] = useState({
+    activo:false,
+    handler:()=>{}
+  })
   const [state,dispatch] = useReducer<Reducer<AppData,ReducerAction<any>>>(appReducer,initialApp)
   
   const loaderCTRL = (param:string | boolean)=>{
     const locationBar = document.location.pathname
-    if(param !== locationBar || param === 'load'){
+    if(param !== locationBar){
+      setBuscador({activo:false,handler:()=>{}})
       setLoader(true)
       return
     }
     setLoader(false)
   }
+
    const getAppData = async()=>{
      const req = await fetch(process.env.API+`/app`)
      const res = await req.json()
@@ -133,7 +139,7 @@ function Myapp({ Component,pageProps}:AppProps) {
     productos:state.store.productos,
     repuestos:state.store.repuestos,
     tasaCambio:state.tasaCambio,
-    sidebar,navBar, setNavBar,setSidebar,loaderCTRL,getAppData,updateApp,getTasaCambio,updateTasa,getAccesorios,getProductos,getRepuestos
+    sidebar,navBar,buscador,setBuscador,setNavBar,setSidebar,loaderCTRL,getAppData,updateApp,getTasaCambio,updateTasa,getAccesorios,getProductos,getRepuestos
     }}>
         <Head>
             <link rel="manifest" href="/site.webmanifest.json" />
@@ -322,6 +328,7 @@ function Myapp({ Component,pageProps}:AppProps) {
           }
           aside{
               display: none;
+              width:250px;
           }
           aside > h3, nav.principal > h3{
               height: var(--height-header);
