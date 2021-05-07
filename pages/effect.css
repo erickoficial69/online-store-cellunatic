@@ -22,7 +22,7 @@
   width:100vw;
   height:100vh;
   z-index:-1;
-  background: radial-gradient(circle at top, rgb(0, 1, 19) 0, rgb(0, 0, 0) 70%);
+  background: radial-gradient(circle at bottom, var(--primary-color) 0, var(--darken) 85%);
   -webkit-transform: translate3d(0vw, 0vh, 0vmin);
           transform: translate3d(0vw, 0vh, 0vmin);
 }

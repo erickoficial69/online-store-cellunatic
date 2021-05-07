@@ -1,14 +1,15 @@
 import {AppProps} from "next/app";
 import Head from 'next/head'
-import {useReducer,Reducer, ReducerAction, useState } from 'react'
+import {useReducer,Reducer, ReducerAction, useState, useEffect } from 'react'
 import GlobalAppContext,{initialApp} from "../context/app/app_state";
 import appReducer from '../context/app/app_reducer'
-import { AppData } from '../interfaces/interfaces'
+import { AppData, Seccion } from '../interfaces/interfaces'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import * as accServ from '../components/controllers/accesorios.controllers'
 import * as repServ from '../components/controllers/repuestos.controllers'
 import * as prodServ from '../components/controllers/productos.controllers'
+import * as seccServ from '../components/controllers/secciones.controllers'
 import Navigation from "../components/Navigation";
 import './effect.css'
 
@@ -21,6 +22,7 @@ NextWebVitalsMetric se importa de next/app
 function Myapp({ Component,pageProps}:AppProps) {
   const [loader,setLoader] = useState<boolean>(true)
   const [navBar,setNavBar] = useState<boolean>(false)
+  const [secciones,setSecciones] = useState<Seccion []>([])
   const [buscador,setBuscador] = useState({
     activo:false,
     handler:()=>{}
@@ -131,6 +133,12 @@ function Myapp({ Component,pageProps}:AppProps) {
       return
     }
   }
+  useEffect(()=>{
+    (async()=>{
+      getProductos()
+      setSecciones(await seccServ.getSecciones())
+    })()
+  },[])
   return <GlobalAppContext.Provider value={{
     loader,
     appData:state.appData,
@@ -138,7 +146,7 @@ function Myapp({ Component,pageProps}:AppProps) {
     productos:state.store.productos,
     repuestos:state.store.repuestos,
     tasaCambio:state.tasaCambio,
-    navBar,buscador,setBuscador,setNavBar,loaderCTRL,getAppData,updateApp,getTasaCambio,updateTasa,getAccesorios,getProductos,getRepuestos
+    navBar,buscador,secciones,setBuscador,setNavBar,loaderCTRL,getAppData,updateApp,getTasaCambio,updateTasa,getAccesorios,getProductos,getRepuestos
     }}>
         <Head>
             <link rel="manifest" href="/site.webmanifest.json" />
@@ -231,12 +239,19 @@ function Myapp({ Component,pageProps}:AppProps) {
             padding: 0;
             box-sizing: border-box;
           }
+          *::-webkit-scrollbar{
+            width:5px;
+            background: var(--primary-color);
+          }
+          *::-webkit-scrollbar-thumb{
+            background:var(--secondary-color);
+          }
           :root{
               --height-header:55px;
               --secondary-color:orange;
               --alfa:rgba(0,0,0, .3);
-              --darken:rgba(0,0,0, .9);
-              --primary-color:rgba(5, 5, 5, .8);
+              --darken:rgb(0,0,0);
+              --primary-color:rgba(0, 0, 30, .9);
               --font-color:white;
               --shadow:0px 0px 2px var(--secondary-color);
               --radius:8px;
@@ -260,7 +275,7 @@ function Myapp({ Component,pageProps}:AppProps) {
           }
           button{
               border-radius:4px;
-              box-shadow: var(--shadow);
+              border:1px solid var(--secondary-color);
               background: var(--primary-color);
               margin: 5px;
               padding: 4px 6px;
@@ -297,7 +312,7 @@ function Myapp({ Component,pageProps}:AppProps) {
             background:var(--primary-color);
             width:100%;
             border-radius:var(--radius);
-            box-shadow:var(--shadow);
+            border:1px solidvar(--secondary-color);
             padding:5px;
           }
           .component_new_item .form{
@@ -313,12 +328,12 @@ function Myapp({ Component,pageProps}:AppProps) {
             width:100%;
             background:transparent;
             padding:5px;
-            box-shadow: var(--shadow);
+            border:1px solid var(--secondary-color);
             background:var(--primary-color);
             border-radius:var(--radius);
           }
           .component_new_item .form div > label{
-              box-shadow: unset;
+              border:1px solid unset;
           }
           /* Barra header*/
           .header_barr{
@@ -351,53 +366,13 @@ function Myapp({ Component,pageProps}:AppProps) {
               background: rgba(0,0,0, .1);
               border-radius: var(--radius);
               padding: 4px;
-              box-shadow: var(--shadow);
+              border:1px solid var(--secondary-color);
               width: 90%;
           }
           
           /*/////////////////////////*/
-          /*Nav y aside*/
-          nav.principal,.effect_menu{
-              width:250px;
-              position: fixed;
-              top:0;
-              left: 0;
-              bottom: 0;
-              overflow-y: auto;
-              overflow-x: hidden;
-              background: var(--primary-color);
-          }
-          nav.principal,.effect_menu{
-            z-index: 13;
-          }
-          .effect_menu{
-              width: 100vw;
-              right: 0;
-              background-color: rgba(0,0,0, .8);
-          }
-          aside{
-              display: none;
-              width:250px;
-              background:var(--primary-color);
-          }
-          aside > h3, nav.principal > h3{
-              height: var(--height-header);
-              line-height: var(--height-header);
-              text-transform: uppercase;
-              border-bottom: 1px solid var(--darken);
-              padding: 0 3px;
-          }
+         
           
-          aside a,nav.principal a{
-            display:block;
-            padding:8px 3px;
-            border-bottom:1px solid var(--secondary-color);
-            text-transform: uppercase;
-          }
-          aside > ul li:hover, nav.principal > ul li:hover{
-            background:var(--alfa);
-          }
-          /*/////////*/
           .coursive{
               font-family: 'cellunatic' !important;
           }
@@ -446,7 +421,7 @@ function Myapp({ Component,pageProps}:AppProps) {
           .item{
               border-radius:var(--radius);
               position:relative;
-              box-shadow:var(--shadow);
+              border:1px solidvar(--secondary-color);
               width:100%;
               height:250px;
               background:var(--font-color);
@@ -456,6 +431,9 @@ function Myapp({ Component,pageProps}:AppProps) {
           }
           .copy_article > p{
             padding:10px 20px;
+          }
+          .copy_article > footer{
+            margin:10px auto;
           }
           @media(min-width:480px){
               /*Intro*/
@@ -485,6 +463,12 @@ function Myapp({ Component,pageProps}:AppProps) {
                   grid-template-columns: repeat(3,1fr);
               }
           }
+          @media(min-width:580px){
+            /*barra header*/
+            .header_barr .logo b{
+              display: contents;
+            }
+          }
           @media(min-width:720px){
               /*Intro*/
               .intro > div > h1{
@@ -493,14 +477,8 @@ function Myapp({ Component,pageProps}:AppProps) {
               /*///*/
           
               /*barra header*/
-              .header_barr .logo b{
-                  display: contents;
-              }
               .nav_header .btn_login{
                   display: contents;
-              }
-              .nav_header .btn_filter{
-                  display: none;
               }
               /*//////*/
               .container_items{
@@ -516,11 +494,6 @@ function Myapp({ Component,pageProps}:AppProps) {
               }
               main > section{
                 grid-column:2/span 1;
-              }
-              aside{
-                  display: block;
-                  height:max-content;
-                  position: fixed;
               }
               .full_width{
                   grid-column: 1 / span 2;

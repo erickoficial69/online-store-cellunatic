@@ -8,9 +8,9 @@ import { User } from '../../interfaces/interfaces'
 
 type InputTarget = ChangeEvent<HTMLInputElement>
 
-const AppSettings = () => {
+const AppConfig = () => {
     const { push, back } = useRouter()
-    const { loaderCTRL, appData, updateApp }:any = useContext(GlobalAppContext)
+    const { loaderCTRL, appData, updateApp, getAppData }:any = useContext(GlobalAppContext)
     const [user, setUser] = useState<User>({ correo: '', password: '' })
 
     const setContact = (e: InputTarget) => {
@@ -38,6 +38,7 @@ const AppSettings = () => {
         if (result.correo === "") push('/login')
 
         setUser(result)
+        getAppData()
         loaderCTRL(document.location.pathname)
     }, [])
 
@@ -115,9 +116,17 @@ const AppSettings = () => {
                                 <button style={{ marginTop: '10px' }} onClick={saveChanges} >Actualizar</button>
                             </form>
                         </div>
-                    
+                    <style>
+                        {
+                            `input{
+                                padding:5px 8px;
+                                background:var(--primary-color);
+                            }
+                            `
+                        }
+                    </style>
                 </section>
             </main>) : null
 }
 
-export default AppSettings
+export default AppConfig

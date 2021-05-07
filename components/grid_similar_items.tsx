@@ -1,7 +1,7 @@
-import { Accesorio, Repuesto, User } from '../interfaces/interfaces'
+import { Accesorio, Repuesto } from '../interfaces/interfaces'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import * as userServ from './controllers/usuarios.controllers'
+import { useContext } from 'react'
+import GlobalAppContext from '../context/app/app_state'
 
 interface Props{
     items:Repuesto[] | Accesorio[]
@@ -9,11 +9,7 @@ interface Props{
 type Item = Repuesto | Accesorio
 
 const Grid_similars_items = ({items}:Props)=>{
-    const [user,setUser] = useState<User>({correo:'',password:''})
-
-    useEffect(()=>{
-        setUser(userServ.verifySesion)
-    },[])
+    const {loaderCTRL}:any = useContext(GlobalAppContext)
 
     return(
             <>
@@ -22,7 +18,7 @@ const Grid_similars_items = ({items}:Props)=>{
                     items.length > 0 ? items.map((list:Item,i:number) =>{
                         return(
                             <Link key={i} href={`/i/${list.url}/${list.producto}`} >
-                                <div className="item">
+                                <div onClick={()=>loaderCTRL(`/i/${list.url}/${list.producto}`)} className="item">
                                     <img loading="lazy" style={{
                                         height:"90%",
                                         width:"90%",
@@ -44,14 +40,6 @@ const Grid_similars_items = ({items}:Props)=>{
                                         
                                         <p style={{height:'20px', overflow:'hidden', color:'white'}} >$ {list.precio}</p>
                                     </div>
-
-                                    {
-                                        user?(
-                                            user.rango === "administrador"?(
-                                                <button style={{position:'absolute',top:'0',right:'0%',backgroundColor:'darkorange'}} >Admin</button>
-                                            ):null
-                                        ):null
-                                    }
                                 </div>
                             </Link>
                         )

@@ -1,9 +1,14 @@
 import { useContext, useEffect, useMemo } from "react";
 import Head from "next/head";
 import GlobalAppContext from "../context/app/app_state";
-import ProductsList from "../components/products.list";
 import {GetStaticProps,GetStaticPropsContext} from 'next'
 import { Producto } from "../interfaces/interfaces";
+import dynamic from 'next/dynamic'
+
+const ProductsList = dynamic(
+  () => import('../components/products.list'),
+  { loading: () => <h1>Cargando Componente</h1> }
+)
 
 type Props={
     metas:Producto

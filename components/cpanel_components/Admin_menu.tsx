@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { destroySesion } from "../controllers/usuarios.controllers";
+import Link from 'next/link'
 
 type Admin_Menu_params={
     setModal:(param:string | boolean)=>void
@@ -27,6 +28,9 @@ export const Admin_menu = ({setModal,tasaCambio}:Admin_Menu_params)=>{
             </li>
             <li onClick={() => setModal('create_repuesto')} >
                 Nuevo Repuesto
+            </li>
+            <li>
+                <Link href="/cpanel/config" ><a>Config</a></Link>
             </li>
             <li onClick={() => {destroySesion(); push('/login')}}>
                 Cerrar Sesion

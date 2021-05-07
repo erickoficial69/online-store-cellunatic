@@ -48,7 +48,7 @@ const Index=({seccion,item,productos,metas}:Props)=>{
         setBuscador({activo:true,handler:fecthData})
         fecthData(item,limit)
         loaderCTRL(document.location.pathname)
-    },[item])
+    },[])
 
     return(
         <>

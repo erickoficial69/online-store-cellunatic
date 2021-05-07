@@ -10,7 +10,12 @@ const Grid_similars_items = dynamic(
   { loading: () => <h1>Cargando Componente</h1> }
 )
 
-const Index = ({sections}:any) => {
+const Intro = dynamic(
+  () => import('../components/Intro'),
+  { loading: () => <h1 style={{height:'250px',display:'grid',placeItems:'center',placeContent:'center'}} >Cargando Intro</h1> }
+)
+
+const Index = () => {
     const { loaderCTRL, getAccesorios, accesorios, repuestos, getRepuestos }: any = useContext(GlobalAppContext)
     const [limit,setLimit] = useState(3)
     const comp_accesorios = useMemo(() =>
@@ -19,6 +24,10 @@ const Index = ({sections}:any) => {
     const comp_repuestos = useMemo(() =>
         <Grid_similars_items items={repuestos.data} />
         , [repuestos,limit])
+
+    const intro = useMemo(() =>
+        <Intro />
+        , [])
    
     useEffect(() => {
         setLimit(3)
@@ -54,20 +63,7 @@ const Index = ({sections}:any) => {
             </Head>
             <section className="full_width" style={{background:'transparent'}} >
                 <section>
-                    <article className="intro" >
-
-                        <img loading="lazy" src="/logo192x192.png" alt="Cellunatic logo" />
-
-                        <div>
-                            <h1 className="coursive" >Cellunatic 2017 CG C.A</h1>
-                            <p >Gente que Responde!</p>
-                        </div>
-
-                        <nav className="botonera" style={{ width: '100%', textAlign: 'center' }} >
-                            {sections?.map((seccion:any)=><Link key={seccion.title} href={`/${seccion.url}`} ><a onClick={()=>loaderCTRL(`/${seccion.url}`)} ><button>{seccion.title}</button></a></Link>
-                            )}
-                        </nav>
-                    </article>
+                    {intro}
                 </section>
 
                 {accesorios.count > 0 ?
@@ -120,15 +116,11 @@ const Index = ({sections}:any) => {
 }
 export const getStaticProps:GetStaticProps = async (_:GetStaticPropsContext)=>{
     try{
-        const req = await fetch(`${process.env.API}/sections`)
-        const res = await req.json()
         return {props:{
-            sections:res
         },revalidate:1}
     }catch(err){
         console.error(err)
         return {props:{
-            sections:[]
         },revalidate:1}
     }
 }

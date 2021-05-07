@@ -1,8 +1,7 @@
-import {useEffect,useState,useContext} from 'react'
+import {useEffect,useState,useMemo} from 'react'
 import { Accesorio, Producto, User, Repuesto } from '../../interfaces/interfaces'
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { verifySesion } from '../../components/controllers/usuarios.controllers';
-import GlobalAppContext from '../../context/app/app_state';
 import { ManageAccesorio } from '../../components/cpanel_components/manage.accesorio';
 import { ManageRepuesto } from '../../components/cpanel_components/manage.repuesto';
 import Head from 'next/head'
@@ -23,12 +22,10 @@ interface Props{
 }
 
 const Details=({item,relacionados,seccion}:Props)=>{
-    const {loaderCTRL}:any = useContext(GlobalAppContext)
     const [user,setUser] = useState<User>({correo:'',password:''})
-
+    const similar_list = useMemo(()=><Grid_similars_items items={relacionados} />,[])
     useEffect(()=>{
         setUser(verifySesion())
-        loaderCTRL(document.location.pathname)
     },[])
 
     return(
@@ -72,7 +69,7 @@ const Details=({item,relacionados,seccion}:Props)=>{
                             {item.producto.replace("-"," ")} más populares
                         </h2>
                         <div className="container_items">
-                            <Grid_similars_items items={relacionados} />
+                            {similar_list}
                         </div>
                     </>
                         ):null
@@ -86,7 +83,6 @@ const Details=({item,relacionados,seccion}:Props)=>{
                         display:grid;
                         grid-template-columns: 1fr;
                         gap:10px;
-                        background:var(--primary-color);
                     }
                     .box_detail_item > section{
                         width:100%;
@@ -97,7 +93,8 @@ const Details=({item,relacionados,seccion}:Props)=>{
                         padding:5px;
                     }
                     .box_detail_item > section:nth-child(2){
-                        box-shadow:var(--shadow);
+                        border:1px solid var(--secondary-color);
+                        background:var(--primary-color);
                     }
                     .box_detail_item > section > h1{
                         padding: 5px 2px;
@@ -125,7 +122,7 @@ const Details=({item,relacionados,seccion}:Props)=>{
                     .container_inputs_item div{
                         text-align: center;
                         background:white;
-                        box-shadow:var(--shadow);
+                        border:1px solid var(--secondary-color);
                     }
                     .container_inputs_item img{
                         width:60px;
@@ -137,7 +134,7 @@ const Details=({item,relacionados,seccion}:Props)=>{
                         width:100%;
                         padding:5px 3px;
                         background:var(--primary-color);
-                        box-shadow:var(--shadow);
+                        border:1px solid var(--secondary-color);
                         margin-bottom:5px;
                     }
                     .box_detail_item > section > .container_details_item > div, .container_details_item > li{
@@ -154,11 +151,11 @@ const Details=({item,relacionados,seccion}:Props)=>{
                         .container_img_item{
                             text-align:center;
                             height:300px;
-                            padding-left:150px;
+                            padding-left:100px;
                         }
                         .container_inputs_item{
                             position:absolute;
-                            width:150px;
+                            width:100px;
                             top:0;
                             left:0;
                             grid-template-columns: 1fr;
@@ -168,14 +165,14 @@ const Details=({item,relacionados,seccion}:Props)=>{
                     }
                     @media(min-width:720px){
                         .box_detail_item{
-                            grid-template-columns: 1fr 350px;
+                            grid-template-columns: 1fr 360px;
                         }
                         .box_detail_item > section > .container_details_item > div, .container_details_item > li{
                             grid-template-columns:1fr, 200px;
                         }
                         .container_details_item > li > b{
                            padding:10px 4px;
-                           border-bottom:1px solid orange;
+                           border-bottom:1px solid var(--secondary-color);
                            height:max-content;
                         }
                         .container_details_item > li > p{
@@ -184,7 +181,7 @@ const Details=({item,relacionados,seccion}:Props)=>{
                     }
                     @media(min-width:1080px){
                         .box_detail_item{
-                            grid-template-columns: 1fr 400px;
+                            grid-template-columns: 1fr 420px;
                         }
                     }
                     `

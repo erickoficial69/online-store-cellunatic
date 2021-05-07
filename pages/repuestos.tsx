@@ -3,7 +3,12 @@ import Head from "next/head";
 import GlobalAppContext from "../context/app/app_state";
 import {GetStaticProps,GetStaticPropsContext} from 'next'
 import { Producto } from "../interfaces/interfaces";
-import ProductsList from "../components/products.list";
+import dynamic from 'next/dynamic'
+
+const ProductsList = dynamic(
+  () => import('../components/products.list'),
+  { loading: () => <h1>Cargando Componente</h1> }
+)
 
 type Props={
     metas:Producto
@@ -64,7 +69,7 @@ const Repuestos=({productos,metas}:Props)=>{
                         <p>
                             ¿Cómo puedes usar tu teléfono si no se mantiene vivo el tiempo suficiente?
                             Los
-                            <b>problemas de batería son una de las fallas más comunes en los teléfonos</b>,
+                            <b> problemas de batería son una de las fallas más comunes en los teléfonos</b>,
                             generalmente causados por el abuso del usuario.
                         </p>
                     </article>
