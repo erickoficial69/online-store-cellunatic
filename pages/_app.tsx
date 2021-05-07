@@ -10,7 +10,7 @@ import * as accServ from '../components/controllers/accesorios.controllers'
 import * as repServ from '../components/controllers/repuestos.controllers'
 import * as prodServ from '../components/controllers/productos.controllers'
 import Navigation from "../components/Navigation";
-
+import './effect.css'
 
 /*
 NextWebVitalsMetric se importa de next/app
@@ -159,7 +159,72 @@ function Myapp({ Component,pageProps}:AppProps) {
             </div>
           ):null
         }
-
+<div className="origin">
+  <div className="control">
+    <div className="galaxy">
+      
+      
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+      <div className="star"></div>
+    </div>
+  </div>
+</div>
         <style jsx global>
           {
             `
@@ -181,6 +246,13 @@ function Myapp({ Component,pageProps}:AppProps) {
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
               color:var(--font-color);
           }
+          *::before,
+          *::after {
+            margin: 0;
+            border: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
           :root{
               --height-header:55px;
               --secondary-color:orange;
@@ -191,13 +263,10 @@ function Myapp({ Component,pageProps}:AppProps) {
               --shadow:0px 0px 2px var(--secondary-color);
               --radius:8px;
           }
-          body{
-              background:url('/img/bg.webp') center;
-              background-size: cover;
-              background-color: rgba(0,0,0, .6);
-              background-blend-mode: darken;
-              background-attachment: fixed;
+          h1{
+            font-size:2em;
           }
+          
           header{
               position: fixed;
               height:var(--height-header);
@@ -231,11 +300,7 @@ function Myapp({ Component,pageProps}:AppProps) {
               width:100%;
               position:relative;
           }
-          main > section,aside{
-              background:var(--primary-color);
-              border-radius:var(--radius);
-              padding:4px;
-            }
+          
           /*creador de items*/
           .component_new_item{
             position:fixed;
@@ -335,21 +400,21 @@ function Myapp({ Component,pageProps}:AppProps) {
           aside{
               display: none;
               width:250px;
+              background:var(--primary-color);
           }
           aside > h3, nav.principal > h3{
               height: var(--height-header);
+              line-height: var(--height-header);
               text-transform: uppercase;
               border-bottom: 1px solid var(--darken);
-              line-height: 3;
+              padding: 0 3px;
           }
-          aside > ul li, nav.principal > ul li{
+          
+          aside a,nav.principal a{
+            display:block;
             padding:8px 3px;
             border-bottom:1px solid var(--secondary-color);
             text-transform: uppercase;
-            cursor:pointer;
-          }
-          aside a,nav.principal a{
-            display:block;
           }
           aside > ul li:hover, nav.principal > ul li:hover{
             background:var(--alfa);
@@ -478,9 +543,6 @@ function Myapp({ Component,pageProps}:AppProps) {
                   display: block;
                   height:max-content;
                   position: fixed;
-                  background:var(--primary-color);
-                  padding: 5px ;
-                  border-radius:7px;
               }
               .full_width{
                   grid-column: 1 / span 2;
