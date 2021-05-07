@@ -8,7 +8,7 @@ interface Props {
     item: Accesorio | Repuesto
 }
 
-export const DetailItem = ({ item }: Props) => {
+const DetailItem = ({ item }: Props) => {
     const initialState = {
         nombre: '',
         color: '',
@@ -135,3 +135,4 @@ export const DetailItem = ({ item }: Props) => {
         </article>
     )
 }
+export default DetailItem

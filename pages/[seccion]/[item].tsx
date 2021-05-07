@@ -3,13 +3,17 @@ import { Accesorio, Producto, Repuesto } from "../../interfaces/interfaces";
 import * as accServ from '../../components/controllers/accesorios.controllers'
 import * as repServ from '../../components/controllers/repuestos.controllers'
 import { useContext, useEffect, useMemo, useState } from "react";
-import ProductsList from "../../components/products.list";
 import GlobalAppContext from "../../context/app/app_state";
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 
 const Grid_similars_items = dynamic(
   () => import('../../components/grid_similar_items'),
+  { loading: () => <h1>Cargando Componente</h1> }
+)
+
+const ProductsList = dynamic(
+  () => import('../../components/products.list'),
   { loading: () => <h1>Cargando Componente</h1> }
 )
 
@@ -27,12 +31,10 @@ const Index=({seccion,item,productos,metas}:Props)=>{
     const fecthData = async (item:string,limit:number)=>{
         
         if(seccion.toLowerCase() =='accesorios'){
-            setData([])
             const {accesorios} = await accServ.getCustomAccesorio(item,limit)
             setData(accesorios)
         }
         if(seccion.toLowerCase() =='repuestos'){
-            setData([])
             const {repuestos} = await repServ.getCustomRepuesto(item,limit)
             setData(repuestos)
         }

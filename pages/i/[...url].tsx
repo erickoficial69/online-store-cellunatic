@@ -3,7 +3,6 @@ import { Accesorio, Producto, User, Repuesto } from '../../interfaces/interfaces
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { verifySesion } from '../../components/controllers/usuarios.controllers';
 import GlobalAppContext from '../../context/app/app_state';
-import { DetailItem } from '../../components/details_item';
 import { ManageAccesorio } from '../../components/cpanel_components/manage.accesorio';
 import { ManageRepuesto } from '../../components/cpanel_components/manage.repuesto';
 import Head from 'next/head'
@@ -11,9 +10,12 @@ import dynamic from 'next/dynamic'
 
 const Grid_similars_items = dynamic(
   () => import('../../components/grid_similar_items'),
-  { loading: () => <h1>Cargando Componente</h1> }
+  { loading: () => <h1>Cargando Componente</h1>,ssr: false  }
 )
-
+const DetailItem = dynamic(
+    () => import('../../components/details_item'),
+    { loading: () => <h1>Cargando Componente</h1> , ssr: false }
+  )
 interface Props{
     item:Accesorio | Repuesto
     relacionados:Accesorio[] | Repuesto[]
