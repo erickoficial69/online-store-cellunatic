@@ -7,7 +7,12 @@ import { DetailItem } from '../../components/details_item';
 import { ManageAccesorio } from '../../components/cpanel_components/manage.accesorio';
 import { ManageRepuesto } from '../../components/cpanel_components/manage.repuesto';
 import Head from 'next/head'
-import Grid_similars_items from '../../components/grid_similar_items';
+import dynamic from 'next/dynamic'
+
+const Grid_similars_items = dynamic(
+  () => import('../../components/grid_similar_items'),
+  { loading: () => <h1>Cargando Componente</h1> }
+)
 
 interface Props{
     item:Accesorio | Repuesto
@@ -65,11 +70,6 @@ const Details=({item,relacionados,seccion}:Props)=>{
                             {item.producto.replace("-"," ")} más populares
                         </h2>
                         <div className="container_items">
-                            <Grid_similars_items items={relacionados} />
-                            <Grid_similars_items items={relacionados} />
-                            <Grid_similars_items items={relacionados} />
-                            <Grid_similars_items items={relacionados} />
-                            <Grid_similars_items items={relacionados} />
                             <Grid_similars_items items={relacionados} />
                         </div>
                     </>

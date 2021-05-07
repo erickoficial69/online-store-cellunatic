@@ -1,23 +1,9 @@
-html {
-  height: 100vh;
-  width: 100vw;
-}
 
-body,
 .galaxy {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-body {
-  background: radial-gradient(circle at top , rgb(0, 1, 19) 0, rgb(0, 0, 0) 70%);;
-  width: 100%;
-  overflow: hidden;
-  -webkit-perspective: 100vmin;
-          perspective: 100vmin;
-}
-
 .origin,
 .control,
 .galaxy,
@@ -27,6 +13,16 @@ body {
 }
 
 .origin {
+  overflow: hidden;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100vw;
+  height:100vh;
+  z-index:-1;
+  background: radial-gradient(circle at top, rgb(0, 1, 19) 0, rgb(0, 0, 0) 70%);
   -webkit-transform: translate3d(0vw, 0vh, 0vmin);
           transform: translate3d(0vw, 0vh, 0vmin);
 }
@@ -34,19 +30,20 @@ body {
 .control {
   -webkit-transform: scale3d(0, 0, 0);
           transform: scale3d(0, 0, 0);
-  -webkit-animation: appear 45s linear forwards;
-          animation: appear 45s linear forwards;
+  -webkit-animation: appear 20s linear forwards;
+          animation: appear 20s linear forwards;
 }
 
 .galaxy {
-  -webkit-animation: rotation 45s linear infinite;
-          animation: rotation 45s linear infinite;
+  -webkit-animation: rotation 20s linear infinite;
+          animation: rotation 20s linear infinite;
 }
 
 .star, .star::before, .star::after {
   position: absolute;
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
+          z-index:9999999;
 }
 .star::before, .star::after {
   background: var(--background);

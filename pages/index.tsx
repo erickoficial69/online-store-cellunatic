@@ -3,7 +3,12 @@ import Link from 'next/link'
 import Head from "next/head";
 import GlobalAppContext from "../context/app/app_state";
 import { GetStaticProps, GetStaticPropsContext } from "next";
-import Grid_similars_items from "../components/grid_similar_items";
+import dynamic from 'next/dynamic'
+
+const Grid_similars_items = dynamic(
+  () => import('../components/grid_similar_items'),
+  { loading: () => <h1>Cargando Componente</h1> }
+)
 
 const Index = ({sections}:any) => {
     const { loaderCTRL, getAccesorios, accesorios, repuestos, getRepuestos }: any = useContext(GlobalAppContext)

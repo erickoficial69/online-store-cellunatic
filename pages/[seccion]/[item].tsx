@@ -2,11 +2,16 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { Accesorio, Producto, Repuesto } from "../../interfaces/interfaces";
 import * as accServ from '../../components/controllers/accesorios.controllers'
 import * as repServ from '../../components/controllers/repuestos.controllers'
-import Grid_similars_items from "../../components/grid_similar_items";
 import { useContext, useEffect, useMemo, useState } from "react";
 import ProductsList from "../../components/products.list";
 import GlobalAppContext from "../../context/app/app_state";
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
+
+const Grid_similars_items = dynamic(
+  () => import('../../components/grid_similar_items'),
+  { loading: () => <h1>Cargando Componente</h1> }
+)
 
 type Props={
     item:string
