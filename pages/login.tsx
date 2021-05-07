@@ -50,13 +50,13 @@ const LoginForm = () => {
     }, [])
 
     return (
-        <>
+        <main>
             <Head>
                 <title>Cellunatic - Login</title>
             </Head>
-            <div className="containerForm">
-                <form onSubmit={login} style={{padding:10,borderRadius:5,background:'rgb(20,20,20)'}}>
-                    <h3 style={{ marginBottom: '10px', textAlign:'center' }} >Login</h3>
+            <section className="full_width containerForm">
+                <form onSubmit={login}>
+                    <h2 >Login</h2>
 
                     <div style={{margin:5}}>
                         <label >{disabled?'no puede estar vacio':'Email' }</label>
@@ -73,9 +73,37 @@ const LoginForm = () => {
                     
                     {/* <Typography style={{ marginTop: '20px' }} variant="caption" >Nó tienes cuenta? <b onClick={()=>push('/register')} >Registrate</b></Typography> */}
                 </form>
-            </div>
-
-        </>
+            </section>
+            <style jsx>{
+                `
+                .containerForm {
+                    display:grid;
+                    place-items:center;
+                    place-content:center;
+                    background:transparent;
+                    height:calc(80vh - var(--height-header));
+                }
+                form{
+                    background:var(--primary-color);
+                    padding:8px;
+                    border-radius:var(--radius);
+                }
+                form h2{
+                    text-align:center;
+                }
+                form label,form input{
+                    display:block;
+                    padding:8px 2px;
+                    text-transform:uppercase;
+                    background:transparent;
+                }
+                form input{
+                    box-shadow:var(--shadow);
+                    padding:5px 2px;
+                }
+                `
+            }</style>
+        </main>
     )
 }
 

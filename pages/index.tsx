@@ -67,7 +67,7 @@ const Index = ({sections}:any) => {
 
                 {accesorios.count > 0 ?
                     <section>
-                        <article>
+                        <article className="copy_article" >
                             <h2>Los accesorios mas populares en Cellunatic</h2>
                             <p>
                                Es casi imprescindible contar con alguno de estos
@@ -91,7 +91,7 @@ const Index = ({sections}:any) => {
                     : null}
                 {repuestos.data.length > 0 ?
                     <section>
-                        <article>
+                        <article className="copy_article" >
                             <h2>Los repuestos mas vendidos en Cellunatic</h2>
                             <p>
                                 Estos son algunos de los repuestos más adquiridos por nuestros visitantes, podras encontrar forros, vidrios templados, audifonos y mucho más.

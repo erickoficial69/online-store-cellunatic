@@ -59,8 +59,8 @@ const Accesorios = ({productos,metas}:Props) => {
                         artículos. Cellunatic hace un repaso de los accesorios
                         más comprados, populares e innovadores del momento.
                     </p>
-                    <article>
-                        <h3>Cable USB y Cargador</h3>
+                    <article className="copy_article">
+                        <h2>Cable USB y Cargador</h2>
                         <p>
                             son productos muy
                             importantes. Existen cargadores que se enchufan mediante el
@@ -70,8 +70,8 @@ const Accesorios = ({productos,metas}:Props) => {
                         </p>
                     </article>
 
-                    <article>
-                        <h3>Vidrio templado o protectores de pantalla</h3>
+                    <article className="copy_article">
+                        <h2>Vidrio templado o protectores de pantalla</h2>
                         <p>
                             Estas delgadas láminas cubren y cuidan la pantalla de
                             nuestro teléfono contra los rayones. Existe una nueva
@@ -81,8 +81,8 @@ const Accesorios = ({productos,metas}:Props) => {
                         </p>
                     </article>
 
-                    <article>
-                        <h3>Auriculares</h3>
+                    <article className="copy_article">
+                        <h2>Auriculares</h2>
                         <p>
                             Son artículos muy usados. Tienen un alto
                             nivel de ventas.También son muy

@@ -48,7 +48,7 @@ const Repuestos=({productos,metas}:Props)=>{
             </aside>
 
             <section> 
-            <h1>Los mejores accesorios para Celulares</h1>
+                <h1>Los mejores accesorios para Celulares</h1>
                     <p>
                         La venta Smartphones sigue creciendo tanto en nuestro país
                         como en todo el planeta. 
@@ -59,8 +59,8 @@ const Repuestos=({productos,metas}:Props)=>{
                         ellos y tenemos que llevarlos a algún lugar para arreglarlos, puede ser un verdadero
                         dolor. Afortunadamente, tenemos para ti una variedad de repuestos y servicio tecnico profesional para cada caso.
                     </p>
-                    <article>
-                        <h3>La batería no funciona</h3>
+                    <article className="copy_article">
+                        <h2>La batería no funciona</h2>
                         <p>
                             ¿Cómo puedes usar tu teléfono si no se mantiene vivo el tiempo suficiente?
                             Los
@@ -69,8 +69,8 @@ const Repuestos=({productos,metas}:Props)=>{
                         </p>
                     </article>
 
-                    <article>
-                        <h3>Pantalla está rota</h3>
+                    <article className="copy_article">
+                        <h2>Pantalla está rota</h2>
                         <p>
                             Como las pantallas de nuestros teléfonos son de vidrio, no es sorprendente que a veces un fuerte impacto con el suelo pueda hacer que se rompan. Las grietas pueden
                             causar problemas en la respuesta de la pantalla táctil o dejar entrar la humedad, por lo que es importante reparar el teléfono después de que la pantalla se
@@ -78,8 +78,8 @@ const Repuestos=({productos,metas}:Props)=>{
                         </p>
                     </article>
 
-                    <article>
-                        <h3>Teléfono no carga (El puerto de carga dejó de funcionar)</h3>
+                    <article className="copy_article">
+                        <h2>Teléfono no carga (El puerto de carga dejó de funcionar)</h2>
                         <p>
                             Al igual que con las baterías de los teléfonos, con el tiempo los cables de carga y el
                             puerto se desgastarán. En el teléfono, las pequeñas lengüetas metálicas alrededor de

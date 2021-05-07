@@ -194,7 +194,7 @@ function Myapp({ Component,pageProps}:AppProps) {
           body{
               background:url('/img/bg.webp') center;
               background-size: cover;
-              background-color: rgba(0,0,0, .3);
+              background-color: rgba(0,0,0, .6);
               background-blend-mode: darken;
               background-attachment: fixed;
           }
@@ -355,19 +355,6 @@ function Myapp({ Component,pageProps}:AppProps) {
             background:var(--alfa);
           }
           /*/////////*/
-          .containerForm {
-              width:100%;
-              height:100vh;
-              display: flex;
-              flex-flow: column;
-              justify-content: center;
-              align-content: center;
-              align-items: center;
-              position: relative;
-              margin: 0 auto;
-              overflow: hidden;
-          }
-          
           .coursive{
               font-family: 'cellunatic' !important;
           }
@@ -424,7 +411,9 @@ function Myapp({ Component,pageProps}:AppProps) {
               cursor:pointer;
               text-align:center;
           }
-          
+          .copy_article > p{
+            padding:10px 20px;
+          }
           @media(min-width:480px){
               /*Intro*/
               .intro > img{
