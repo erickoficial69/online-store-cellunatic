@@ -163,28 +163,6 @@ function Myapp({ Component,pageProps}:AppProps) {
   <div className="control">
     <div className="galaxy">
       
-      
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
       <div className="star"></div>
       <div className="star"></div>
       <div className="star"></div>
@@ -258,7 +236,7 @@ function Myapp({ Component,pageProps}:AppProps) {
               --secondary-color:orange;
               --alfa:rgba(0,0,0, .3);
               --darken:rgba(0,0,0, .9);
-              --primary-color:rgba(25, 25, 25, 1);
+              --primary-color:rgba(5, 5, 5, .8);
               --font-color:white;
               --shadow:0px 0px 2px var(--secondary-color);
               --radius:8px;
