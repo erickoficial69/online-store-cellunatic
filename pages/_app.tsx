@@ -135,6 +135,10 @@ function Myapp({ Component,pageProps}:AppProps) {
   }
   useEffect(()=>{
     (async()=>{
+      for(let i = 0; i > 30; i++){
+        const start = document.createElement("div")
+        start.classList.add('star')
+      }
       getProductos()
       setSecciones(await seccServ.getSecciones())
     })()
@@ -170,14 +174,6 @@ function Myapp({ Component,pageProps}:AppProps) {
 <div className="origin">
   <div className="control">
     <div className="galaxy">
-      
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
-      <div className="star"></div>
       <div className="star"></div>
       <div className="star"></div>
       <div className="star"></div>

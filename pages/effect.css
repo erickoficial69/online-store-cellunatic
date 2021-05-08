@@ -1,11 +1,3 @@
-
-.galaxy {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.origin,
-.control,
 .galaxy,
 .star {
   -webkit-transform-style: preserve-3d;
@@ -22,9 +14,12 @@
   width:100vw;
   height:100vh;
   z-index:-1;
-  background: radial-gradient(circle at bottom, var(--primary-color) 0, var(--darken) 85%);
+  background: radial-gradient(circle at bottom, rgb(0,0,30) 0, rgb(0,0,0) 70%);
   -webkit-transform: translate3d(0vw, 0vh, 0vmin);
           transform: translate3d(0vw, 0vh, 0vmin);
+          display:grid;
+          place-items:center;
+          place-content:center;
 }
 
 .control {
@@ -40,10 +35,10 @@
 }
 
 .star, .star::before, .star::after {
-  position: absolute;
+  position: fixed;
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
-          z-index:9999999;
+          z-index:9999999999999;
 }
 .star::before, .star::after {
   background: var(--background);
@@ -52,14 +47,17 @@
   content: '';
   height: var(--size);
   width: var(--size);
+  z-index:999999999999;
 }
 .star::before {
   -webkit-transform: var(--transform);
           transform: var(--transform);
+          z-index:999999999999;
 }
 .star::after {
   -webkit-transform: scale3d(-1, -1, -1) var(--transform);
           transform: scale3d(-1, -1, -1) var(--transform);
+          z-index:999999999999;
 }
 
 .star:nth-of-type(1) {
@@ -136,8 +134,8 @@
 
 .star:nth-of-type(10) {
   --size: 0.7107513334vmin;
-  --background: #ff5880;
-  --shadow: 0 0 0.9962013414vmin 0.1962571025vmin #ff5880;
+  --background: white;
+  --shadow: 0 0 0.9962013414vmin 0.1962571025vmin white;
   --transform: rotate3d(1, 0, 0, 101deg) rotate3d(0, 1, 0, 107deg) rotate3d(0, 0, 1, 16deg) translate3d(0, 0, 70.1759644933vmin)
   ;
 }
@@ -184,8 +182,8 @@
 
 .star:nth-of-type(16) {
   --size: 0.7408991482vmin;
-  --background: #ea1b90;
-  --shadow: 0 0 0.5636452941vmin 0.3366402359vmin #ea1b90;
+  --background: gold;
+  --shadow: 0 0 0.5636452941vmin 0.3366402359vmin gold;
   --transform: rotate3d(1, 0, 0, 54deg) rotate3d(0, 1, 0, 19deg) rotate3d(0, 0, 1, 167deg) translate3d(0, 0, 70.4007677602vmin)
   ;
 }
@@ -193,15 +191,15 @@
 .star:nth-of-type(17) {
   --size: 0.5275932186vmin;
   --background: #dd1486;
-  --shadow: 0 0 0.3797963007vmin 0.1531168848vmin #eb2495;
+  --shadow: 0 0 0.3797963007vmin 0.1531168848vmin white;
   --transform: rotate3d(1, 0, 0, 178deg) rotate3d(0, 1, 0, 222deg) rotate3d(0, 0, 1, 277deg) translate3d(0, 0, 72.288528018vmin)
   ;
 }
 
 .star:nth-of-type(18) {
   --size: 0.5093118435vmin;
-  --background: #ea1b90;
-  --shadow: 0 0 0.3970329884vmin 0.0773944724vmin #ea1b90;
+  --background: gold;
+  --shadow: 0 0 0.3970329884vmin 0.0773944724vmin gold;
   --transform: rotate3d(1, 0, 0, 268deg) rotate3d(0, 1, 0, 327deg) rotate3d(0, 0, 1, 46deg) translate3d(0, 0, 76.8482204992vmin)
   ;
 }
@@ -224,8 +222,8 @@
 
 .star:nth-of-type(21) {
   --size: 0.4313161361vmin;
-  --background: #ff76ad;
-  --shadow: 0 0 0.3734112201vmin 0.0457078964vmin #ff80b3;
+  --background: white;
+  --shadow: 0 0 0.3734112201vmin 0.0457078964vmin white;
   --transform: rotate3d(1, 0, 0, 102deg) rotate3d(0, 1, 0, 353deg) rotate3d(0, 0, 1, 150deg) translate3d(0, 0, 84.5243263407vmin)
   ;
 }
@@ -240,8 +238,8 @@
 
 .star:nth-of-type(23) {
   --size: 0.6749804977vmin;
-  --background: #ff5880;
-  --shadow: 0 0 0.4141135488vmin 0.1769542018vmin #ff5880;
+  --background: white;
+  --shadow: 0 0 0.4141135488vmin 0.1769542018vmin white;
   --transform: rotate3d(1, 0, 0, 358deg) rotate3d(0, 1, 0, 231deg) rotate3d(0, 0, 1, 134deg) translate3d(0, 0, 67.9039057691vmin)
   ;
 }
@@ -302,85 +300,6 @@
   ;
 }
 
-.star:nth-of-type(31) {
-  --size: 0.4767887783vmin;
-  --background: #f1f4f7;
-  --shadow: 0 0 0.5256370696vmin 0.193330741vmin #f1f4f7;
-  --transform: rotate3d(1, 0, 0, 308deg) rotate3d(0, 1, 0, 56deg) rotate3d(0, 0, 1, 249deg) translate3d(0, 0, 75.3259937348vmin)
-  ;
-}
-
-.star:nth-of-type(32) {
-  --size: 0.3488615182vmin;
-  --background: #eee784;
-  --shadow: 0 0 0.1783888201vmin 0.0877796286vmin #f4efb0;
-  --transform: rotate3d(1, 0, 0, 22deg) rotate3d(0, 1, 0, 56deg) rotate3d(0, 0, 1, 120deg) translate3d(0, 0, 87.9945198278vmin)
-  ;
-}
-
-.star:nth-of-type(33) {
-  --size: 0.6272794925vmin;
-  --background: #7e7bf5;
-  --shadow: 0 0 0.4018138602vmin 0.0036085878vmin #7e7bf5;
-  --transform: rotate3d(1, 0, 0, 72deg) rotate3d(0, 1, 0, 4deg) rotate3d(0, 0, 1, 108deg) translate3d(0, 0, 74.9429716204vmin)
-  ;
-}
-
-.star:nth-of-type(34) {
-  --size: 0.5980763449vmin;
-  --background: #f68c8c;
-  --shadow: 0 0 0.609028633vmin 0.0206698956vmin #f68c8c;
-  --transform: rotate3d(1, 0, 0, 43deg) rotate3d(0, 1, 0, 294deg) rotate3d(0, 0, 1, 120deg) translate3d(0, 0, 76.1165457048vmin)
-  ;
-}
-
-.star:nth-of-type(35) {
-  --size: 0.6185383144vmin;
-  --background: #eee784;
-  --shadow: 0 0 0.372974437vmin 0.1348613878vmin #f4efb0;
-  --transform: rotate3d(1, 0, 0, 184deg) rotate3d(0, 1, 0, 2deg) rotate3d(0, 0, 1, 25deg) translate3d(0, 0, 67.3368436297vmin)
-  ;
-}
-
-.star:nth-of-type(36) {
-  --size: 0.4141415773vmin;
-  --background: #ff8fbc;
-  --shadow: 0 0 0.5083147474vmin 0.0947692398vmin #ff8fbc;
-  --transform: rotate3d(1, 0, 0, 200deg) rotate3d(0, 1, 0, 4deg) rotate3d(0, 0, 1, 111deg) translate3d(0, 0, 80.5099805988vmin)
-  ;
-}
-
-.star:nth-of-type(37) {
-  --size: 0.464004449vmin;
-  --background: #31b6ef;
-  --shadow: 0 0 0.4434728559vmin 0.0845349624vmin #31b6ef;
-  --transform: rotate3d(1, 0, 0, 331deg) rotate3d(0, 1, 0, 5deg) rotate3d(0, 0, 1, 207deg) translate3d(0, 0, 73.7570183556vmin)
-  ;
-}
-
-.star:nth-of-type(38) {
-  --size: 0.4698868978vmin;
-  --background: #e8edf1;
-  --shadow: 0 0 0.3505111485vmin 0.0437121938vmin #f4f7f9;
-  --transform: rotate3d(1, 0, 0, 121deg) rotate3d(0, 1, 0, 85deg) rotate3d(0, 0, 1, 48deg) translate3d(0, 0, 73.9383472235vmin)
-  ;
-}
-
-.star:nth-of-type(39) {
-  --size: 0.5291774426vmin;
-  --background: #eee784;
-  --shadow: 0 0 0.6760046753vmin 0.2242731162vmin #f4efb0;
-  --transform: rotate3d(1, 0, 0, 99deg) rotate3d(0, 1, 0, 353deg) rotate3d(0, 0, 1, 352deg) translate3d(0, 0, 77.1554461862vmin)
-  ;
-}
-
-.star:nth-of-type(40) {
-  --size: 0.397408839vmin;
-  --background: #eb2495;
-  --shadow: 0 0 0.4577027818vmin 0.1326726142vmin #eb2495;
-  --transform: rotate3d(1, 0, 0, 283deg) rotate3d(0, 1, 0, 238deg) rotate3d(0, 0, 1, 22deg) translate3d(0, 0, 85.7114320814vmin)
-  ;
-}
 
 
 
