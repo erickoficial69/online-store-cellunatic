@@ -1,13 +1,3 @@
-/* const withWorkbox = require("next-with-workbox");
- 
-module.exports = withWorkbox({
-  workbox:{
-    dest: "public",
-    swDest: "sw.js",
-    swSrc: "service-worker.js",
-    force: true
-  }
-}); */
 
 const withOffline = require('next-offline')
 const nextConfig = {
@@ -19,7 +9,7 @@ const nextConfig = {
         options: {
           cacheName: 'offlineCache',
           expiration: {
-            maxEntries: 200
+            maxEntries: 400
             }
           }
       },
@@ -29,7 +19,7 @@ const nextConfig = {
         options: {
           cacheName: 'offlineCache',
           expiration: {
-            maxEntries: 200
+            maxEntries: 400
             }
           }
       },
@@ -39,7 +29,7 @@ const nextConfig = {
         options: {
           cacheName: 'offlineCache',
           expiration: {
-            maxEntries: 200
+            maxEntries: 400
             }
           }
       },
@@ -49,7 +39,7 @@ const nextConfig = {
         options: {
           cacheName: 'offlineCache',
           expiration: {
-            maxEntries: 200
+            maxEntries: 400
             }
           }
       },
@@ -59,7 +49,7 @@ const nextConfig = {
       options: {
         cacheName: 'offlineCache',
         expiration: {
-          maxEntries: 200
+          maxEntries: 400
           }
         }
       }

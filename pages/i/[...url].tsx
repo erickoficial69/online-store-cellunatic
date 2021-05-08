@@ -37,10 +37,10 @@ const Details=({item,relacionados,seccion}:Props)=>{
                 <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/i/${item.url}/${item.producto}`} />
                 <meta property="og:locale" content="es_ES" />
                 <meta property="og:type" content="website" />
-                <meta property="og:title" content="Cellunatic" />
+                <meta property="og:title" content={`${item.nombre} - Cellunatic"`} />
                 <meta property="og:description" content={item?item.description:""} />
                 <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/i/${item.url}/${item.producto}`} />
-                <meta property="og:site_name" content="cellunatic.store" />
+                <meta property="og:site_name" content="cellunatic" />
                 <meta property="og:image" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
                 <meta property="og:image:secure_url" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
                 <meta property="og:image:width" content="32" />
