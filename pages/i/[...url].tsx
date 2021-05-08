@@ -34,12 +34,12 @@ const Details=({item,relacionados,seccion}:Props)=>{
                 <title>{item.nombre} - Cellunatic</title>
                 <meta name="description" content={item?item.description:""} />
                 <meta name="keywords" content={item?item.keywords:""}/>
-                <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/${item?item.url:""}`} />
+                <link rel="canonical" href={`https://online-store-cellunatic.vercel.app/i/${item?item.url:""}`} />
                 <meta property="og:locale" content="es_ES" />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Cellunatic" />
                 <meta property="og:description" content={item?item.description:""} />
-                <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/${item?item.url:""}`} />
+                <meta property="og:url" content={`https://online-store-cellunatic.vercel.app/i/${item?item.url:""}`} />
                 <meta property="og:site_name" content="cellunatic.store" />
                 <meta property="og:image" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
                 <meta property="og:image:secure_url" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
@@ -49,7 +49,7 @@ const Details=({item,relacionados,seccion}:Props)=>{
                 <meta name="twitter:description" content={item?item.description:""} />
                 <meta name="twitter:title" content={`${item.nombre} - Cellunatic"`} />
                 <meta name="twitter:image" content={item?item.imagenes.imagen1:'/logo512x512.png'} />
-                <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/${item?item.url:""}`} />
+                <link rel="shortlink" href={`https://online-store-cellunatic.vercel.app/i/${item?item.url:""}`} />
             </Head>
 
             <section className="full_width" >
