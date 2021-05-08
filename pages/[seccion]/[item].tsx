@@ -24,7 +24,7 @@ type Props={
     metas:Producto
 }
 
-const Index=({seccion,item,productos,metas}:Props)=>{
+const List_Item_Component=({seccion,item,productos,metas}:Props)=>{
     const {loaderCTRL,setBuscador}:any = useContext(GlobalAppContext)
     const [data,setData] = useState<Accesorio[] | Repuesto[]>([])
     const [limit,setLimit] = useState<number>(10)
@@ -126,4 +126,4 @@ export const getStaticProps:GetStaticProps = async({params}:GetStaticPropsContex
     }
 }
 
-export default Index
+export default List_Item_Component
